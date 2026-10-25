@@ -60,3 +60,11 @@ colab-exchange/*/*
 preprocess/*json
 .deepeval*
 benchmarks/results/*
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+
+# Playwright MCP artifacts
+.playwright-mcp/
