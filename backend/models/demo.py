@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class DemoHistoryMessage(BaseModel):
     role: Literal["user", "assistant", "ai"]
-    content: str = Field(min_length=1, max_length=2000)
+    content: str = Field(min_length=1, max_length=4000)
 
 
 class DemoChatRequest(BaseModel):

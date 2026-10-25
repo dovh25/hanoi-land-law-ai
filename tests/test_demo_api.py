@@ -124,6 +124,27 @@ def test_demo_uses_injected_pipeline_and_returns_citations(settings):
         assert provider.calls == 1
 
 
+def test_demo_accepts_full_length_retrieval_answer_in_history(settings):
+    """The UI echoes the whole retrieval-only answer (~3.3k chars) as history."""
+    index = MvpCorpusIndex.load()
+    provider = FakeProvider("Không đủ căn cứ.")
+    pipeline = MvpRagPipeline(provider=provider, index=index)
+    app = create_app(settings, mvp_pipeline=pipeline)
+    long_answer = "Đoạn trích nguồn. " * 200  # ~3,600 chars, under MVP_MAX_HISTORY_CHARS
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/v1/demo/chat",
+            json={
+                "message": "Thời hạn sử dụng đất ở là bao lâu?",
+                "history": [
+                    {"role": "user", "content": "Bồi thường khi Nhà nước thu hồi đất ở là gì?"},
+                    {"role": "assistant", "content": long_answer},
+                ],
+            },
+        )
+    assert response.status_code == 200
+
+
 def test_demo_readiness_follows_corpus_loading(settings):
     app = create_app(settings)
     with TestClient(app) as client:
