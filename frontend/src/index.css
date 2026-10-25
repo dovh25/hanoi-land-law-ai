@@ -1,10 +1,37 @@
 @import "tailwindcss";
 
+/* Indochine legal-tech design tokens (see docs/frontend-redesign.md) */
+@theme {
+  --color-ink-950: #0A121C;
+  --color-ink-900: #0B1420;
+  --color-ink-800: #102232;
+  --color-navy-700: #153550;
+  --color-navy-600: #1B4363;
+  --color-gold-600: #B08A34;
+  --color-gold-500: #C9A24B;
+  --color-gold-300: #E7CB86;
+  --color-gold-100: #F6EDD6;
+  --color-paper: #F8F3E7;
+  --color-paper-2: #FFFDF7;
+  --color-line: #E5DCC5;
+  --color-line-soft: #EFE8D6;
+  --color-muted: #6E6455;
+  --color-muted-2: #8C8272;
+  --color-ok: #1E6B4F;
+  --color-okbg: #E7F2EC;
+  --color-warn: #8A621C;
+  --color-warnbg: #F7EFDA;
+  --color-info: #20516E;
+  --color-infobg: #E6EFF4;
+
+  --font-display: Georgia, "Times New Roman", "Liberation Serif", serif;
+}
+
 @layer base {
   :root {
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-    color: #111827;
-    background-color: #ffffff;
+    color: #1B1915;
+    background-color: #F8F3E7;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -13,7 +40,7 @@
   body {
     margin: 0;
     min-height: 100vh;
-    background-color: #ffffff;
+    background-color: #F8F3E7;
   }
 
   a {
@@ -122,7 +149,7 @@ html {
 
 .prose strong {
   font-weight: 600;
-  color: #111827;
+  color: #0B1420;
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
@@ -191,4 +218,35 @@ html {
   background-color: transparent;
   padding: 0;
   color: inherit;
+}
+
+/* Inline evidence citations ([E1]) render as gold chips, matching the Figma design. */
+.prose a[href^="#"] {
+  display: inline-block;
+  font-size: 0.72em;
+  font-weight: 700;
+  line-height: 1.5;
+  vertical-align: baseline;
+  color: #B08A34;
+  background-color: #F6EDD6;
+  border: 1px solid #E7D6A8;
+  border-radius: 6px;
+  padding: 0 6px;
+  margin: 0 1px;
+  text-decoration: none;
+}
+
+/* Custom scrollbar styling for the source excerpt panels */
+.excerpt-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #D8CDB2 transparent;
+}
+
+.excerpt-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.excerpt-scroll::-webkit-scrollbar-thumb {
+  background-color: #D8CDB2;
+  border-radius: 3px;
 }
