@@ -1,0 +1,44 @@
+services:
+  # The Python Backend
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/backend  # This allows "Hot Reload" (updates without restarting)
+      - ./law_crawler:/law_crawler  # Mount law documents for lookup service
+      - ~/.cache/huggingface:/root/.cache/huggingface  # Cache AI models
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}  # Passes the Gemini API key from your host environment
+      - DOCS_ROOT=/law_crawler/vbpl_documents
+    depends_on:
+      - qdrant
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1 # Or 'all'
+              capabilities: [gpu]
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./qdrant_data:/qdrant/storage
+
+  # The React Frontend
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app      # Syncs your code changes
+      - /app/node_modules    # Prevents local node_modules from breaking the container
+    depends_on:
+      - backend
