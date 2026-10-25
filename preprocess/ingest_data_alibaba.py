@@ -4,12 +4,8 @@ import json
 import pickle as pkl
 from tqdm import tqdm  # Import progress bar
 import uuid
-from transformers import AutoTokenizer
 
 # LangChain Imports
-from langchain_qdrant import QdrantVectorStore
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -28,17 +24,16 @@ from collections import defaultdict
 from qdrant_client.http.models import Distance, VectorParams
 from qdrant_client.models import PointStruct
 from qdrant_client import QdrantClient, models
+from backend.core.config import Config as RuntimeConfig
+from backend.core.index_safety import prepare_collection, destructive_cli_args
+from backend.core.models import model_location
 
 logger = logging.getLogger(__name__)
 
-from dotenv import load_dotenv
-from pydantic_settings import BaseSettings
 
-load_dotenv()
 
-class Config(BaseSettings):
+class Config(RuntimeConfig):
     QDRANT_PORT: int = 6333
-    DOCS_ROOT: str = "./law_crawler/vbpl_documents"
     CHUNK_SIZE: int = 1024
     COLLECTION_NAME: str = f"laws"
     DENSE_VECTOR_SIZE: int = 768  # Example size for dense vectors
@@ -85,14 +80,12 @@ def to_qdrant_sparse(token_weights_dict, tokenizer):
     
 config = Config()
 
-def ingest_data() -> None:
-    client = QdrantClient(host="localhost", port=config.QDRANT_PORT)
+def ingest_data(*, recreate=False, confirm_collection=None) -> None:
+    client = QdrantClient(host=config.QDRANT_HOST, port=config.QDRANT_PORT)
     collection_name = config.COLLECTION_NAME
     
     # 1. Handle Collection Recreation
-    if client.collection_exists(collection_name=collection_name):
-        client.delete_collection(collection_name=collection_name)
-        logger.info(f"Deleted existing collection '{collection_name}'.")
+    prepare_collection(client, collection_name, recreate=recreate, confirm_collection=confirm_collection)
 
     # 2. Create Collection with Hybrid Support
     client.create_collection(
@@ -125,7 +118,8 @@ def ingest_data() -> None:
     BATCH_SIZE = 128
     total_docs = len(docs)
     
-    tokenizer = AutoTokenizer.from_pretrained(config.MODEL_NAME)
+    from transformers import AutoTokenizer
+    tokenizer = AutoTokenizer.from_pretrained(model_location(config.MODEL_NAME))
 
     # 4. Ingest in Batches
     for i in tqdm(range(0, total_docs, BATCH_SIZE), desc="Uploading Hybrid Points"):
@@ -163,4 +157,4 @@ def ingest_data() -> None:
     logger.info("Hybrid data ingestion completed.")
 
 if __name__ == "__main__":
-    ingest_data()
+    ingest_data(**destructive_cli_args())

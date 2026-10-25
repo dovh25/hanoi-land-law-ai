@@ -21,6 +21,7 @@ from qdrant_client.http.models import (
 )
 
 from .config import config
+from backend.core.index_safety import prepare_collection
 
 logger = logging.getLogger(__name__)
 
@@ -235,6 +236,7 @@ def create_benchmark_collection(
     collection_name: str,
     dense_dim: int = 768,
     recreate: bool = False,
+    confirm_collection: str | None = None,
 ) -> None:
     """
     Create a Qdrant collection for benchmark evaluation.
@@ -245,13 +247,7 @@ def create_benchmark_collection(
         dense_dim: Dimension of dense vectors
         recreate: Whether to delete existing collection
     """
-    if client.collection_exists(collection_name):
-        if recreate:
-            logger.info(f"Deleting existing collection: {collection_name}")
-            client.delete_collection(collection_name)
-        else:
-            logger.info(f"Collection {collection_name} already exists")
-            return
+    prepare_collection(client, collection_name, recreate=recreate, confirm_collection=confirm_collection)
 
     logger.info(f"Creating collection: {collection_name}")
     client.create_collection(

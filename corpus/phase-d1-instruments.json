@@ -1,0 +1,516 @@
+{
+  "schema_version": 2,
+  "notice": "Phase D.1 official-gazette CDN manifestations of the same instruments. Files are individually URL-approved for limited automated download. No legal review, validity or current-law status is implied.",
+  "candidates": [
+    {
+      "attachment_status": "verified_official_cdn_manifestation",
+      "discovery_evidence_sha256": "4efcc03fb4e4d7561f81cfc3c4e2a35c54ccacc27f37620196656f8a847b7414",
+      "discovery_timestamp": "2026-10-25T18:45:43.797852+00:00",
+      "document_type": "Luật",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/41329/49226-1-2024363-36431-2024-qh15.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/41329/49029-1-2024365-36631-2024-qh15.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/41329/49032-1-2024367-36831-2024-qh15.pdf"
+      ],
+      "effective_date": null,
+      "effective_date_claim": {
+        "date": "2025-01-01",
+        "evidence": "official metadata page",
+        "may_be_amended": true,
+        "review_status": "pending"
+      },
+      "expiry_date": null,
+      "full_text_acquired": false,
+      "issuance_date": "2024-01-18",
+      "issuing_authority": "Quốc hội",
+      "issuing_authority_evidence": "official metadata page",
+      "jurisdiction": "VN",
+      "legal_validity": "unknown",
+      "official_identifier": "VN:Quốc hội:31/2024/QH15",
+      "official_number": "31/2024/QH15",
+      "publication_date": null,
+      "relationships": [],
+      "replacement_status": "unknown",
+      "review_status": "pending",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "source_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=211189",
+      "state": "manifestation_verified_pending_review",
+      "territorial_applicability": {
+        "basis": "official title; operative scope not yet inspected",
+        "claim": null,
+        "status": "pending_scope_review"
+      },
+      "title": "Luật Đất đai",
+      "topics": [
+        "land_law"
+      ],
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "363+364",
+          "365+366",
+          "367+368"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/nghi-quyet-so-31-2024-qh15-41329/49226.htm",
+          "https://congbao.chinhphu.vn/van-ban/nghi-quyet-so-31-2024-qh15-41329/49029.htm",
+          "https://congbao.chinhphu.vn/van-ban/nghi-quyet-so-31-2024-qh15-41329/49032.htm"
+        ],
+        "evidence_page_sha256": "4efcc03fb4e4d7561f81cfc3c4e2a35c54ccacc27f37620196656f8a847b7414",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": true,
+        "note": "Gazette detail page is titled as Nghị quyết 31/2024/QH15 but the served PDF text is Luật Đất đai 31/2024/QH15; identity confirmed from PDF body."
+      }
+    },
+    {
+      "attachment_status": "verified_official_cdn_manifestation",
+      "discovery_evidence_sha256": "63b1145eefcc358984791a7ec5e8a6569c64ba6b272dceee189098bf07b7f674",
+      "discovery_timestamp": "2026-10-25T18:45:46.774667+00:00",
+      "document_type": "Luật",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/6/42578/51470-1-2024987-98843-2024-qh15.pdf"
+      ],
+      "effective_date": null,
+      "effective_date_claim": {
+        "date": "2024-08-01",
+        "evidence": "official metadata page",
+        "may_be_amended": true,
+        "review_status": "pending"
+      },
+      "expiry_date": null,
+      "full_text_acquired": false,
+      "issuance_date": "2024-06-29",
+      "issuing_authority": "Quốc hội",
+      "issuing_authority_evidence": "official metadata page",
+      "jurisdiction": "VN",
+      "legal_validity": "unknown",
+      "official_identifier": "VN:Quốc hội:43/2024/QH15",
+      "official_number": "43/2024/QH15",
+      "publication_date": null,
+      "relationships": [
+        {
+          "evidence_quote": "Luật sửa đổi, bổ sung một số điều của Luật Đất đai số 31/2024/QH15, Luật Nhà ở số 27/2023/QH15, Luật Kinh doanh bất động sản số 29/2023/QH15 và Luật Các tổ chức tín dụng số 32/2024/QH15",
+          "evidence_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=211201",
+          "kind": "mentioned_in_title",
+          "review_status": "pending",
+          "target_number": "27/2023/QH15"
+        },
+        {
+          "evidence_quote": "Luật sửa đổi, bổ sung một số điều của Luật Đất đai số 31/2024/QH15, Luật Nhà ở số 27/2023/QH15, Luật Kinh doanh bất động sản số 29/2023/QH15 và Luật Các tổ chức tín dụng số 32/2024/QH15",
+          "evidence_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=211201",
+          "kind": "mentioned_in_title",
+          "review_status": "pending",
+          "target_number": "29/2023/QH15"
+        },
+        {
+          "evidence_quote": "Luật sửa đổi, bổ sung một số điều của Luật Đất đai số 31/2024/QH15, Luật Nhà ở số 27/2023/QH15, Luật Kinh doanh bất động sản số 29/2023/QH15 và Luật Các tổ chức tín dụng số 32/2024/QH15",
+          "evidence_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=211201",
+          "kind": "mentioned_in_title",
+          "review_status": "pending",
+          "target_number": "31/2024/QH15"
+        },
+        {
+          "evidence_quote": "Luật sửa đổi, bổ sung một số điều của Luật Đất đai số 31/2024/QH15, Luật Nhà ở số 27/2023/QH15, Luật Kinh doanh bất động sản số 29/2023/QH15 và Luật Các tổ chức tín dụng số 32/2024/QH15",
+          "evidence_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=211201",
+          "kind": "mentioned_in_title",
+          "review_status": "pending",
+          "target_number": "32/2024/QH15"
+        }
+      ],
+      "replacement_status": "unknown",
+      "review_status": "pending",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "source_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=211201",
+      "state": "manifestation_verified_pending_review",
+      "territorial_applicability": {
+        "basis": "official title; operative scope not yet inspected",
+        "claim": null,
+        "status": "pending_scope_review"
+      },
+      "title": "Luật sửa đổi, bổ sung một số điều của Luật Đất đai số 31/2024/QH15, Luật Nhà ở số 27/2023/QH15, Luật Kinh doanh bất động sản số 29/2023/QH15 và Luật Các tổ chức tín dụng số 32/2024/QH15",
+      "topics": [
+        "land_law",
+        "amendments"
+      ],
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "987+988"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/luat-so-43-2024-qh15-42578/51470.htm"
+        ],
+        "evidence_page_sha256": "63b1145eefcc358984791a7ec5e8a6569c64ba6b272dceee189098bf07b7f674",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": false,
+        "note": null
+      }
+    },
+    {
+      "attachment_status": "verified_official_cdn_manifestation",
+      "discovery_evidence_sha256": "1858812a3f1b595a538d2e34677a67fcbae14450acb7d239eee17fb286f72f4d",
+      "discovery_timestamp": "2026-10-25T18:49:20.801652+00:00",
+      "document_type": "Nghị định",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42343/51007-1-2024873-87488-2024-nd-cp.pdf"
+      ],
+      "effective_date": null,
+      "effective_date_claim": {
+        "date": "2024-08-01",
+        "evidence": "official metadata page",
+        "may_be_amended": true,
+        "review_status": "pending"
+      },
+      "expiry_date": null,
+      "full_text_acquired": false,
+      "issuance_date": "2024-07-15",
+      "issuing_authority": "Chính phủ",
+      "issuing_authority_evidence": "official metadata page",
+      "jurisdiction": "VN",
+      "legal_validity": "unknown",
+      "official_identifier": "VN:Chính phủ:88/2024/NĐ-CP",
+      "official_number": "88/2024/NĐ-CP",
+      "publication_date": null,
+      "relationships": [],
+      "replacement_status": "unknown",
+      "review_status": "pending",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "source_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=210658",
+      "state": "manifestation_verified_pending_review",
+      "territorial_applicability": {
+        "basis": "official title; operative scope not yet inspected",
+        "claim": null,
+        "status": "pending_scope_review"
+      },
+      "title": "Quy định về bồi thường, hỗ trợ, tái định cư khi Nhà nước thu hồi đất",
+      "topics": [
+        "land_recovery",
+        "compensation",
+        "support",
+        "resettlement"
+      ],
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "873+874"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-88-2024-nd-cp-42343/51007.htm"
+        ],
+        "evidence_page_sha256": "1858812a3f1b595a538d2e34677a67fcbae14450acb7d239eee17fb286f72f4d",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": false,
+        "note": null
+      }
+    },
+    {
+      "attachment_status": "verified_official_cdn_manifestation",
+      "discovery_evidence_sha256": "551f082c9c0590bb69c0730e0562889c54b96fc94e3ed2f43f363519e15e67d4",
+      "discovery_timestamp": "2026-10-25T18:49:27.016632+00:00",
+      "document_type": "Nghị định",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/6/42155/50667-1-2024783-78471-2024-nd-cp.pdf"
+      ],
+      "effective_date": null,
+      "effective_date_claim": {
+        "date": null,
+        "evidence": "official metadata page",
+        "may_be_amended": true,
+        "review_status": "pending"
+      },
+      "expiry_date": null,
+      "full_text_acquired": false,
+      "issuance_date": "2024-06-27",
+      "issuing_authority": "Chính phủ",
+      "issuing_authority_evidence": "official metadata page",
+      "jurisdiction": "VN",
+      "legal_validity": "unknown",
+      "official_identifier": "VN:Chính phủ:71/2024/NĐ-CP",
+      "official_number": "71/2024/NĐ-CP",
+      "publication_date": null,
+      "relationships": [],
+      "replacement_status": "unknown",
+      "review_status": "pending",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "source_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=210523",
+      "state": "manifestation_verified_pending_review",
+      "territorial_applicability": {
+        "basis": "official title; operative scope not yet inspected",
+        "claim": null,
+        "status": "pending_scope_review"
+      },
+      "title": "Quy định về giá đất",
+      "topics": [
+        "land_prices",
+        "compensation"
+      ],
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "783+784"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-71-2024-nd-cp-42155/50667.htm"
+        ],
+        "evidence_page_sha256": "551f082c9c0590bb69c0730e0562889c54b96fc94e3ed2f43f363519e15e67d4",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": false,
+        "note": null
+      }
+    },
+    {
+      "attachment_status": "verified_official_cdn_manifestation",
+      "discovery_evidence_sha256": "2468a166706256d58fde28bbe80feee32f8791bd39b308b6712426730b35bc3e",
+      "discovery_timestamp": "2026-10-25T18:49:30.023388+00:00",
+      "document_type": "Nghị định",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42434/51166-1-2024913-914101-2024-nd-cp.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42434/51169-1-2024915-916101-2024-nd-cp.pdf"
+      ],
+      "effective_date": null,
+      "effective_date_claim": {
+        "date": "2024-08-01",
+        "evidence": "official metadata page",
+        "may_be_amended": true,
+        "review_status": "pending"
+      },
+      "expiry_date": null,
+      "full_text_acquired": false,
+      "issuance_date": "2024-07-29",
+      "issuing_authority": "Chính phủ",
+      "issuing_authority_evidence": "official metadata page",
+      "jurisdiction": "VN",
+      "legal_validity": "unknown",
+      "official_identifier": "VN:Chính phủ:101/2024/NĐ-CP",
+      "official_number": "101/2024/NĐ-CP",
+      "publication_date": null,
+      "relationships": [],
+      "replacement_status": "unknown",
+      "review_status": "pending",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "source_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=210791",
+      "state": "manifestation_verified_pending_review",
+      "territorial_applicability": {
+        "basis": "official title; operative scope not yet inspected",
+        "claim": null,
+        "status": "pending_scope_review"
+      },
+      "title": "Quy định về điều tra cơ bản đất đai; đăng ký, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất và Hệ thống thông tin đất đai",
+      "topics": [
+        "registration",
+        "land_information"
+      ],
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "913+914",
+          "915+916"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-101-2024-nd-cp-42434/51166.htm",
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-101-2024-nd-cp-42434/51169.htm"
+        ],
+        "evidence_page_sha256": "2468a166706256d58fde28bbe80feee32f8791bd39b308b6712426730b35bc3e",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": false,
+        "note": null
+      }
+    },
+    {
+      "attachment_status": "verified_official_cdn_manifestation",
+      "discovery_evidence_sha256": "0c24dd7805cd5e24f24ff518c22dbe56eee254ad417003e438b8e06472c2ed60",
+      "discovery_timestamp": "2026-10-25T18:49:24.071031+00:00",
+      "document_type": "Nghị định",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42485/51273-1-2024931-932102-2024-nd-cp.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42485/51276-1-2024933-934102-2024-nd-cp.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42485/51279-1-2024935-936102-2024-nd-cp.pdf"
+      ],
+      "effective_date": null,
+      "effective_date_claim": {
+        "date": "2024-08-01",
+        "evidence": "official metadata page",
+        "may_be_amended": true,
+        "review_status": "pending"
+      },
+      "expiry_date": null,
+      "full_text_acquired": false,
+      "issuance_date": "2024-07-30",
+      "issuing_authority": "Chính phủ",
+      "issuing_authority_evidence": "official metadata page",
+      "jurisdiction": "VN",
+      "legal_validity": "unknown",
+      "official_identifier": "VN:Chính phủ:102/2024/NĐ-CP",
+      "official_number": "102/2024/NĐ-CP",
+      "publication_date": null,
+      "relationships": [],
+      "replacement_status": "unknown",
+      "review_status": "pending",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "source_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=210795",
+      "state": "manifestation_verified_pending_review",
+      "territorial_applicability": {
+        "basis": "official title; operative scope not yet inspected",
+        "claim": null,
+        "status": "pending_scope_review"
+      },
+      "title": "Quy định chi tiết thi hành một số điều của Luật Đất đai",
+      "topics": [
+        "land_law",
+        "implementation"
+      ],
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "931+932",
+          "933+934",
+          "935+936"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-102-2024-nd-cp-42485/51273.htm",
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-102-2024-nd-cp-42485/51276.htm",
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-102-2024-nd-cp-42485/51279.htm"
+        ],
+        "evidence_page_sha256": "0c24dd7805cd5e24f24ff518c22dbe56eee254ad417003e438b8e06472c2ed60",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": false,
+        "note": null
+      }
+    },
+    {
+      "attachment_status": "verified_official_cdn_manifestation",
+      "discovery_evidence_sha256": "d181ad080624840f3a2eba266394d47b1f1de4a2311f7eeb091046135601e938",
+      "discovery_timestamp": "2026-10-25T18:49:33.100363+00:00",
+      "document_type": "Nghị định",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42499/51304-1-2024945-946103-2024-nd-cp.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2024/7/42499/51307-1-2024947-948103-2024-nd-cp.pdf"
+      ],
+      "effective_date": null,
+      "effective_date_claim": {
+        "date": "2024-08-01",
+        "evidence": "official metadata page",
+        "may_be_amended": true,
+        "review_status": "pending"
+      },
+      "expiry_date": null,
+      "full_text_acquired": false,
+      "issuance_date": "2024-07-30",
+      "issuing_authority": "Chính phủ",
+      "issuing_authority_evidence": "official metadata page",
+      "jurisdiction": "VN",
+      "legal_validity": "unknown",
+      "official_identifier": "VN:Chính phủ:103/2024/NĐ-CP",
+      "official_number": "103/2024/NĐ-CP",
+      "publication_date": null,
+      "relationships": [],
+      "replacement_status": "unknown",
+      "review_status": "pending",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "source_url": "https://vanban.chinhphu.vn/?pageid=27160&docid=210797",
+      "state": "manifestation_verified_pending_review",
+      "territorial_applicability": {
+        "basis": "official title; operative scope not yet inspected",
+        "claim": null,
+        "status": "pending_scope_review"
+      },
+      "title": "Quy định về tiền sử dụng đất, tiền thuê đất",
+      "topics": [
+        "land_use_fees",
+        "land_rent"
+      ],
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "945+946",
+          "947+948"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-103-2024-nd-cp-42499/51304.htm",
+          "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-103-2024-nd-cp-42499/51307.htm"
+        ],
+        "evidence_page_sha256": "d181ad080624840f3a2eba266394d47b1f1de4a2311f7eeb091046135601e938",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": false,
+        "note": null
+      }
+    },
+    {
+      "official_identifier": "VN:Văn phòng Quốc hội:133/VBHN-VPQH",
+      "official_number": "133/VBHN-VPQH",
+      "title": "Văn bản hợp nhất số 133/VBHN-VPQH hợp nhất Luật Đất đai",
+      "document_type": "Văn bản hợp nhất",
+      "issuing_authority": "Văn phòng Quốc hội",
+      "issuing_authority_evidence": "official gazette page and consolidating body",
+      "jurisdiction": "VN",
+      "territorial_applicability": {
+        "claim": "Việt Nam",
+        "status": "pending_scope_review",
+        "basis": "official title; operative scope not yet inspected"
+      },
+      "source_url": "https://congbao.chinhphu.vn/van-ban/van-ban-hop-nhat-so-133-vbhn-vpqh-46142.htm",
+      "download_urls": [
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2025/9/46142/58840-1-20251337-1338133-vbhn-vpqh.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2025/9/46142/58843-1-20251339-1340133-vbhn-vpqh.pdf",
+        "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2025/9/46142/58846-1-20251341-1342133-vbhn-vpqh.pdf"
+      ],
+      "attachment_status": "verified_official_cdn_manifestation",
+      "issuance_date": "2025-09-03",
+      "publication_date": null,
+      "effective_date": null,
+      "expiry_date": null,
+      "legal_validity": "unknown",
+      "effective_date_claim": {
+        "date": null,
+        "evidence": "official gazette page",
+        "review_status": "pending",
+        "may_be_amended": true
+      },
+      "replacement_status": "unknown",
+      "topics": [
+        "land_law",
+        "implementation"
+      ],
+      "relationships": [
+        {
+          "target_number": "31/2024/QH15",
+          "kind": "consolidates",
+          "review_status": "pending",
+          "evidence_url": "",
+          "evidence_quote": "Văn bản hợp nhất số 133/VBHN-VPQH hợp nhất Luật Đất đai"
+        }
+      ],
+      "discovery_timestamp": null,
+      "discovery_evidence_sha256": "c90f12e5a0df011739a7741ea0191a79122e50b9e72c261689cc47c25d4f6c36",
+      "source_access_policy": "official_gazette_cdn_approved_limited; pending legal review",
+      "state": "manifestation_verified_pending_review",
+      "review_status": "pending",
+      "full_text_acquired": false,
+      "manifestation": {
+        "kind": "official_gazette_file_cdn",
+        "host": "congbaocdn.chinhphu.vn",
+        "gazette_issues": [
+          "1337+1338",
+          "1339+1340",
+          "1341+1342"
+        ],
+        "detail_pages": [
+          "https://congbao.chinhphu.vn/van-ban/van-ban-hop-nhat-so-133-vbhn-vpqh-46142/58840.htm",
+          "https://congbao.chinhphu.vn/van-ban/van-ban-hop-nhat-so-133-vbhn-vpqh-46142/58843.htm",
+          "https://congbao.chinhphu.vn/van-ban/van-ban-hop-nhat-so-133-vbhn-vpqh-46142/58846.htm"
+        ],
+        "evidence_page_sha256": "c90f12e5a0df011739a7741ea0191a79122e50b9e72c261689cc47c25d4f6c36",
+        "page_sha256_is_detail_or_index": true,
+        "identity_verified_from_file": false,
+        "note": null
+      }
+    }
+  ]
+}

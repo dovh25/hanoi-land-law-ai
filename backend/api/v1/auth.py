@@ -6,11 +6,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from api.deps import get_db, get_current_user
-from core.security import create_access_token, PasswordTooLongError, MAX_PASSWORD_BYTES
-from db.models.user import User
-from models.auth import UserCreate, UserLogin, UserResponse, TokenResponse
-from services.auth_service import auth_service
+from backend.api.deps import get_db, get_current_user, get_request_settings
+from backend.core.security import create_access_token, PasswordTooLongError, MAX_PASSWORD_BYTES
+from backend.db.models.user import User
+from backend.models.auth import UserCreate, UserLogin, UserResponse, TokenResponse
+from backend.services.auth_service import auth_service
+from backend.core.config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +116,7 @@ async def register(
 async def login(
     credentials: UserLogin,
     db: Session = Depends(get_db),
+    settings: Config = Depends(get_request_settings),
 ):
     """
     Authenticate user and return JWT token.
@@ -152,7 +154,7 @@ async def login(
             )
 
         # Create access token with user ID as subject (must be string per JWT spec)
-        access_token = create_access_token(data={"sub": str(user.id)})
+        access_token = create_access_token(data={"sub": str(user.id)}, settings=settings)
 
         logger.info(f"User logged in successfully: {user.username}")
 

@@ -2,9 +2,35 @@
 
 # Hanoi Land Law AI — Vietnamese Legal Expert Assistant
 
+> **Current status: Phase D source discovery and policy verification.** Use
+> [docs/environment-setup.md](docs/environment-setup.md) for the authoritative setup,
+> root `.env` creation, offline checks, and live-use controls. Run
+> `python3 scripts/setup_env.py` from root to create your ignored local `.env`.
+> Gemini and model downloads are disabled by default. The historical ViLeXa feature
+> descriptions and benchmark results below do not establish Hanoi legal QA readiness.
+> Phase D discovered 18 official metadata candidates and acquired **0** full-text legal
+> instruments: attachment hosts returned robots HTTP 403 and `vbpl.vn` document access is
+> ambiguous. No candidate is reviewed, valid, sealed, or indexed.
+>
+> **MVP demo (implemented, not deployed or live-validated):** an anonymous demo using a
+> bundled 2-document / 90-chunk corpus, deterministic Vietnamese BM25, a one-call Gemini
+> path, and validated citations is documented in [docs/mvp-demo.md](docs/mvp-demo.md).
+> It is not current law, every chunk is `validity_status=unknown`, and live Gemini plus
+> public deployment remain disabled pending explicit approval.
+>
+> New: [legal data model](docs/legal-data-model.md),
+> [offline ingestion](docs/offline-ingestion.md), [corpus review](docs/corpus-review.md),
+> [corpus sources](docs/corpus-sources.md),
+> [corpus acquisition](docs/corpus-acquisition.md),
+> [corpus inventory](docs/corpus-inventory.md),
+> [corpus quality report](docs/corpus-quality-report.md),
+> [Phase D validation](docs/phase-d-validation.md),
+> [Phase E readiness](docs/next-phase-readiness.md), and
+> [Colab Web workflow](docs/colab-web.md). No real legal corpus or GPU run is supplied.
+
 **An Agentic RAG system for Vietnamese legal documents, powered by LangGraph, Qdrant, and Gemini.**
 
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.127+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
@@ -124,14 +150,14 @@ flowchart TD
 | Component | Technology | Version | Purpose |
 |-----------|------------|---------|---------|
 | Framework | FastAPI | 0.127+ | Async REST API |
-| Language | Python | 3.10+ | Core runtime |
+| Language | Python | 3.12 | Core runtime |
 | Orchestration | LangGraph | 0.2+ | Agentic RAG pipeline |
 | LLM | Google Gemini | `gemini-2.5-flash-lite` | Query routing, grading, generation |
 | Vector DB | Qdrant | 1.7+ | Hybrid dense + sparse retrieval |
 | Embeddings | AITeamVN/Vietnamese_Embedding_v2 | 1024-dim | BGE-M3 fine-tuned for Vietnamese |
 | Reranker | Alibaba-NLP/gte-multilingual-reranker-base | CrossEncoder | Precision reranking |
 | Auth DB | SQLite + SQLAlchemy | - | User accounts, sessions, messages |
-| Security | JWT (PyJWT) | - | Token-based authentication |
+| Security | JWT (python-jose) + bcrypt | - | Token-based authentication |
 
 ### Frontend
 
@@ -248,94 +274,54 @@ hanoi-land-law-ai/
 
 ---
 
-## Getting Started
+## Getting Started — Offline Foundation (Phases A/B/C)
 
-### Prerequisites
-
-| Requirement | Version | Notes |
-|-------------|---------|-------|
-| Docker & Docker Compose | 24+ | For containerized deployment |
-| Python | 3.10+ | For local development / preprocessing |
-| Node.js | 18+ | For frontend development |
-| NVIDIA GPU | Optional | Required for GPU-accelerated embeddings |
-| NVIDIA Container Toolkit | Optional | For Docker GPU passthrough |
-
-### 1. Clone and Configure
+Python 3.12 and Node 22.21+/24 are required. From this repository's root:
 
 ```bash
-git clone https://github.com/dovh25/hanoi-land-law-ai.git
-cd hanoi-land-law-ai
-
-# Create .env file with your Gemini API key
-cat > .env << 'EOF'
-GEMINI_API_KEY=your_google_gemini_api_key_here
-EOF
+python3 scripts/setup_env.py
+uv sync --frozen
+npm --prefix frontend ci --ignore-scripts --no-audit --no-fund
+uv run --frozen pytest -q
+npm --prefix frontend test
 ```
 
-Get your API key from [Google AI Studio](https://aistudio.google.com/).
-
-### 2. Start with Docker (Recommended)
+Start the offline API and frontend in separate terminals:
 
 ```bash
-# Build and start all services
-docker-compose up --build
-
-# Or run in detached mode
-docker-compose up -d --build
+uv run --frozen uvicorn backend.main:app --host 127.0.0.1 --port 8000
+npm --prefix frontend run dev
 ```
 
-Services will be available at:
+Your ignored root `.env` can be edited locally. New files disable Gemini, leave its
+key blank, and generate a JWT secret without printing it. Existing `.env` values
+are never overwritten by setup.
+No GPU, corpus, Qdrant, or model weights are needed for offline startup/tests.
+`/healthz` returns 200; `/readyz` and legal chat return 503 until explicitly enabled
+and initialized. No live legal QA readiness is claimed.
 
-| Service | URL | Description |
-|---------|-----|-------------|
-| Frontend | http://localhost:5173 | React chat UI |
-| Backend API | http://localhost:8000 | FastAPI REST API |
-| API Docs | http://localhost:8000/docs | Swagger UI (auto-generated) |
-| Qdrant Dashboard | http://localhost:6333/dashboard | Vector DB management |
+See [environment setup](docs/environment-setup.md) for all settings, Compose behavior,
+budget enforcement, and optional runtime limitations. Do not crawl, index, download
+weights, or enable Gemini as part of ordinary setup.
 
-### 3. Ingest Legal Documents
-
-Before the system can answer questions, ingest the crawled legal documents into Qdrant:
+Phase B additionally provides guarded Alembic migrations and a weight-free CPU batch
+smoke test. Back up an existing database before its next startup/upgrade; follow
+[the model guide](docs/legal-data-model.md#migrations-and-existing-application-data).
 
 ```bash
-# Install Python dependencies
-pip install -e .
-
-# Run ingestion with Vietnamese BGE-M3 embeddings (recommended)
-python preprocess/ingest_data_vietnamese.py
+uv run --frozen python -m batch.cli smoke --workspace data/phase-b-smoke
 ```
 
-This will:
-- Load hierarchical chunks from `data/processed_chunksize_512_vietnamese/`
-- Create Qdrant collection with hybrid (dense + sparse) vectors
-- Batch upload all document embeddings
+For the Phase C synthetic end-to-end ingestion and browser-only Colab handoff:
 
-> **Note:** First run downloads the embedding model (~1.5GB). GPU acceleration is used automatically when available.
-
-### 4. Local Development
-
-**Backend:**
 ```bash
-cd backend
-pip install -e .
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uv run --frozen python -m preprocess.offline_cli --workspace data/phase-c-smoke smoke
+uv run --frozen python -m batch.cli pack-colab --input data/phase-c-smoke/embedding-input
 ```
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-**Testing:**
-```bash
-# Backend tests
-pytest
-
-# Frontend linting
-cd frontend && npm run lint
-```
+Upload `notebooks/embedding_batch.ipynb` in **Colab Web → File → Upload notebook**.
+See [the Colab Web runbook](docs/colab-web.md) for the one-ZIP exchange and local
+validation/import commands. Real GPU execution remains untested.
 
 ---
 
@@ -573,95 +559,25 @@ flowchart TD
 
 ## Environment Variables
 
-### Backend
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GEMINI_API_KEY` | *required* | Google Gemini API key |
-| `MODEL` | `gemini-2.5-flash-lite` | LLM model name |
-| `QDRANT_HOST` | `qdrant` | Qdrant host |
-| `QDRANT_PORT` | `6333` | Qdrant port |
-| `DATABASE_URL` | `sqlite:///./law.db` | SQLAlchemy database URL |
-| `COLLECTION_NAME` | `laws` | Qdrant collection name |
-| `EMBEDDING_MODEL_NAME` | `Alibaba-NLP/gte-multilingual-base` | Embedding model |
-| `RETRIEVAL_MODE` | `hybrid` | Retrieval: `hybrid`, `dense`, `sparse` |
-| `RETRIEVAL_K` | `10` | Number of candidates to retrieve |
-| `TOP_K` | `3` | Final docs sent to LLM |
-| `JWT_SECRET_KEY` | *change in prod* | JWT signing secret |
-| `JWT_ACCESS_TOKEN_EXPIRE_MINUTES` | `10080` | Token expiry (7 days) |
-| `VIETNAMESE_EMBEDDING_MODEL` | `AITeamVN/Vietnamese_Embedding_v2` | Vietnamese embedding model |
-| `VIETNAMESE_DENSE_VECTOR_SIZE` | `1024` | Dense vector dimension |
-| `BGEM3_EMBEDDING_MODEL` | `BAAI/bge-m3` | BGE-M3 embedding model |
-
-### Frontend
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `VITE_API_BASE_URL` | `http://localhost:8000` | Backend API URL |
+See [`.env.example`](.env.example) and the
+[settings reference](docs/environment-setup.md#configuration-and-consent-controls).
+Use one root `.env`; never expose backend credentials through `VITE_*`.
 
 ---
 
 ## Docker Configuration
 
-```yaml
-services:
-  backend:
-    build: ./backend
-    ports: ["8000:8000"]
-    volumes:
-      - ./backend:/backend              # Hot reload
-      - ./law_crawler:/law_crawler      # Document access
-      - ~/.cache/huggingface:/root/.cache/huggingface  # Model cache
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-
-  qdrant:
-    image: qdrant/qdrant:latest
-    ports: ["6333:6333"]
-    volumes:
-      - ./qdrant_data:/qdrant/storage
-
-  frontend:
-    build: ./frontend
-    ports: ["5173:5173"]
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-```
+[`docker-compose.yaml`](docker-compose.yaml) is CPU-first, injects backend settings
+explicitly, binds host ports to loopback, and puts Qdrant behind an optional profile
+without a host port. The default backend image is the offline foundation, not an
+ML-enabled legal QA deployment. See [setup details](docs/environment-setup.md).
 
 ---
 
 ## Troubleshooting
 
-### Qdrant Connection Issues
-
-```bash
-curl http://localhost:6333/healthz
-# Should return: {"status": "ok"}
-```
-
-### Model Download Issues
-
-The embedding model is downloaded from Hugging Face on first run. Ensure internet access and ~2GB disk space.
-
-### Docker GPU Issues
-
-1. Install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
-2. Verify GPU passthrough: `docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi`
-3. Increase Docker memory: Docker Desktop → Settings → Resources → Memory: 4GB+
-
-### Out of Memory on CPU
-
-Reduce batch size in the embedding adapter:
-```python
-# In adapters.py, modify batch_size parameter
-results = self.model.encode(texts, batch_size=8)  # Default is 16
-```
+Offline `/readyz` and chat returning 503 is expected, not a reason to enable Gemini
+or download models. Check the [environment guide](docs/environment-setup.md) first.
 
 ---
 
@@ -670,7 +586,7 @@ results = self.model.encode(texts, batch_size=8)  # Default is 16
 - The cross-encoder reranker showed mixed results on this dataset — Hit Rate@1 dropped from 77.3% to 50.0% with reranking enabled. This suggests the dense retrieval alone is already highly effective for this Vietnamese legal corpus.
 - Hybrid search (dense+sparse) underperformed pure dense search (77.3% vs 82.7% Hit Rate@1), likely because the sparse weights from BGE-M3 add noise for highly specialized Vietnamese legal terminology.
 - The pipeline uses `gemini-2.5-flash-lite` (the smallest Gemini model) to keep API costs low. A larger model would likely improve answer quality.
-- CORS is set to `allow_origins=["*"]` for development convenience — this must be restricted before production deployment.
+- Phase A uses an explicit CORS allowlist; public deployment hardening remains out of scope.
 
 ---
 

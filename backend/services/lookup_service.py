@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 from dataclasses import dataclass, asdict
 
-from core.config import config
+from backend.core.config import config
 
 logger = logging.getLogger(__name__)
 
@@ -240,6 +240,7 @@ class LawDocumentService:
         self._content_cache: List[tuple] = []  # (law_id, content) for content search
         self._documents_cache: List[Dict] = []  # All document metadata for fast listing
         self._types_cache: List[str] = []  # All document types
+        self._initialized = False
 
     def startup(self) -> None:
         """Initialize the service: build all caches."""
@@ -248,6 +249,7 @@ class LawDocumentService:
         self._build_content_cache()
         self._build_documents_cache()
         logger.info("LawDocumentService initialized successfully")
+        self._initialized = True
 
     def _get_cache_path(self) -> Path:
         """Get the path to the cache file."""

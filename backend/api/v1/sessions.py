@@ -6,9 +6,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from api.deps import get_db, get_current_user
-from db.models.user import User
-from models.session import (
+from backend.api.deps import get_db, get_current_user
+from backend.db.models.user import User
+from backend.models.session import (
     SessionCreate,
     SessionUpdate,
     SessionResponse,
@@ -17,7 +17,7 @@ from models.session import (
     MessageResponse,
     SourceResponse,
 )
-from services.session_service import session_service
+from backend.services.session_service import session_service
 
 logger = logging.getLogger(__name__)
 

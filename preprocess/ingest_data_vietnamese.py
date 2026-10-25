@@ -7,8 +7,6 @@ import uuid
 import sys
 from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # LangChain Imports
 from langchain_core.documents import Document
@@ -22,18 +20,17 @@ from qdrant_client.http.models import (
 )
 from collections import defaultdict
 from qdrant_client import QdrantClient, models
+from backend.core.config import Config as RuntimeConfig
+from backend.core.index_safety import prepare_collection, destructive_cli_args
+from backend.core.models import select_device, model_location
 
 logger = logging.getLogger(__name__)
 
-from dotenv import load_dotenv
-from pydantic_settings import BaseSettings
-
-load_dotenv()
 
 
-class Config(BaseSettings):
+
+class Config(RuntimeConfig):
     QDRANT_PORT: int = 6333
-    DOCS_ROOT: str = "./law_crawler/vbpl_documents"
     CHUNK_SIZE: int = 512
     COLLECTION_NAME: str = "laws"
     DENSE_VECTOR_SIZE: int = 1024
@@ -101,14 +98,14 @@ def to_qdrant_sparse(token_weights_dict, tokenizer):
 config = Config()
 
 
-def ingest_data() -> None:
-    client = QdrantClient(host="localhost", port=config.QDRANT_PORT)
+def ingest_data(*, recreate=False, confirm_collection=None) -> None:
+    if config.MODEL_NAME == "AITeamVN/Vietnamese_Embedding_v2":
+        raise ValueError("Legacy sparse artifacts are incompatible with this dense-only checkpoint; validated batch import does not index Qdrant")
+    client = QdrantClient(host=config.QDRANT_HOST, port=config.QDRANT_PORT)
     collection_name = config.COLLECTION_NAME
 
     # 1. Handle Collection Recreation
-    if client.collection_exists(collection_name=collection_name):
-        client.delete_collection(collection_name=collection_name)
-        logger.info(f"Deleted existing collection '{collection_name}'.")
+    prepare_collection(client, collection_name, recreate=recreate, confirm_collection=confirm_collection)
 
     # 2. Create Collection with Hybrid Support
     # Note: BGE-M3 uses DOT PRODUCT distance (not cosine)
@@ -139,7 +136,8 @@ def ingest_data() -> None:
 
     from FlagEmbedding import BGEM3FlagModel
 
-    model = BGEM3FlagModel(config.MODEL_NAME, use_fp16=False, device="cuda")
+    model = BGEM3FlagModel(model_location(config.MODEL_NAME), use_fp16=False,
+                          device=select_device(config.EMBEDDING_DEVICE))
     tokenizer = model.tokenizer
 
     # 4. Ingest in Batches
@@ -176,4 +174,4 @@ def ingest_data() -> None:
 
 
 if __name__ == "__main__":
-    ingest_data()
+    ingest_data(**destructive_cli_args())

@@ -7,11 +7,11 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy import String, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base
+from backend.db.base import Base
 
 if TYPE_CHECKING:
-    from db.models.user import User
-    from db.models.message import Message
+    from backend.db.models.user import User
+    from backend.db.models.message import Message
 
 
 def utc_now() -> datetime:

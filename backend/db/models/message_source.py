@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING, Optional
 from sqlalchemy import String, ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base
+from backend.db.base import Base
 
 if TYPE_CHECKING:
-    from db.models.message import Message
+    from backend.db.models.message import Message
 
 
 class MessageSource(Base):

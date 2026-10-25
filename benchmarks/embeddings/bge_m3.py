@@ -16,6 +16,8 @@ from tqdm import tqdm
 from FlagEmbedding import BGEM3FlagModel
 
 from .base import EmbeddingOutput, EmbeddingProvider
+from backend.core.config import config
+from backend.core.models import select_device, model_location
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +40,7 @@ class BGEM3Embedding:
         self.model_name = model_name
         self.use_fp16 = use_fp16
 
+        device = select_device(device or config.EMBEDDING_DEVICE)
         # Device setup
         if device:
             self.device = device
@@ -52,7 +55,7 @@ class BGEM3Embedding:
 
         # Load model
         self.model = BGEM3FlagModel(
-            model_name,
+            model_location(model_name),
             use_fp16=self.use_fp16,
             device=self.device,
         )

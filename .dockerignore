@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+.venv
+**/__pycache__
+**/node_modules
+**/dist
+data
+qdrant_data
+law_crawler/vbpl_documents
+**/*.db
+**/*.sqlite3
+**/*.pkl
+**/*.pt
+**/*.safetensors

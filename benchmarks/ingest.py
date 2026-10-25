@@ -45,6 +45,7 @@ from tqdm import tqdm
 from typing import Optional
 
 from .config import config, get_data_path
+from backend.core.index_safety import prepare_collection
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -169,6 +170,7 @@ def create_collection(
     recreate: bool = False,
     distance: str = "cosine",
     use_sparse: bool = True,
+    confirm_collection: str | None = None,
 ) -> None:
     """
     Create a Qdrant collection for benchmark evaluation.
@@ -183,13 +185,7 @@ def create_collection(
         distance: Distance metric (cosine, dot, euclid)
         use_sparse: Whether to configure sparse vectors
     """
-    if client.collection_exists(collection_name):
-        if recreate:
-            logger.info(f"Deleting existing collection: {collection_name}")
-            client.delete_collection(collection_name)
-        else:
-            logger.info(f"Collection {collection_name} already exists")
-            return
+    prepare_collection(client, collection_name, recreate=recreate, confirm_collection=confirm_collection)
 
     logger.info(
         f"Creating collection: {collection_name} (dim={dense_dim}, dist={distance}, sparse={use_sparse})"
@@ -230,6 +226,7 @@ def ingest_embeddings(
     recreate: bool = False,
     dense_size: int = None,
     distance: str = "cosine",
+    confirm_collection: str | None = None,
 ) -> int:
     """
     Ingest pre-computed embeddings into Qdrant.
@@ -297,6 +294,7 @@ def ingest_embeddings(
         recreate=recreate,
         distance=distance,
         use_sparse=sparse_embeddings is not None,
+        confirm_collection=confirm_collection,
     )
 
     # Ingest in batches
@@ -460,6 +458,7 @@ Examples:
         help="Distance metric for dense vectors (default: cosine)",
     )
 
+    parser.add_argument("--confirm-collection", help="Required with --recreate: DELETE:<exact-name>")
     args = parser.parse_args()
 
     ingest_embeddings(
@@ -472,6 +471,7 @@ Examples:
         recreate=args.recreate,
         dense_size=args.dense_size,
         distance=args.distance,
+        confirm_collection=args.confirm_collection,
     )
 
 

@@ -4,16 +4,16 @@ Law Document Lookup API endpoints.
 
 import logging
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel
 
-from models.lookup import (
+from backend.models.lookup import (
     DocumentResponse,
     DocumentListResponse,
     ArticleResponse,
     TypesResponse,
 )
-from services.lookup_service import LawDocumentService
+from backend.services.lookup_service import LawDocumentService
 
 
 class SearchByContentRequest(BaseModel):
@@ -25,10 +25,12 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/documents", tags=["documents"])
 
 
-def get_lookup_service() -> LawDocumentService:
+def get_lookup_service(request: Request) -> LawDocumentService:
     """Dependency to get the shared lookup service instance."""
-    from main import lookup_service
-    return lookup_service
+    service = request.app.state.lookup_service
+    if not service._initialized:
+        service.startup()
+    return service
 
 
 @router.get("/types", response_model=TypesResponse)

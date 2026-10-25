@@ -8,7 +8,11 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from config import BASE_URL, START_URL, DOWNLOAD_FOLDER, ID_LISTS
+from law_crawler.config import BASE_URL, START_URL, DOWNLOAD_FOLDER, ID_LISTS
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
 
 MAX_WORKERS = int(os.environ.get("CRAWLER_MAX_WORKERS", "10"))
 REQUEST_TIMEOUT = float(os.environ.get("CRAWLER_REQUEST_TIMEOUT", "30"))

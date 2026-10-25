@@ -2,13 +2,13 @@
 
 from typing import Generator, Optional
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from core.database import SessionLocal
-from core.security import decode_access_token
-from db.models.user import User
+from backend.core.config import Config
+from backend.core.security import decode_access_token
+from backend.db.models.user import User
 
 # OAuth2 scheme for JWT token extraction
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
@@ -17,11 +17,18 @@ oauth2_scheme_optional = OAuth2PasswordBearer(
 )
 
 
-def get_db() -> Generator[Session, None, None]:
+def get_request_settings(request: Request) -> Config:
+    return request.app.state.settings
+
+
+def get_db(request: Request) -> Generator[Session, None, None]:
     """Dependency that provides a database session."""
-    db = SessionLocal()
+    db = request.app.state.session_factory()
     try:
         yield db
+    except Exception:
+        db.rollback()
+        raise
     finally:
         db.close()
 
@@ -29,6 +36,7 @@ def get_db() -> Generator[Session, None, None]:
 def get_current_user(
     db: Session = Depends(get_db),
     token: str = Depends(oauth2_scheme),
+    settings: Config = Depends(get_request_settings),
 ) -> User:
     """
     Get the current authenticated user.
@@ -40,7 +48,7 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    payload = decode_access_token(token)
+    payload = decode_access_token(token, settings)
     if payload is None:
         raise credentials_exception
 
@@ -63,6 +71,7 @@ def get_current_user(
 def get_current_user_optional(
     db: Session = Depends(get_db),
     token: Optional[str] = Depends(oauth2_scheme_optional),
+    settings: Config = Depends(get_request_settings),
 ) -> Optional[User]:
     """
     Get the current user if authenticated, None otherwise.
@@ -71,7 +80,7 @@ def get_current_user_optional(
     if token is None:
         return None
 
-    payload = decode_access_token(token)
+    payload = decode_access_token(token, settings)
     if payload is None:
         return None
 

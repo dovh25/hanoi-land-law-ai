@@ -1,0 +1,415 @@
+{
+  "schema_version": 2,
+  "pilot_max_instruments": 40,
+  "default_decision": "deny_pending_policy_review",
+  "approved_for_automated_document_download": 0,
+  "notice": "Robots permission is necessary but not sufficient. No source approved for automated document download in this pilot.",
+  "sources": [
+    {
+      "approved_urls": [],
+      "constraint": "Metadata/HTML discovery only under robots.txt; document endpoints require explicit source approval; linked attachment hosts are blocked",
+      "decision": "discovery_only",
+      "evidence_root": "data/phase-d-network",
+      "home_evidence": {
+        "chain": [
+          {
+            "bytes": 136774,
+            "evidence_path": "evidence/1acb7a15f5bf61373f4bd2e8d6b08ef7c18ca5c01ec50f0a0719ad26f25f8046",
+            "headers": {
+              "content-length": "136774",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Sun, 25 Oct 2026 18:45:41 GMT"
+            },
+            "host": "congbao.hanoi.gov.vn",
+            "purpose": "discovery",
+            "retrieved_at": "2026-10-25T18:45:17.866812+00:00",
+            "sha256": "1acb7a15f5bf61373f4bd2e8d6b08ef7c18ca5c01ec50f0a0719ad26f25f8046",
+            "status": 200,
+            "url": "https://congbao.hanoi.gov.vn/"
+          }
+        ],
+        "evidence_path": "evidence/1acb7a15f5bf61373f4bd2e8d6b08ef7c18ca5c01ec50f0a0719ad26f25f8046",
+        "final_url": "https://congbao.hanoi.gov.vn/",
+        "ok": true,
+        "sha256": "1acb7a15f5bf61373f4bd2e8d6b08ef7c18ca5c01ec50f0a0719ad26f25f8046",
+        "status": 200
+      },
+      "host": "congbao.hanoi.gov.vn",
+      "inspected_at": "2026-10-25T18:45:03.541339+00:00",
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "min_interval_seconds": 5,
+      "origin": "https://congbao.hanoi.gov.vn",
+      "permission_evidence": null,
+      "public_attribution_notice": "Ghi rõ nguồn Cổng Thông tin điện tử thành phố Hà Nội khi phát hành lại",
+      "robots_evidence": [
+        {
+          "bytes": 39,
+          "evidence_path": "evidence/6767af1809f86b509529512185d4363b140e0e1ea59677ac7a3552474e8dae7d",
+          "headers": {
+            "content-length": "39",
+            "content-type": "text/plain",
+            "date": "Sun, 25 Oct 2026 18:45:26 GMT",
+            "etag": "\"8a9d13e25768da1:0\"",
+            "last-modified": "Mon, 26 Feb 2024 02:02:42 GMT"
+          },
+          "host": "congbao.hanoi.gov.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:45:03.541339+00:00",
+          "sha256": "6767af1809f86b509529512185d4363b140e0e1ea59677ac7a3552474e8dae7d",
+          "status": 200,
+          "url": "https://congbao.hanoi.gov.vn/robots.txt"
+        }
+      ],
+      "robots_http_status": 200,
+      "robots_text": "User-agent: *\nCrawl-delay: 5\nAllow: /",
+      "robots_url": "https://congbao.hanoi.gov.vn/robots.txt",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "document_download_decision": "blocked_pending_explicit_source_approval"
+    },
+    {
+      "approved_urls": [],
+      "constraint": "Stop: robots.txt returned HTTP 403; no document request attempted; manual download or explicit source approval required",
+      "decision": "blocked_http_403",
+      "evidence_root": "data/phase-d-network",
+      "home_evidence": null,
+      "host": "datafiles.chinhphu.vn",
+      "inspected_at": "2026-10-25T18:46:13.161519+00:00",
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "min_interval_seconds": 3,
+      "origin": "https://datafiles.chinhphu.vn",
+      "permission_evidence": null,
+      "public_attribution_notice": null,
+      "robots_evidence": [
+        {
+          "bytes": 271,
+          "evidence_path": "evidence/3e226c68900c0b19dea9c3ce38e24fea692843df1b2fbdba4a7c055eab1f7650",
+          "headers": {
+            "content-type": "application/xml",
+            "date": "Sun, 25 Oct 2026 18:46:13 GMT"
+          },
+          "host": "datafiles.chinhphu.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:46:13.161519+00:00",
+          "sha256": "3e226c68900c0b19dea9c3ce38e24fea692843df1b2fbdba4a7c055eab1f7650",
+          "status": 403,
+          "url": "https://datafiles.chinhphu.vn/robots.txt"
+        }
+      ],
+      "robots_http_status": 403,
+      "robots_text": null,
+      "robots_url": "https://datafiles.chinhphu.vn/robots.txt",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "document_download_decision": "blocked_attachment_host_http_403"
+    },
+    {
+      "approved_urls": [],
+      "constraint": "Stop: robots.txt returned HTTP 403; no document request attempted; manual download or explicit source approval required",
+      "decision": "blocked_http_403",
+      "evidence_root": "data/phase-d-network",
+      "home_evidence": null,
+      "host": "datafiles.hanoi.gov.vn",
+      "inspected_at": "2026-10-25T18:46:13.344359+00:00",
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "min_interval_seconds": 5,
+      "origin": "https://datafiles.hanoi.gov.vn",
+      "permission_evidence": null,
+      "public_attribution_notice": "Ghi rõ nguồn Cổng Thông tin điện tử thành phố Hà Nội khi phát hành lại",
+      "robots_evidence": [
+        {
+          "bytes": 299,
+          "evidence_path": "evidence/975e24b6a7198f039ad48da9ce3ea04c9965945282c809d87858abf9215c4cb0",
+          "headers": {
+            "content-length": "299",
+            "content-type": "application/xml",
+            "date": "Sun, 25 Oct 2026 18:46:36 GMT"
+          },
+          "host": "datafiles.hanoi.gov.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:46:13.344359+00:00",
+          "sha256": "975e24b6a7198f039ad48da9ce3ea04c9965945282c809d87858abf9215c4cb0",
+          "status": 403,
+          "url": "https://datafiles.hanoi.gov.vn/robots.txt"
+        }
+      ],
+      "robots_http_status": 403,
+      "robots_text": null,
+      "robots_url": "https://datafiles.hanoi.gov.vn/robots.txt",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "document_download_decision": "blocked_attachment_host_http_403"
+    },
+    {
+      "approved_urls": [],
+      "constraint": "Metadata/HTML discovery only under robots.txt; document endpoints require explicit source approval; linked attachment hosts are blocked",
+      "decision": "discovery_only",
+      "evidence_root": "data/phase-d-network",
+      "home_evidence": {
+        "chain": [
+          {
+            "bytes": 515565,
+            "evidence_path": "evidence/345d5430603c6e20642adb6c6fdc3c63f52266baa6e119fcb541a23a7f7908bd",
+            "headers": {
+              "content-length": "515565",
+              "content-type": "text/html",
+              "date": "Sun, 25 Oct 2026 18:45:41 GMT"
+            },
+            "host": "hanoi.gov.vn",
+            "purpose": "discovery",
+            "retrieved_at": "2026-10-25T18:45:18.052591+00:00",
+            "sha256": "345d5430603c6e20642adb6c6fdc3c63f52266baa6e119fcb541a23a7f7908bd",
+            "status": 200,
+            "url": "https://hanoi.gov.vn/"
+          }
+        ],
+        "evidence_path": "evidence/345d5430603c6e20642adb6c6fdc3c63f52266baa6e119fcb541a23a7f7908bd",
+        "final_url": "https://hanoi.gov.vn/",
+        "ok": true,
+        "sha256": "345d5430603c6e20642adb6c6fdc3c63f52266baa6e119fcb541a23a7f7908bd",
+        "status": 200
+      },
+      "host": "hanoi.gov.vn",
+      "inspected_at": "2026-10-25T18:45:03.709957+00:00",
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "min_interval_seconds": 5,
+      "origin": "https://hanoi.gov.vn",
+      "permission_evidence": null,
+      "public_attribution_notice": "Ghi rõ nguồn Cổng Thông tin điện tử thành phố Hà Nội khi phát hành lại",
+      "robots_evidence": [
+        {
+          "bytes": 39,
+          "evidence_path": "evidence/6767af1809f86b509529512185d4363b140e0e1ea59677ac7a3552474e8dae7d",
+          "headers": {
+            "content-length": "39",
+            "content-type": "text/plain",
+            "date": "Sun, 25 Oct 2026 18:45:27 GMT",
+            "etag": "\"8a9d13e25768da1:0\"",
+            "last-modified": "Mon, 26 Feb 2024 02:02:42 GMT"
+          },
+          "host": "hanoi.gov.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:45:03.709957+00:00",
+          "sha256": "6767af1809f86b509529512185d4363b140e0e1ea59677ac7a3552474e8dae7d",
+          "status": 200,
+          "url": "https://hanoi.gov.vn/robots.txt"
+        }
+      ],
+      "robots_http_status": 200,
+      "robots_text": "User-agent: *\nCrawl-delay: 5\nAllow: /",
+      "robots_url": "https://hanoi.gov.vn/robots.txt",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "document_download_decision": "blocked_pending_explicit_source_approval"
+    },
+    {
+      "host": "storage-vnportal.vnpt.vn",
+      "origin": "https://storage-vnportal.vnpt.vn",
+      "robots_url": "https://storage-vnportal.vnpt.vn/robots.txt",
+      "min_interval_seconds": 5,
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "robots_http_status": 403,
+      "robots_text": null,
+      "robots_evidence": [
+        {
+          "bytes": 299,
+          "evidence_path": "evidence/4a34065a6ddf2bc20bf082aed9761e995e7ce7281bae34917999a43250a3929c",
+          "headers": {
+            "content-length": "299",
+            "content-type": "application/xml",
+            "date": "Sun, 25 Oct 2026 19:01:45 GMT"
+          },
+          "host": "storage-vnportal.vnpt.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:59:56.372412+00:00",
+          "sha256": "4a34065a6ddf2bc20bf082aed9761e995e7ce7281bae34917999a43250a3929c",
+          "status": 403,
+          "url": "https://storage-vnportal.vnpt.vn/robots.txt"
+        }
+      ],
+      "decision": "blocked_http_403",
+      "document_download_decision": "blocked_attachment_host_http_403",
+      "approved_urls": [],
+      "permission_evidence": null,
+      "constraint": "Stop: robots.txt returned HTTP 403; no document request attempted; manual download or explicit source approval required",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "public_attribution_notice": null,
+      "evidence_root": "data/phase-d-network",
+      "inspected_at": "2026-10-25T19:02:35.487275+00:00"
+    },
+    {
+      "approved_urls": [],
+      "constraint": "Metadata/HTML discovery only under robots.txt; document endpoints require explicit source approval; linked attachment hosts are blocked",
+      "decision": "discovery_only",
+      "evidence_root": "data/phase-d-network",
+      "home_evidence": {
+        "chain": [
+          {
+            "bytes": 268495,
+            "evidence_path": "evidence/24503f412480f6d612d72ceab4f0e3ed58f5806d7c246fdf04ad9f376be6efb7",
+            "headers": {
+              "content-length": "268495",
+              "content-type": "text/html; charset=utf-8",
+              "date": "Sun, 25 Oct 2026 18:45:18 GMT"
+            },
+            "host": "vanban.chinhphu.vn",
+            "purpose": "discovery",
+            "retrieved_at": "2026-10-25T18:45:18.317491+00:00",
+            "sha256": "24503f412480f6d612d72ceab4f0e3ed58f5806d7c246fdf04ad9f376be6efb7",
+            "status": 200,
+            "url": "https://vanban.chinhphu.vn/"
+          }
+        ],
+        "evidence_path": "evidence/24503f412480f6d612d72ceab4f0e3ed58f5806d7c246fdf04ad9f376be6efb7",
+        "final_url": "https://vanban.chinhphu.vn/",
+        "ok": true,
+        "sha256": "24503f412480f6d612d72ceab4f0e3ed58f5806d7c246fdf04ad9f376be6efb7",
+        "status": 200
+      },
+      "host": "vanban.chinhphu.vn",
+      "inspected_at": "2026-10-25T18:45:03.885292+00:00",
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "min_interval_seconds": 3,
+      "origin": "https://vanban.chinhphu.vn",
+      "permission_evidence": null,
+      "public_attribution_notice": "Ghi rõ nguồn Cục Thông tin và Truyền thông Chính phủ hoặc www.chinhphu.vn khi phát hành lại",
+      "robots_evidence": [
+        {
+          "bytes": 23,
+          "evidence_path": "evidence/eaeaa8d3511d1622227d89707d995b8b1f0902f5b86fdbe58882d1cef260d4d7",
+          "headers": {
+            "content-length": "23",
+            "content-type": "text/plain",
+            "date": "Sun, 25 Oct 2026 18:45:03 GMT",
+            "etag": "\"fa8f1438211d81:0\"",
+            "last-modified": "Mon, 24 Jan 2022 09:10:23 GMT"
+          },
+          "host": "vanban.chinhphu.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:45:03.885292+00:00",
+          "sha256": "eaeaa8d3511d1622227d89707d995b8b1f0902f5b86fdbe58882d1cef260d4d7",
+          "status": 200,
+          "url": "https://vanban.chinhphu.vn/robots.txt"
+        }
+      ],
+      "robots_http_status": 200,
+      "robots_text": "User-agent: *\nAllow: /",
+      "robots_url": "https://vanban.chinhphu.vn/robots.txt",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "document_download_decision": "blocked_pending_explicit_source_approval"
+    },
+    {
+      "host": "vanban.hanoi.gov.vn",
+      "origin": "https://vanban.hanoi.gov.vn",
+      "robots_url": "https://vanban.hanoi.gov.vn/robots.txt",
+      "min_interval_seconds": 5,
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "robots_http_status": 200,
+      "robots_text": "User-agent: *\nCrawl-delay: 5\nAllow: /",
+      "robots_evidence": [
+        {
+          "bytes": 39,
+          "evidence_path": "evidence/6767af1809f86b509529512185d4363b140e0e1ea59677ac7a3552474e8dae7d",
+          "headers": {
+            "content-length": "39",
+            "content-type": "text/plain",
+            "date": "Sun, 25 Oct 2026 18:59:43 GMT",
+            "etag": "\"8a9d13e25768da1:0\"",
+            "last-modified": "Mon, 26 Feb 2024 02:02:42 GMT"
+          },
+          "host": "vanban.hanoi.gov.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:59:20.256852+00:00",
+          "sha256": "6767af1809f86b509529512185d4363b140e0e1ea59677ac7a3552474e8dae7d",
+          "status": 200,
+          "url": "https://vanban.hanoi.gov.vn/robots.txt"
+        }
+      ],
+      "home_evidence": {
+        "bytes": 201350,
+        "evidence_path": "evidence/f1a22b6fb145bb1b757205426964cced9a9aa744c77e8ed9fc73553f550ed297",
+        "headers": {
+          "content-length": "201350",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Sun, 25 Oct 2026 18:59:49 GMT"
+        },
+        "host": "vanban.hanoi.gov.vn",
+        "purpose": "discovery",
+        "retrieved_at": "2026-10-25T18:59:25.586955+00:00",
+        "sha256": "f1a22b6fb145bb1b757205426964cced9a9aa744c77e8ed9fc73553f550ed297",
+        "status": 200,
+        "url": "https://vanban.hanoi.gov.vn/"
+      },
+      "decision": "discovery_only",
+      "document_download_decision": "blocked_pending_explicit_source_approval",
+      "approved_urls": [],
+      "permission_evidence": null,
+      "constraint": "Metadata/HTML discovery only under robots.txt; document endpoints require explicit source approval; linked attachment hosts are blocked",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "public_attribution_notice": "Ghi rõ nguồn Cổng Thông tin điện tử thành phố Hà Nội khi phát hành lại",
+      "evidence_root": "data/phase-d-network",
+      "inspected_at": "2026-10-25T19:02:35.487309+00:00"
+    },
+    {
+      "approved_urls": [],
+      "constraint": "No CAPTCHA challenge was served to this client, but document access is tied to reCAPTCHA and robots.txt disallows /api/ and /Pages/; no document request attempted",
+      "decision": "blocked_ambiguous_access_controls",
+      "evidence_root": "data/phase-d-network",
+      "home_evidence": {
+        "chain": [
+          {
+            "bytes": 80001,
+            "evidence_path": "evidence/51b903c230fb61515480c797ecd44f859cf636562d759c93c53a244ca2e80563",
+            "headers": {
+              "content-type": "text/html; charset=utf-8",
+              "date": "Sun, 25 Oct 2026 18:45:18 GMT",
+              "etag": "\"loibw6ve611kab\""
+            },
+            "host": "vbpl.vn",
+            "purpose": "discovery",
+            "retrieved_at": "2026-10-25T18:45:18.744677+00:00",
+            "sha256": "51b903c230fb61515480c797ecd44f859cf636562d759c93c53a244ca2e80563",
+            "status": 200,
+            "url": "https://vbpl.vn/"
+          }
+        ],
+        "final_url": "https://vbpl.vn/",
+        "ok": false,
+        "status": "access_control_detected"
+      },
+      "host": "vbpl.vn",
+      "inspected_at": "2026-10-25T18:45:04.454745+00:00",
+      "max_concurrency_per_host": 1,
+      "max_retries": 3,
+      "min_interval_seconds": 3,
+      "origin": "https://vbpl.vn",
+      "permission_evidence": null,
+      "public_attribution_notice": null,
+      "robots_evidence": [
+        {
+          "bytes": 95,
+          "evidence_path": "evidence/f8b495dbc6d0edee08542ed95a71a53665e4e032c6369cdc0487e1b166fb7c7b",
+          "headers": {
+            "content-length": "95",
+            "content-type": "text/plain",
+            "date": "Sun, 25 Oct 2026 18:45:04 GMT"
+          },
+          "host": "vbpl.vn",
+          "purpose": "policy",
+          "retrieved_at": "2026-10-25T18:45:04.454745+00:00",
+          "sha256": "f8b495dbc6d0edee08542ed95a71a53665e4e032c6369cdc0487e1b166fb7c7b",
+          "status": 200,
+          "url": "https://vbpl.vn/robots.txt"
+        }
+      ],
+      "robots_http_status": 200,
+      "robots_text": "User-Agent: *\nAllow: /\nDisallow: /api/\nDisallow: /Pages/\n\nSitemap: https://vbpl.vn/sitemap.xml\n",
+      "robots_url": "https://vbpl.vn/robots.txt",
+      "terms_review": "robots.txt and public pages reviewed; no published automation permission found; the public attribution notice is not a data/automation license",
+      "document_download_decision": "blocked_ambiguous_or_recaptcha"
+    }
+  ]
+}

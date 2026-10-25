@@ -17,6 +17,8 @@ from transformers import AutoModelForTokenClassification, AutoTokenizer
 from transformers.utils import is_torch_npu_available
 
 from .base import EmbeddingOutput, EmbeddingProvider
+from backend.core.config import config
+from backend.core.models import select_device, model_location
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +43,8 @@ class GTEEmbedding(torch.nn.Module):
         self.model_name = model_name
         self.normalized = normalized
 
+        device = select_device(device or config.EMBEDDING_DEVICE)
+        model_name = model_location(model_name)
         # Device setup
         if device:
             self.device = torch.device(device)
@@ -62,7 +66,7 @@ class GTEEmbedding(torch.nn.Module):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForTokenClassification.from_pretrained(
             model_name,
-            trust_remote_code=True,
+            trust_remote_code=config.ALLOW_REMOTE_MODEL_CODE,
             torch_dtype=torch.float16 if self.use_fp16 else torch.float32,
         )
         self.model.eval()

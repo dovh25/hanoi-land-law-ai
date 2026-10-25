@@ -1,0 +1,35 @@
+{
+  "notice": "SYNTHETIC TEST FIXTURES ONLY. NOT OFFICIAL VIETNAMESE LAW.",
+  "national": {
+    "official_identifier": "SYNTHETIC:NATIONAL:001",
+    "official_number": "SYNTHETIC-001/2020",
+    "document_type": "synthetic_law",
+    "title": "SYNTHETIC national land-law test instrument",
+    "issuing_authority": "SYNTHETIC national authority",
+    "jurisdiction": "VN"
+  },
+  "hanoi": {
+    "official_identifier": "SYNTHETIC:HANOI:001",
+    "official_number": "SYNTHETIC-HN-001/2022",
+    "document_type": "synthetic_decision",
+    "title": "SYNTHETIC Hanoi local test instrument",
+    "issuing_authority": "SYNTHETIC Hanoi authority",
+    "jurisdiction": "VN-HN"
+  },
+  "amending": {
+    "official_identifier": "SYNTHETIC:AMENDMENT:001",
+    "official_number": "SYNTHETIC-AMEND-001/2022",
+    "document_type": "synthetic_amendment",
+    "title": "SYNTHETIC amending test instrument",
+    "issuing_authority": "SYNTHETIC national authority",
+    "jurisdiction": "VN"
+  },
+  "unknown": {
+    "official_identifier": "SYNTHETIC:UNKNOWN:001",
+    "official_number": "SYNTHETIC-UNKNOWN-001",
+    "document_type": "synthetic_unknown",
+    "title": "SYNTHETIC instrument with deliberately unknown validity",
+    "issuing_authority": "SYNTHETIC unknown authority",
+    "jurisdiction": "VN"
+  }
+}

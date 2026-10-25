@@ -6,7 +6,7 @@ from typing import Optional, Any
 import bcrypt
 from jose import jwt, JWTError
 
-from core.config import config
+from backend.core.config import Config, get_settings
 
 # Bcrypt has a maximum password length of 72 bytes
 MAX_PASSWORD_BYTES = 72
@@ -58,9 +58,11 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def create_access_token(
     data: dict[str, Any],
-    expires_delta: Optional[timedelta] = None
+    expires_delta: Optional[timedelta] = None,
+    settings: Optional[Config] = None,
 ) -> str:
     """Create a JWT access token."""
+    config = settings or get_settings()
     to_encode = data.copy()
 
     if expires_delta:
@@ -73,18 +75,19 @@ def create_access_token(
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(
         to_encode,
-        config.JWT_SECRET_KEY,
+        config.JWT_SECRET_KEY.get_secret_value(),
         algorithm=config.JWT_ALGORITHM
     )
     return encoded_jwt
 
 
-def decode_access_token(token: str) -> Optional[dict[str, Any]]:
+def decode_access_token(token: str, settings: Optional[Config] = None) -> Optional[dict[str, Any]]:
     """Decode and validate a JWT access token."""
+    config = settings or get_settings()
     try:
         payload = jwt.decode(
             token,
-            config.JWT_SECRET_KEY,
+            config.JWT_SECRET_KEY.get_secret_value(),
             algorithms=[config.JWT_ALGORITHM]
         )
         return payload

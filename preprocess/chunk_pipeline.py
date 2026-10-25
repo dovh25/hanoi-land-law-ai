@@ -13,7 +13,7 @@ import logging
 import sys
 from pathlib import Path
 
-from chunker import VietLegalChunker, ChunkerConfig
+from preprocess.chunker import VietLegalChunker, ChunkerConfig
 
 
 def setup_logging(verbose: bool = False) -> None:

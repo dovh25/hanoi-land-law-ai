@@ -18,19 +18,15 @@ if TYPE_CHECKING:
 try:
     from dotenv import load_dotenv
 
-    load_dotenv()
+    load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
 except ImportError:
     pass
 
-# Add backend to path for imports
-_backend_path = Path(__file__).parent.parent / "backend"
-if str(_backend_path) not in sys.path:
-    sys.path.insert(0, str(_backend_path))
 
 
 def _get_backend_config():
     """Get the backend config singleton."""
-    from core.config import config
+    from backend.core.config import config
 
     return config
 
@@ -113,19 +109,8 @@ def get_eval_model() -> "GeminiModel":
     Returns:
         GeminiModel instance configured with backend settings.
     """
-    global _gemini_model_instance
-
-    if _gemini_model_instance is None:
-        from deepeval.models import GeminiModel
-
-        backend_config = _get_backend_config()
-
-        _gemini_model_instance = GeminiModel(
-            model=backend_config.MODEL,
-            api_key=backend_config.GEMINI_API_KEY,
-        )
-
-    return _gemini_model_instance
+    from backend.services.llm import LLMUnavailable
+    raise LLMUnavailable("Live DeepEval judges are disabled until their internal calls can be budgeted")
 
 
 def setup_gemini_for_deepeval() -> None:

@@ -1,0 +1,26 @@
+{
+  "notice": "Targeted official metadata pages, not a claim that full text or current validity has been verified. No pagination.",
+  "seeds": [
+    {"number":"31/2024/QH15","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=211189","topics":["land_law"]},
+    {"number":"43/2024/QH15","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=211201","topics":["land_law","amendments"]},
+    {"number":"88/2024/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=210658","topics":["land_recovery","compensation","support","resettlement"]},
+    {"number":"102/2024/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=210795","topics":["land_law","implementation"]},
+    {"number":"71/2024/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=210523","topics":["land_prices","compensation"]},
+    {"number":"101/2024/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=210791","topics":["registration","land_information"]},
+    {"number":"103/2024/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=210797","topics":["land_use_fees","land_rent"]},
+    {"number":"151/2025/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=213927","topics":["implementation","administrative_applicability"]},
+    {"number":"226/2025/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=214955","topics":["amendments","implementation"]},
+    {"number":"291/2025/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=215808","topics":["amendments","land_use_fees"]},
+    {"number":"49/2026/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=216860","topics":["land_law","implementation"]},
+    {"number":"50/2026/NĐ-CP","url":"https://vanban.chinhphu.vn/?pageid=27160&docid=216861","topics":["land_use_fees","land_rent"]},
+    {"number":"10/2026/QĐ-UBND","url":"https://congbao.hanoi.gov.vn/Default.aspx?pageid=45002&p_attribute=5204","topics":["hanoi_implementation","amendments","compensation","support","resettlement"]},
+    {"number":"566/QĐ-UBND","url":"https://congbao.hanoi.gov.vn/Default.aspx?pageid=45002&p_attribute=5255","topics":["hanoi_implementation","corrections","compensation"]},
+    {"number":"40/2026/QĐ-UBND","url":"https://vanban.hanoi.gov.vn/chi-tiet-van-ban/ve-viec-ban-hanh-quy-dinh-mot-so-noi-dung-ve-boi-thuong-ho-tro-tai-dinh-cu-khi-nha-nuoc-thu-hoi-dat-238352","topics":["hanoi_implementation","land_recovery","compensation","support","resettlement"]},
+    {"number":"56/2024/QĐ-UBND","url":"https://vanban.hanoi.gov.vn/van-ban/ve-viec-ban-hanh-quy-dinh-mot-so-noi-dung-ve-boi-thuong-ho-tro-tai-dinh-cu-khi-nha-nuoc-thu-hoi--210964","topics":["hanoi_implementation","land_recovery","compensation","support","resettlement"]},
+    {"number":"38/2025/QĐ-UBND","url":"https://vanban.hanoi.gov.vn/chi-tiet-van-ban/ve-viec-sua-doi-bo-sung-mot-so-dieu-cua-quy-dinh-ban-hanh-kem-theo-quyet-dinh-so-56-2024-qd-ubnd-221034","topics":["hanoi_implementation","amendments","compensation","support","resettlement"]},
+    {"number":"29/QĐ-UBND","url":"https://vanban.hanoi.gov.vn/chi-tiet-van-ban/ve-viec-phe-duyet-ke-hoach-su-dung-dat-nam-2025-quan-hai-ba-trung-217938","topics":["hanoi_implementation","land_use_planning"]}
+  ],
+  "unresolved_leads": [
+    {"number":null,"source_url":"https://hanoi.gov.vn/chi-dao-cua-ubnd-thanh-pho-ha-noi/phe-duyet-ke-hoach-su-dung-dat-nam-2025-quan-tay-ho-4250109100611519.htm","state":"official news lead, not acquired legal instrument; identity/full annexes require manual verification"}
+  ]
+}

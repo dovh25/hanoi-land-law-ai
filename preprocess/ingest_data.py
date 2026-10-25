@@ -6,9 +6,6 @@ from tqdm import tqdm  # Import progress bar
 import uuid
 
 # LangChain Imports
-from langchain_qdrant import QdrantVectorStore
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -17,24 +14,21 @@ from langchain_core.documents import Document
 from qdrant_client.http.models import Distance, VectorParams
 from qdrant_client.models import PointStruct
 from qdrant_client import QdrantClient
+from backend.core.config import Config as RuntimeConfig
+from backend.core.index_safety import prepare_collection, destructive_cli_args
 
 logger = logging.getLogger(__name__)
 
-from dotenv import load_dotenv
-from pydantic_settings import BaseSettings
-
-load_dotenv()
 
 
-class Config(BaseSettings):
+
+class Config(RuntimeConfig):
     APP_NAME: str = "Vietnamese Law API"
     API_STR: str = "/api/v1"
     SERVER_HOST: str = "http://localhost:8000"
     PROJECT_NAME: str = "vietnamese-law-api"
-    GEMINI_API_KEY: str
     MODEL: str = "gemini-2.5-flash-lite"
     QDRANT_PORT: int = 6333
-    DOCS_ROOT: str = "./law_crawler/vbpl_documents"
     CHUNK_SIZE: int = 1024
     COLLECTION_NAME: str = f"laws"
     EMBEDDINGS_FILE: str = f"data/processed_chunksize_{CHUNK_SIZE}_alibaba/embeddings.pkl"
@@ -57,25 +51,15 @@ def _load_docs_from_json(input_file):
     return docs
 
 
-def ingest_data() -> None:
+def ingest_data(*, recreate=False, confirm_collection=None) -> None:
     """
     Ingest new documents into Qdrant.
     Each document should be a dict with 'content' and 'metadata' keys.
     """
-    client = QdrantClient(host="localhost", port=config.QDRANT_PORT)
+    client = QdrantClient(host=config.QDRANT_HOST, port=config.QDRANT_PORT)
     collection_name = config.COLLECTION_NAME
 
-    # Check if collection exists safely
-    if client.collection_exists(collection_name=collection_name):
-        logger.info(f"Collection '{collection_name}' already exists.")
-        try:
-            client.delete_collection(collection_name=collection_name)
-            logger.info(f"Deleted existing collection '{collection_name}'.")
-        except Exception as e:
-            logger.error(f"Could not delete existing collection: {e}")
-            return
-    else:
-        logger.info(f"Collection '{collection_name}' does not exist. Proceeding...")
+    prepare_collection(client, collection_name, recreate=recreate, confirm_collection=confirm_collection)
 
     # Prepare data for upsert
     client.create_collection(
@@ -116,4 +100,4 @@ def ingest_data() -> None:
 
 
 if __name__ == "__main__":
-    ingest_data()
+    ingest_data(**destructive_cli_args())

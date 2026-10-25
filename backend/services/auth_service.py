@@ -4,8 +4,8 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from core.security import hash_password, verify_password
-from db.models.user import User
+from backend.core.security import hash_password, verify_password
+from backend.db.models.user import User
 
 
 class AuthService:

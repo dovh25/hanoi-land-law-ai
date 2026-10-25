@@ -4,6 +4,7 @@ import { Badge, Input, Button } from '../components/ui';
 import type { LawDocument, DocumentListResponse, TypesResponse } from '../types';
 import { API_BASE_URL } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
+import { containsArticle, escapeHtml } from '../utils/documentSafety';
 
 const API_URL = API_BASE_URL;
 
@@ -73,7 +74,7 @@ const ContentSkeleton: React.FC = () => (
     </div>
     <div className="space-y-3">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-        <div key={i} className="h-4 bg-slate-100 rounded" style={{ width: `${Math.random() * 30 + 70}%` }}></div>
+        <div key={i} className="h-4 bg-slate-100 rounded" style={{ width: `${70 + (i * 7) % 30}%` }}></div>
       ))}
     </div>
   </div>
@@ -151,6 +152,7 @@ export const LookupPage: React.FC = () => {
 
   const contentRef = useRef<HTMLDivElement>(null);
   const contentWrapperRef = useRef<HTMLDivElement>(null);
+  const selectedDocRef = useRef<LawDocument | null>(null);
 
   // Extract TOC from content
   const toc = useMemo(() => {
@@ -235,7 +237,7 @@ export const LookupPage: React.FC = () => {
         <html>
         <head>
           <meta charset="utf-8">
-          <title>${selectedDoc.ref} - ${selectedDoc.title}</title>
+          <title>${escapeHtml(selectedDoc.ref)} - ${escapeHtml(selectedDoc.title)}</title>
           <style>
             * {
               margin: 0;
@@ -295,14 +297,14 @@ export const LookupPage: React.FC = () => {
         <body>
           <div class="header">
             <div class="doc-type">Văn bản pháp luật</div>
-            <div class="title">${selectedDoc.title}</div>
+            <div class="title">${escapeHtml(selectedDoc.title)}</div>
             <div class="meta">
-              <span><strong>Số hiệu:</strong> ${selectedDoc.ref}</span>
-              <span><strong>Năm:</strong> ${selectedDoc.date}</span>
-              <span><strong>Loại:</strong> ${selectedDoc.type}</span>
+              <span><strong>Số hiệu:</strong> ${escapeHtml(selectedDoc.ref)}</span>
+              <span><strong>Năm:</strong> ${escapeHtml(selectedDoc.date)}</span>
+              <span><strong>Loại:</strong> ${escapeHtml(selectedDoc.type)}</span>
             </div>
           </div>
-          <div class="content">${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+          <div class="content">${escapeHtml(content)}</div>
           <div class="footer">
             Xuất từ Hanoi Land Law AI - ${new Date().toLocaleDateString('vi-VN')}
           </div>
@@ -349,19 +351,6 @@ export const LookupPage: React.FC = () => {
     fetchTypes();
   }, []);
 
-  // Handle citation navigation from ChatPage
-  useEffect(() => {
-    const docId = searchParams.get('id');
-    const article = searchParams.get('article');
-
-    if (docId) {
-      setHighlightArticle(article);
-      fetchDocumentById(docId);
-    } else {
-      fetchDocuments();
-    }
-  }, [searchParams]);
-
   // Scroll to highlighted article when content loads
   useEffect(() => {
     if (highlightArticle && contentRef.current && selectedDoc?.content) {
@@ -404,6 +393,7 @@ export const LookupPage: React.FC = () => {
       const response = await fetch(`${API_URL}/api/v1/documents/${encodeURIComponent(docId)}`);
       if (response.ok) {
         const doc: LawDocument = await response.json();
+        selectedDocRef.current = doc;
         setSelectedDoc(doc);
         setResults([doc]);
       } else if (response.status === 404) {
@@ -414,6 +404,30 @@ export const LookupPage: React.FC = () => {
     } catch (error) {
       console.error('Failed to fetch document:', error);
       setDocError('Lỗi kết nối. Vui lòng kiểm tra mạng và thử lại.');
+    } finally {
+      setIsDocLoading(false);
+    }
+  }, []);
+
+  const fetchFullDocument = useCallback(async (docId: string) => {
+    setIsDocLoading(true);
+    setDocError(null);
+    setReadingProgress(0);
+    try {
+      const response = await fetch(`${API_URL}/api/v1/documents/${encodeURIComponent(docId)}`);
+      if (response.ok) {
+        const doc: LawDocument = await response.json();
+        selectedDocRef.current = doc;
+        setSelectedDoc(doc);
+        contentWrapperRef.current?.scrollTo({ top: 0 });
+      } else if (response.status === 404) {
+        setDocError('Không tìm thấy văn bản này.');
+      } else {
+        setDocError('Không thể tải nội dung văn bản.');
+      }
+    } catch (error) {
+      console.error('Failed to fetch document:', error);
+      setDocError('Lỗi kết nối. Vui lòng thử lại.');
     } finally {
       setIsDocLoading(false);
     }
@@ -447,7 +461,7 @@ export const LookupPage: React.FC = () => {
         setTotalPages(data.total_pages);
         setTotalItems(data.total);
 
-        if (data.items.length > 0 && !selectedDoc) {
+        if (data.items.length > 0 && !selectedDocRef.current) {
           fetchFullDocument(data.items[0].id);
         }
       } else {
@@ -459,30 +473,18 @@ export const LookupPage: React.FC = () => {
     } finally {
       setIsListLoading(false);
     }
-  }, [selectedDoc]);
+  }, [fetchFullDocument]);
 
-  const fetchFullDocument = useCallback(async (docId: string) => {
-    setIsDocLoading(true);
-    setDocError(null);
-    setReadingProgress(0);
-    try {
-      const response = await fetch(`${API_URL}/api/v1/documents/${encodeURIComponent(docId)}`);
-      if (response.ok) {
-        const doc: LawDocument = await response.json();
-        setSelectedDoc(doc);
-        contentWrapperRef.current?.scrollTo({ top: 0 });
-      } else if (response.status === 404) {
-        setDocError('Không tìm thấy văn bản này.');
-      } else {
-        setDocError('Không thể tải nội dung văn bản.');
-      }
-    } catch (error) {
-      console.error('Failed to fetch document:', error);
-      setDocError('Lỗi kết nối. Vui lòng thử lại.');
-    } finally {
-      setIsDocLoading(false);
+  // Stable callbacks avoid refetching the list merely because selection changes.
+  useEffect(() => {
+    const docId = searchParams.get('id');
+    setHighlightArticle(searchParams.get('article'));
+    if (docId) {
+      fetchDocumentById(docId);
+    } else {
+      fetchDocuments();
     }
-  }, []);
+  }, [searchParams, fetchDocumentById, fetchDocuments]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -550,8 +552,7 @@ export const LookupPage: React.FC = () => {
       }
       
       // Check if this line should be highlighted
-      const shouldHighlight = highlightArticle && 
-        new RegExp(`${highlightArticle}[.:]?`, 'i').test(line);
+      const shouldHighlight = containsArticle(line, highlightArticle);
       
       if (isTocItem) {
         return (

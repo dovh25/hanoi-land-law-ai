@@ -28,10 +28,6 @@ from .deepeval_dataset import load_and_generate
 
 logger = logging.getLogger(__name__)
 
-# Add backend to path for imports
-_backend_path = Path(__file__).parent.parent / "backend"
-if str(_backend_path) not in sys.path:
-    sys.path.insert(0, str(_backend_path))
 
 
 # =============================================================================
@@ -156,7 +152,7 @@ def get_pipeline(
     Returns:
         RAGPipeline instance.
     """
-    from services.pipelines import (
+    from backend.services.pipelines import (
         VietnameseEmbeddingPipeline,
         GTEPipeline,
         BGEM3Pipeline,
@@ -379,7 +375,7 @@ class DeepEvalEvaluator:
                 pass_rates[metric_name] = 0.0
 
         # Build config - use backend config for model name since GeminiModel.model is a Client object
-        from core.config import config as backend_config
+        from backend.core.config import config as backend_config
 
         result_config = {
             "dataset_path": dataset_path,

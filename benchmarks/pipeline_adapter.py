@@ -16,10 +16,6 @@ from typing import List, Optional, Type
 
 logger = logging.getLogger(__name__)
 
-# Add backend to path for imports
-_backend_path = Path(__file__).parent.parent / "backend"
-if str(_backend_path) not in sys.path:
-    sys.path.insert(0, str(_backend_path))
 
 
 class BaseRetrieverAdapter(ABC):
@@ -138,7 +134,7 @@ class RAGPipelineAdapter(BaseRetrieverAdapter):
 
         # Create custom reranker if model is specified
         if self.use_reranker and self.reranker_model:
-            from services.rerankers import CrossEncoderReranker
+            from backend.services.rerankers import CrossEncoderReranker
 
             custom_reranker = CrossEncoderReranker(model_name=self.reranker_model)
             pipeline_kwargs["reranker"] = custom_reranker
@@ -281,7 +277,7 @@ def _get_pipeline_registry() -> dict[str, Type]:
     Returns:
         Dictionary mapping pipeline names to their classes.
     """
-    from services.pipelines import GTEPipeline, VietnameseEmbeddingPipeline, BGEM3Pipeline
+    from backend.services.pipelines import GTEPipeline, VietnameseEmbeddingPipeline, BGEM3Pipeline
 
     return {
         "gte": GTEPipeline,

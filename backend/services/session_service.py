@@ -6,9 +6,9 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from db.models.chat_session import ChatSession
-from db.models.message import Message
-from db.models.message_source import MessageSource
+from backend.db.models.chat_session import ChatSession
+from backend.db.models.message import Message
+from backend.db.models.message_source import MessageSource
 
 
 def utc_now() -> datetime:
@@ -165,6 +165,7 @@ class SessionService:
         role: str,
         content: str,
         sources: Optional[List[Dict[str, Any]]] = None,
+        commit: bool = True,
     ) -> Message:
         """
         Add a message to a session.
@@ -210,9 +211,15 @@ class SessionService:
                 )
                 db.add(source)
 
-        db.commit()
-        db.refresh(message)
+        if commit:
+            db.commit()
+            db.refresh(message)
         return message
+
+    def get_recent_messages(self, db: Session, session_id: str, limit: int):
+        messages = (db.query(Message).filter(Message.session_id == session_id)
+                    .order_by(Message.timestamp.desc(), Message.id.desc()).limit(limit).all())
+        return list(reversed(messages))
 
     def get_messages(
         self,

@@ -16,19 +16,19 @@ from langchain_core.documents import Document
 from langchain_core.messages import BaseMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_google_genai import ChatGoogleGenerativeAI
+from backend.services.llm import build_llm, budgeted_turn, LLMUnavailable
 from langchain_qdrant import QdrantVectorStore, RetrievalMode
 from langgraph.graph import END, StateGraph
 from qdrant_client import QdrantClient
 
-from core.config import config
-from services.adapters import (
+from backend.core.config import config
+from backend.services.adapters import (
     VietnameseDenseAdapter,
     VietnameseEmbedding,
     VietnameseSparseAdapter,
 )
-from services.pipelines.base import RAGPipeline
-from services.rerankers import BaseReranker, CrossEncoderReranker
+from backend.services.pipelines.base import RAGPipeline
+from backend.services.rerankers import BaseReranker, CrossEncoderReranker
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +82,7 @@ class AgenticRAGPipeline(RAGPipeline):
 
     def __init__(
         self,
-        retrieval_mode: Optional[str] = "dense",
+        retrieval_mode: Optional[str] = None,
         use_reranker: bool = False,
         reranker: Optional[BaseReranker] = None,
         collection_name: Optional[str] = None,
@@ -94,7 +94,7 @@ class AgenticRAGPipeline(RAGPipeline):
     ) -> None:
         """Initialize the pipeline."""
         self.vector_store: Optional[QdrantVectorStore] = None
-        self.model: Optional[ChatGoogleGenerativeAI] = None
+        self.model = None
         self.base_retriever = None
         self.reranker: Optional[BaseReranker] = reranker
         self._initialized = False
@@ -137,16 +137,14 @@ class AgenticRAGPipeline(RAGPipeline):
             )
 
         # 1. Initialize Gemini LLM
-        self.model = ChatGoogleGenerativeAI(
-            model=config.MODEL,
-            google_api_key=config.GEMINI_API_KEY,
-            temperature=0.3,
-        )
+        if retrieval_mode != "dense":
+            raise ValueError("Vietnamese_Embedding_v2 is dense-only; hybrid retrieval requires an independent lexical index")
+        self.model = build_llm()
 
         # 2. Initialize Vietnamese Embedding
         vietnamese_engine = VietnameseEmbedding(
             model_name=config.VIETNAMESE_EMBEDDING_MODEL,
-            device="gpu",
+            device=config.EMBEDDING_DEVICE,
         )
 
         dense_embeddings = None
@@ -297,6 +295,8 @@ You must respond with ONLY "yes" or "no", nothing else.""",
             result = chain.invoke({"query": query}).strip().lower()
             needs_retrieval = result == "yes"
             logger.info(f"[Route] Decision: needs_retrieval={needs_retrieval}")
+        except LLMUnavailable:
+            raise
         except Exception as e:
             logger.error(f"[Route] Error during routing: {e}")
             # Default to retrieval on error
@@ -383,6 +383,8 @@ You must respond with ONLY "yes" or "no", nothing else.""",
 
                 if is_relevant:
                     relevant_docs.append(doc)
+            except LLMUnavailable:
+                raise
             except Exception as e:
                 logger.error(f"[Grade] Error grading document {i + 1}: {e}")
                 # Include document on error to avoid losing potentially relevant content
@@ -434,6 +436,8 @@ Respond with ONLY the rewritten query in Vietnamese, nothing else.""",
                 {"original_query": original_query, "current_query": current_query}
             ).strip()
             logger.info(f"[Rewrite] New query: '{new_query}'")
+        except LLMUnavailable:
+            raise
         except Exception as e:
             logger.error(f"[Rewrite] Error during rewriting: {e}")
             # Keep current query on error
@@ -488,6 +492,8 @@ specialize in Vietnamese law and suggest they ask a related question.""",
 
         try:
             answer = chain.invoke({"query": query, "history": history})
+        except LLMUnavailable:
+            raise
         except Exception as e:
             logger.error(f"[Generate] Error during direct generation: {e}")
             answer = "Sorry, an error occurred while processing your request. Please try again."
@@ -525,6 +531,8 @@ Respond in Vietnamese in a professional and helpful manner.""",
 
         try:
             answer = chain.invoke({"query": query})
+        except LLMUnavailable:
+            raise
         except Exception as e:
             logger.error(f"[NoDocsHandler] Error: {e}")
             answer = (
@@ -604,6 +612,8 @@ CONTEXT:
                     "history": history_messages,
                 }
             )
+        except LLMUnavailable:
+            raise
         except Exception as e:
             logger.error(f"[Generate] Gemini Error: {e}")
             return "Xin lỗi, đã xảy ra lỗi khi tạo câu trả lời. Vui lòng thử lại."
@@ -648,6 +658,7 @@ CONTEXT:
             "sources": source_documents,
         }
 
+    @budgeted_turn
     def respond(
         self,
         query: str,
@@ -685,6 +696,8 @@ CONTEXT:
         # Run the workflow
         try:
             final_state = self._workflow.invoke(initial_state)
+        except LLMUnavailable:
+            raise
         except Exception as e:
             logger.error(f"[AgenticRAG] Workflow error: {e}")
             return {

@@ -1,5 +1,2 @@
-qdrant-client>=1.7.0
-sentence-transformers>=2.2.2
-torch>=2.0.0
-FlagEmbedding>=1.2.0
-
+# Use the root pyproject.toml / uv.lock: uv sync --frozen --extra ml
+# Do not maintain a second, contradictory dependency set here.

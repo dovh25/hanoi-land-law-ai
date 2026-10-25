@@ -2,30 +2,29 @@
 
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
-from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.messages import HumanMessage, AIMessage
 
-from api.deps import get_db, get_current_user
-from db.models.user import User
-from models.chat import ChatRequest, ChatResponse
-from services.chat_service import ChatService
-from services.session_service import session_service
+from backend.api.deps import get_db, get_current_user
+from backend.db.models.user import User
+from backend.models.chat import ChatRequest, ChatResponse
+from backend.services.chat_service import ChatService
+from backend.services.session_service import session_service
+from backend.services.llm import LLMUnavailable
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
 
-def get_chat_service() -> ChatService:
+def get_chat_service(request: Request) -> ChatService:
     """Dependency to get the shared chat service instance."""
-    from main import chat_service
-    return chat_service
+    return request.app.state.chat_service
 
 
 @router.post("/chat", response_model=ChatResponse, status_code=status.HTTP_200_OK)
-async def chat(
+def chat(
     payload: ChatRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -79,22 +78,23 @@ async def chat(
 
     # Load existing messages from database into LangChain history
     # This ensures continuity even if the server restarted
-    existing_messages = session_service.get_messages(db=db, session_id=session_id)
+    existing_messages = session_service.get_recent_messages(
+        db, session_id, service.settings.MAX_HISTORY_MESSAGES
+    )
 
-    # Populate the in-memory history with DB messages
-    history = ChatMessageHistory()
+    # Reconstruct bounded request-local history; SQLite remains the source of truth.
+    history = []
     for msg in existing_messages:
         if msg.role == "user":
-            history.add_message(HumanMessage(content=msg.content))
+            history.append(HumanMessage(content=msg.content))
         elif msg.role == "ai":
-            history.add_message(AIMessage(content=msg.content))
-
-    # Inject the loaded history into the service's session_store
-    service.session_store[session_id] = history
+            history.append(AIMessage(content=msg.content))
 
     try:
         # Call the RAG pipeline
-        response_data = service.respond(payload.message, session_id=session_id)
+        response_data = service.respond(payload.message, history=history)
+    except LLMUnavailable:
+        raise
     except Exception:
         logger.exception("Failed to handle chat request")
         raise HTTPException(
@@ -109,6 +109,7 @@ async def chat(
         role="user",
         content=payload.message,
         sources=None,
+        commit=False,
     )
 
     # Save AI response to database with sources
@@ -119,6 +120,7 @@ async def chat(
         role="ai",
         content=response_data["answer"],
         sources=sources,
+        commit=False,
     )
 
     # Update session timestamp

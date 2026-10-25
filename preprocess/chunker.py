@@ -6,6 +6,8 @@ Parses document structure (Phần, Chương, Mục, Điều) and creates
 LangChain Documents with rich metadata.
 """
 
+from __future__ import annotations
+
 import re
 import uuid
 import json
@@ -15,7 +17,8 @@ from typing import List, Dict, Optional, Any, Union
 from dataclasses import dataclass, field
 
 from langchain_core.documents import Document
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from backend.core.config import config
+from backend.core.models import model_location
 
 logger = logging.getLogger(__name__)
 
@@ -119,7 +122,7 @@ class VietLegalChunker:
             from transformers import AutoTokenizer
 
             self._tokenizer = AutoTokenizer.from_pretrained(
-                self.config.model_name, trust_remote_code=True
+                model_location(self.config.model_name), trust_remote_code=config.ALLOW_REMOTE_MODEL_CODE
             )
         return self._tokenizer
 
@@ -127,6 +130,7 @@ class VietLegalChunker:
     def text_splitter(self) -> RecursiveCharacterTextSplitter:
         """Lazy-load text splitter for fallback chunking."""
         if self._text_splitter is None:
+            from langchain_text_splitters import RecursiveCharacterTextSplitter
             self._text_splitter = (
                 RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
                     self.tokenizer,
@@ -135,6 +139,12 @@ class VietLegalChunker:
                 )
             )
         return self._text_splitter
+
+    @staticmethod
+    def chunk_canonical(provision_version, context, model, budget, *, max_tokens=512):
+        """Phase C: exact-span deterministic chunks, without legacy random IDs or model loads."""
+        from preprocess.legal_chunking import chunk_provision
+        return chunk_provision(provision_version, context, model, budget, max_tokens=max_tokens)
 
     def _count_tokens(self, text: str) -> int:
         """Count tokens in text using the tokenizer."""

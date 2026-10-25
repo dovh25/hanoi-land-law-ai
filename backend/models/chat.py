@@ -1,11 +1,11 @@
 from typing import List, Dict, Optional, Any
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ChatRequest(BaseModel):
     """Request schema for chat endpoint."""
 
-    message: str
+    message: str = Field(min_length=1, max_length=10000)
     session_id: Optional[str] = None  # If None, creates new session
 
 

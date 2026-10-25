@@ -3,6 +3,8 @@ import torch
 import gc
 from typing import List, Dict, Tuple, Any
 from collections import defaultdict
+from backend.core.config import config
+from backend.core.models import select_device, model_location
 
 # LangChain / Qdrant Imports
 from langchain_core.embeddings import Embeddings
@@ -25,6 +27,8 @@ class GTEEmbedding(torch.nn.Module):
         super().__init__()
         self.normalized = normalized
 
+        device = select_device(device or config.EMBEDDING_DEVICE)
+        model_name = model_location(model_name)
         # 1. Device Setup
         if device:
             self.device = torch.device(device)
@@ -47,7 +51,7 @@ class GTEEmbedding(torch.nn.Module):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForTokenClassification.from_pretrained(
             model_name,
-            trust_remote_code=True,
+            trust_remote_code=config.ALLOW_REMOTE_MODEL_CODE,
             torch_dtype=torch.float16 if self.use_fp16 else torch.float32,
         )
         self.model.eval()  # Explicitly set to eval mode
@@ -233,10 +237,9 @@ class GTESparseAdapter(SparseEmbeddings):
 
 
 class VietnameseEmbedding:
-    """
-    Wrapper for AITeamVN/Vietnamese_Embedding_v2 (BGE-M3 fine-tuned).
+    """Pinned dense-only SentenceTransformer; same encoder as interactive Colab.
 
-    Uses FlagEmbedding.BGEM3FlagModel for dense + sparse embeddings.
+    Legacy BGEM3FlagModel indexes require an explicit rebuild (see docs/colab-gpu.md).
     """
 
     def __init__(
@@ -244,70 +247,34 @@ class VietnameseEmbedding:
         model_name: str = "AITeamVN/Vietnamese_Embedding_v2",
         device: str = "cpu",
     ):
+        from batch.contracts import MODEL_ID
+        from batch.embedding import VietnameseEncoder
+        if model_name != MODEL_ID:
+            raise ValueError("Checkpoint override requires an explicit model-contract migration")
         self.model_name = model_name
-        self.device = device
+        self.device = select_device(device)
+        self.encoder = VietnameseEncoder(self.device, allow_downloads=config.ALLOW_MODEL_DOWNLOADS)
 
-        from FlagEmbedding import BGEM3FlagModel
-
-        self.model = BGEM3FlagModel(
-            model_name,
-            use_fp16=device == "cuda",
-            device=device,
-        )
-        self.model.model.eval()
-        try:
-            self.model.encode(["warmup"], batch_size=1, max_length=32)
-        except Exception as e:
-            print(f"Warmup failed: {e}")
-        self.tokenizer = self.model.tokenizer
+    @property
+    def tokenizer(self):
+        return self.encoder.tokenizer
 
     def encode(
         self,
         texts: list[str],
         return_dense: bool = True,
-        return_sparse: bool = True,
-        max_length: int = 8192,
+        return_sparse: bool = False,
+        max_length: int = 2048,
         batch_size: int = 16,
     ) -> dict[str, any]:
-        """
-        Encode texts using BGE-M3 model.
-
-        Returns:
-            Dict with "dense_embeddings" and/or "sparse_embeddings" keys.
-        """
+        """Do not invent sparse heads or silently truncate legal evidence."""
+        if return_sparse:
+            raise ValueError("This checkpoint has no verified learned-sparse heads; use a separately evaluated lexical retriever")
+        if max_length != self.encoder.spec.max_tokens:
+            raise ValueError("Token policy differs from the pinned embedding contract")
         if isinstance(texts, str):
             texts = [texts]
-
-        output = {}
-
-        # Ensure eval mode and no_grad for determinism
-        self.model.model.eval()
-        with torch.no_grad():
-            # Single encode call for efficiency - BGE-M3 returns dict with 'dense_vecs' and 'lexical_weights'
-            results = self.model.encode(
-                texts,
-                batch_size=min(batch_size, len(texts)),
-                max_length=max_length,
-                return_dense=return_dense,
-                return_sparse=return_sparse,
-                return_colbert_vecs=False,
-            )
-        tokens = self.tokenizer(
-            texts, padding=True, truncation=True, return_tensors="pt"
-        )["input_ids"][0].tolist()
-        print(f"Tokens Sample: {tokens}")
-
-        if return_dense:
-            output["dense_embeddings"] = results["dense_vecs"]
-
-        if return_sparse:
-            output["sparse_embeddings"] = results["lexical_weights"]
-
-        # Check if len(sparse_embeddings) matches len(tokens)
-
-        # if len(output["sparse_embeddings"]) != len(tokens):
-        #     raise ValueError("Mismatch between number of sparse embeddings and tokenized inputs.")
-        return output
+        return {"dense_embeddings": self.encoder.encode(texts, batch_size=batch_size)} if return_dense else {}
 
 
 def _to_token_id_weights(
@@ -355,11 +322,11 @@ class VietnameseDenseAdapter(Embeddings):
 
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         res = self.vietnamese.encode(texts, return_dense=True, return_sparse=False)
-        return res["dense_embeddings"]
+        return res["dense_embeddings"].tolist()
 
     def embed_query(self, text: str) -> List[float]:
         res = self.vietnamese.encode([text], return_dense=True, return_sparse=False)
-        return res["dense_embeddings"][0]
+        return res["dense_embeddings"][0].tolist()
 
 
 class VietnameseSparseAdapter(SparseEmbeddings):
@@ -417,8 +384,9 @@ class BGEM3Embedding:
 
         from FlagEmbedding import BGEM3FlagModel
 
+        device = select_device(device)
         self.model = BGEM3FlagModel(
-            model_name,
+            model_location(model_name),
             use_fp16=device == "cuda",
             device=device,
         )

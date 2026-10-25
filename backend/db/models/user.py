@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy import String, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base
+from backend.db.base import Base
 
 if TYPE_CHECKING:
-    from db.models.chat_session import ChatSession
+    from backend.db.models.chat_session import ChatSession
 
 
 def utc_now() -> datetime:

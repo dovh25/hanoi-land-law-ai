@@ -37,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const currentUser = await authService.getCurrentUser();
       setUser(currentUser);
-    } catch (error) {
+    } catch {
       // Token invalid or expired
       authService.logout();
       setUser(null);
@@ -114,6 +114,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 /**
  * Hook to use auth context
  */
+// Context and hook intentionally share this module; neither has render side effects.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

@@ -5,16 +5,16 @@ import time
 from typing import Dict, Any, Optional, List
 
 from langchain_qdrant import QdrantVectorStore, RetrievalMode
-from langchain_google_genai import ChatGoogleGenerativeAI
+from backend.services.llm import build_llm, budgeted_turn, LLMUnavailable
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.messages import BaseMessage
 from qdrant_client import QdrantClient
 
-from core.config import config
-from services.adapters import GTEDenseAdapter, GTESparseAdapter, GTEEmbedding
-from services.pipelines.base import RAGPipeline
-from services.rerankers import BaseReranker, CrossEncoderReranker
+from backend.core.config import config
+from backend.services.adapters import GTEDenseAdapter, GTESparseAdapter, GTEEmbedding
+from backend.services.pipelines.base import RAGPipeline
+from backend.services.rerankers import BaseReranker, CrossEncoderReranker
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +75,7 @@ class GTEPipeline(RAGPipeline):
             top_k: Number of documents after reranking (defaults to config.TOP_K).
         """
         self.vector_store: Optional[QdrantVectorStore] = None
-        self.model: Optional[ChatGoogleGenerativeAI] = None
+        self.model = None
         self.base_retriever = None
         self.reranker: Optional[BaseReranker] = reranker
         self._initialized = False
@@ -118,18 +118,14 @@ class GTEPipeline(RAGPipeline):
 
         # 1. Initialize Gemini LLM (skip if retrieval-only mode)
         if not self.skip_llm:
-            self.model = ChatGoogleGenerativeAI(
-                model=config.MODEL,
-                google_api_key=config.GEMINI_API_KEY,
-                temperature=0.3,
-            )
+            self.model = build_llm()
         else:
             logger.info("Skipping LLM initialization (retrieval-only mode)")
 
         # 2. Initialize GTE Embeddings (only load what's needed for the mode)
         gte_engine = GTEEmbedding(
             model_name="Alibaba-NLP/gte-multilingual-base",
-            device="cpu",
+            device=config.EMBEDDING_DEVICE,
         )
 
         dense_embeddings = None
@@ -288,6 +284,8 @@ class GTEPipeline(RAGPipeline):
                     "history": history_messages,
                 }
             )
+        except LLMUnavailable:
+            raise
         except Exception as e:
             logger.error(f"Gemini Error: {e}")
             return "Error generating response."
@@ -322,6 +320,7 @@ class GTEPipeline(RAGPipeline):
             "sources": source_documents,
         }
 
+    @budgeted_turn
     def respond(
         self,
         query: str,

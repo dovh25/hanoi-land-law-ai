@@ -1,11 +1,11 @@
 # Use the latest Node version automatically
-FROM node:22-alpine
+FROM node:22.21.1-alpine3.22
 
-WORKDIR /app
+WORKDIR /app/frontend
 
 # Copy package.json and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the code
 COPY . .

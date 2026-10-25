@@ -1,15 +1,17 @@
-"""RAG Pipeline implementations for the chat service."""
-
+"""Load optional ML implementations only when selected."""
+from importlib import import_module
 from .base import RAGPipeline
-from .gte_pipeline import GTEPipeline
-from .vietnamese_embedding_pipeline import VietnameseEmbeddingPipeline
-from .bge_m3_pipeline import BGEM3Pipeline
-from .agentic_rag_pipeline import AgenticRAGPipeline
 
-__all__ = [
-    "RAGPipeline",
-    "GTEPipeline",
-    "VietnameseEmbeddingPipeline",
-    "BGEM3Pipeline",
-    "AgenticRAGPipeline",
-]
+_MODULES = {
+    "AgenticRAGPipeline": "agentic_rag_pipeline",
+    "GTEPipeline": "gte_pipeline",
+    "VietnameseEmbeddingPipeline": "vietnamese_embedding_pipeline",
+    "BGEM3Pipeline": "bge_m3_pipeline",
+}
+__all__ = ["RAGPipeline", *_MODULES]
+
+
+def __getattr__(name):
+    if name not in _MODULES:
+        raise AttributeError(name)
+    return getattr(import_module(f"{__name__}.{_MODULES[name]}"), name)

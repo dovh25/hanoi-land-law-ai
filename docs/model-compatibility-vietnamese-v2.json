@@ -1,0 +1,29 @@
+{
+  "model_id": "AITeamVN/Vietnamese_Embedding_v2",
+  "revision": "18b44161e041bf1d3a333ab5144b5b7b93f914d2",
+  "evidence_kind": "Public metadata/config inspection only; no weights or inference",
+  "license_declared_by_publisher": "Apache-2.0",
+  "publisher_authors": ["Nguyễn Nho Trung", "Nguyễn Nhật Quang", "Nguyễn Văn Huy"],
+  "loader": "sentence_transformers.SentenceTransformer",
+  "architecture": "XLMRobertaModel",
+  "dimension": 1024,
+  "pooling": "CLS only",
+  "normalization": "Declared Normalize module; also explicitly normalize_embeddings=True",
+  "tokenizer": "XLMRobertaTokenizer (SentencePiece; standard fast-tokenizer implementation may be selected)",
+  "custom_code_required_by_declared_modules": false,
+  "learned_sparse_supported": false,
+  "sparse_evidence": "Repository file list has no sparse_linear.pt or colbert_linear.pt; module chain is Transformer/Pooling/Normalize, not BGEM3 heads",
+  "length_disagreement": "Card recommends 2048; sentence_bert_config and tokenizer_config declare 8192; conservative shared policy is 2048 including special tokens, reject oversized input",
+  "weight_parameters": 567754752,
+  "runtime_numerical_validation_performed": false,
+  "sources": [
+    "https://huggingface.co/api/models/AITeamVN/Vietnamese_Embedding_v2",
+    "https://huggingface.co/AITeamVN/Vietnamese_Embedding_v2/blob/18b44161e041bf1d3a333ab5144b5b7b93f914d2/README.md",
+    "https://huggingface.co/AITeamVN/Vietnamese_Embedding_v2/blob/18b44161e041bf1d3a333ab5144b5b7b93f914d2/modules.json",
+    "https://huggingface.co/AITeamVN/Vietnamese_Embedding_v2/blob/18b44161e041bf1d3a333ab5144b5b7b93f914d2/1_Pooling/config.json",
+    "https://huggingface.co/AITeamVN/Vietnamese_Embedding_v2/blob/18b44161e041bf1d3a333ab5144b5b7b93f914d2/config.json",
+    "https://huggingface.co/AITeamVN/Vietnamese_Embedding_v2/blob/18b44161e041bf1d3a333ab5144b5b7b93f914d2/tokenizer_config.json",
+    "https://huggingface.co/AITeamVN/Vietnamese_Embedding_v2/blob/18b44161e041bf1d3a333ab5144b5b7b93f914d2/sentence_bert_config.json"
+  ],
+  "migration": "Checkpoint unchanged; replace incompatible BGEM3 loader with shared pinned dense encoder. Recompute vectors and publish a new index/release contract; do not mix old dense/sparse artifacts or query an old index as if equivalent. No existing index was changed."
+}

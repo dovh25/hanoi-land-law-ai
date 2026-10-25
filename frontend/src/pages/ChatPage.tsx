@@ -112,7 +112,7 @@ export const ChatPage: React.FC = () => {
     if (urlSessionId !== activeSessionId) {
       selectSession(urlSessionId || null);
     }
-  }, [urlSessionId]); // Only react to URL changes, not activeSessionId
+  }, [urlSessionId, activeSessionId, selectSession]);
 
   const [messages, setMessages] = useState<ExtendedMessage[]>([]);
   const [composer, setComposer] = useState('');
@@ -267,7 +267,7 @@ export const ChatPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [selectSession, fetchSessions, updateSessionInList]);
+  }, [navigate, fetchSessions, updateSessionInList]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -5,7 +5,9 @@ from typing import List, Optional
 import torch
 from langchain_core.documents import Document
 from sentence_transformers import CrossEncoder
-from services.rerankers.base import BaseReranker
+from backend.services.rerankers.base import BaseReranker
+from backend.core.config import config
+from backend.core.models import select_device, model_location
 
 import numpy as np
 logger = logging.getLogger(__name__)
@@ -51,12 +53,8 @@ class CrossEncoderReranker(BaseReranker):
         t_start = time.time()
 
         # Device detection
-        if self._device is not None:
-            device = self._device
-            cuda_available = device == "cuda"
-        else:
-            cuda_available = torch.cuda.is_available()
-            device = "cuda" if cuda_available else "cpu"
+        device = select_device(self._device or config.EMBEDDING_DEVICE)
+        cuda_available = device == "cuda"
 
         # Log device info
         if cuda_available:
@@ -84,9 +82,9 @@ class CrossEncoderReranker(BaseReranker):
                 torch.backends.cudnn.allow_tf32 = True
 
             self._model = CrossEncoder(
-                self.model_name,
+                model_location(self.model_name),
                 device=device,
-                trust_remote_code=True,
+                trust_remote_code=config.ALLOW_REMOTE_MODEL_CODE,
                 model_kwargs=model_kwargs,
             )
             self._model.max_length = self.max_length
