@@ -69,9 +69,13 @@ def test_demo_rate_limit(settings):
     app = create_app(limited)
     with TestClient(app) as client:
         assert client.post("/api/v1/demo/chat", json={"message": "Xin chào"}).status_code == 200
-        response = client.post("/api/v1/demo/chat", json={"message": "Xin chào"})
+        response = client.post(
+            "/api/v1/demo/chat", json={"message": "Xin chào"},
+            headers={"Origin": "http://localhost:5173"},
+        )
         assert response.status_code == 429
         assert response.headers["Retry-After"].isdigit()
+        assert "retry-after" in response.headers["access-control-expose-headers"].lower()
         assert "quá nhiều" in response.json()["detail"]
 
 
@@ -152,3 +156,45 @@ def test_demo_readiness_follows_corpus_loading(settings):
         assert body["database"] is True
         assert body["demo_rag"] is True
         assert body["rag"] is False
+
+
+def test_anonymous_daily_llm_cap_returns_sources_without_second_call(settings, monkeypatch):
+    from backend.services import llm
+    from backend.services.pipelines import mvp_rag_pipeline
+
+    calls = []
+    def transport(_):
+        calls.append(1)
+        return "Bồi thường về đất ở [E1]."
+
+    monkeypatch.setattr(mvp_rag_pipeline, "GeminiProvider",
+                        lambda config: llm.GeminiProvider(config, transport))
+    limited = settings.model_copy(update={"ENABLE_LIVE_LLM": True,
+        "GEMINI_API_KEY": "mock-only", "MAX_LLM_CALLS_PER_DAY": 1})
+    with TestClient(create_app(limited)) as client:
+        payload = {"message": "Điều 11 Nghị định 88/2024/NĐ-CP quy định gì?"}
+        assert client.post("/api/v1/demo/chat", json=payload).json()["status"] == "answered"
+        result = client.post("/api/v1/demo/chat", json=payload).json()
+        assert result["status"] == "llm_unavailable"
+        assert result["sources"]
+        assert result["llm_used"] is False
+    assert len(calls) == 1
+
+
+def test_demo_history_is_request_local(settings):
+    prompts = []
+    class RecordingProvider:
+        def invoke(self, prompt):
+            prompts.append(str(prompt))
+            return "Bồi thường về đất ở [E1]."
+
+    pipeline = MvpRagPipeline(provider=RecordingProvider(), index=MvpCorpusIndex.load())
+    with TestClient(create_app(settings, mvp_pipeline=pipeline)) as client:
+        question = "Điều 11 Nghị định 88/2024/NĐ-CP quy định gì?"
+        first = client.post("/api/v1/demo/chat", json={"message": question,
+            "history": [{"role": "user", "content": "PRIVATE_M4_CANARY"}]})
+        second = client.post("/api/v1/demo/chat", json={"message": question})
+        assert first.status_code == second.status_code == 200
+        assert "PRIVATE_M4_CANARY" in prompts[0]
+        assert "PRIVATE_M4_CANARY" not in prompts[1]
+        assert "set-cookie" not in first.headers

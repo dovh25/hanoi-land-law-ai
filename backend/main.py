@@ -62,6 +62,7 @@ def create_app(
         CORSMiddleware, allow_origins=settings.CORS_ORIGINS,
         allow_credentials=False, allow_methods=["GET", "POST", "PATCH", "DELETE"],
         allow_headers=["Authorization", "Content-Type"],
+        expose_headers=["Retry-After"],
     )
 
     @app.exception_handler(LLMUnavailable)

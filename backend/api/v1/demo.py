@@ -8,6 +8,7 @@ from fastapi import APIRouter, HTTPException, Request, status
 from langchain_core.messages import AIMessage, HumanMessage
 
 from backend.models.demo import DemoChatRequest, DemoChatResponse, DemoRateLimit
+from backend.core.config import settings_context
 from backend.services.pipelines.mvp_rag_pipeline import MvpRagPipeline
 from backend.services.rate_limit import DemoRateLimiter
 
@@ -87,10 +88,11 @@ def demo_chat(payload: DemoChatRequest, request: Request) -> DemoChatResponse:
         )
 
     try:
-        result = pipeline.respond(
-            payload.message.strip(),
-            history=_history(payload, settings),
-        )
+        with settings_context(settings):
+            result = pipeline.respond(
+                payload.message.strip(),
+                history=_history(payload, settings),
+            )
     except Exception:
         # Never log user questions or provider details.
         logger.exception("MVP demo request failed")

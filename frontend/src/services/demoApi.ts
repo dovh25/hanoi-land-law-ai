@@ -3,6 +3,7 @@
  */
 import { API_BASE_URL } from './api';
 import type { DemoChatResponse, DemoInfo } from '../types/demo';
+import { parseRetryAfter } from '../utils/retryAfter';
 
 export class DemoApiError extends Error {
   status: number;
@@ -28,8 +29,7 @@ async function parseError(response: Response): Promise<DemoApiError> {
   } catch {
     // Keep the generic Vietnamese message.
   }
-  const retryAfter = Number(response.headers.get('Retry-After'));
-  return new DemoApiError(response.status, detail, Number.isFinite(retryAfter) ? retryAfter : null);
+  return new DemoApiError(response.status, detail, parseRetryAfter(response.headers.get('Retry-After')));
 }
 
 export async function fetchDemoInfo(signal?: AbortSignal): Promise<DemoInfo> {
