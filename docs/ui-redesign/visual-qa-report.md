@@ -63,4 +63,15 @@ Full temporary capture set: `/tmp/opencode/redesign-*.png`; baseline: `/tmp/open
 - The implementation adds native focus handling, service-info icon, composer character count and actual stop/send control; Figma state diagrams remain noninteractive editable specimens.
 - Earlier document reading-progress/back-to-top decoration is omitted in favor of native scrolling and TOC links; search, pagination, source access and print export remain available.
 
-No critical layout defect remains in the tested Chromium configurations. Legal accuracy/validity and Hanoi corpus QA are **not** established by these UI tests. No deployment was performed.
+No critical layout defect remains in the tested Chromium configurations. Legal accuracy/validity and Hanoi corpus QA are **not** established by these UI tests.
+
+## Production verification
+
+Released with user approval on 2026-10-27. Application commit `5917de2`; Cloudflare Pages production deployment `d379ae4c-8920-4541-b423-227d4170fc13`.
+
+- Public UI: `https://hanoi-land-law-ai.pages.dev`.
+- Backend health/readiness returned 200; CORS allows the exact frontend origin; public library contains two documents; live Gemini is disabled.
+- Playwright production smoke: **21 checks passed**, **0 browser errors**. One real anonymous chat request returned HTTP 200, retrieval citations and `llm_used=false` (request ID `34e55c55d4e1433d829f4801aeed696d`).
+- Verified chat/composer geometry at 390×844, 768×1024, 1440×900 and 1920×1080; mobile drawer/theme, exact article reader navigation, route refresh and document-reference search.
+- Production screenshots opened for visual review: `/tmp/opencode/deployed-desktop-empty.png`, `/tmp/opencode/deployed-mobile-chat.png`, `/tmp/opencode/deployed-mobile-reader-dark.png`; additional library capture `/tmp/opencode/deployed-desktop-library-dark.png`.
+- No Gemini calls, resource creation or plan upgrades were performed. Backend deployment was completed by the user before frontend publication.
