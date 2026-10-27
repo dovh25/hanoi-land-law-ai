@@ -1,46 +1,29 @@
-# Law Crawler
+# Controlled legal-source acquisition
 
-Crawler for vbpl.vn that downloads Vietnamese legal documents as JSON files grouped by document type.
+This package supports source discovery, approval-bound acquisition, manual inbox
+handling, quality inventories and provenance reporting. It is **not needed** to
+run the bundled Hanoi Land Law AI demo; see the [runtime corpus](../docs/corpus.md).
 
-## How it works
-- Entry point loops over configured document type IDs and kicks off per-type crawling in [law-crawler/main.py](law-crawler/main.py#L105-L113).
-- Each list page is paginated; page counting and URL building live in [law-crawler/main.py](law-crawler/main.py#L53-L104).
-- Individual document pages are fetched, validity-checked, and written to disk as JSON in [law-crawler/main.py](law-crawler/main.py#L19-L52).
-- Base URLs, ID ranges, and output folder are set in [law-crawler/config.py](law-crawler/config.py#L1-L4).
+| Module | Purpose |
+|---|---|
+| [pilot.py](pilot.py), [pilot_cli.py](pilot_cli.py) | Bounded acquisition and operator CLI |
+| [catalog.py](catalog.py) | Official metadata discovery |
+| [manual_inbox.py](manual_inbox.py) | Artifact binding and manual-source handling |
+| [quality.py](quality.py), [reporting.py](reporting.py) | Extraction quality and provenance inventory |
+| [main.py](main.py), [config.py](config.py) | Retained bulk JSON crawler and its configuration |
 
-## Prerequisites
-- Python 3.8+
-- Dependencies: requests, beautifulsoup4
+Use Python 3.12 and the root frozen environment, not a separate requirements
+installation. See [source policy](../docs/corpus-sources.md),
+[acquisition records](../docs/corpus-acquisition.md) and the
+[review runbook](../docs/corpus-review-runbook.md) before operating on real sources.
+Root `.env` is the only settings file. A safe CLI inspection is:
 
-Install deps:
 ```bash
-pip install requests beautifulsoup4
+uv run --frozen python -m law_crawler.pilot_cli --help
 ```
 
-## Running the crawler
-From the law-crawler folder:
-```bash
-python main.py
-```
-The script will iterate through the IDs in `ID_LISTS`, crawl each document type, and save results under `vbpl_documents/<document_type>/`.
-
-## Configuration
-- BASE_URL / START_URL: Target site and base list page.
-- ID_LISTS: Document type IDs to crawl; adjust to expand or narrow coverage.
-- DOWNLOAD_FOLDER: Root folder for saved JSON files.
-
-Edit these in [law-crawler/config.py](law-crawler/config.py#L1-L4).
-
-## Output
-- Files: `vbpl_documents/<document_type>/<document_id>.json`
-- JSON shape:
-```json
-{
-	"Id": "170620",
-	"Content": "Full document text..."
-}
-```
-
-## Notes
-- The crawler skips documents that are expired or partially expired, and it will not re-download files already on disk.
-- A short delay between requests is included to reduce load on the source site; increase the delay if you crawl larger ID ranges.
+Help is not permission to crawl. Network access, source-policy approval, artifact
+licensing and legal review are separate prerequisites. Preserve raw artifacts and
+provenance; do not infer current validity from the retained crawler's expiry filter.
+The legacy crawler writes `Id`/`Content` JSON under its configured document folder;
+those local files are ignored and are not the bundled demo corpus.

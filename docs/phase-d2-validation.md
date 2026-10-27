@@ -1,5 +1,9 @@
 # Phase D.2 validation — parser recovery, review packets, R0 research draft
 
+> **Phase D.2 validation snapshot.** Stage-specific counts and draft publication
+> status are distinct from the [isolated demo corpus](corpus.md). Technical
+> extraction success does not certify legal validity.
+
 ## Outcome
 
 Phase D.2 recovered technically usable extractions for the two R0 instruments

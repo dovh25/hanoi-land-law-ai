@@ -1,5 +1,9 @@
 # Phase D — controlled corpus acquisition
 
+> **Phase D evidence snapshot.** Acquisition counts describe this phase only.
+> See the [current bundled corpus](corpus.md); later D.1/D.2 acquisition and review
+> evidence remains separate from runtime legal-validity claims.
+
 ## Outcome
 
 > **Phase D.1 update:** 8 instruments / 16 official PDFs were subsequently acquired from

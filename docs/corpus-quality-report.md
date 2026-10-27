@@ -1,5 +1,9 @@
 # Phase D — corpus quality report
 
+> **Phase D quality snapshot.** Results describe this phase's inputs and gates.
+> See [current runtime corpus](corpus.md) and [evaluation](evaluation.md) for the
+> demo; technical extraction checks do not establish legal validity.
+
 ## Bottom line
 
 **No real corpus-quality percentage can be reported.** Phase D acquired zero full-text

@@ -1,134 +1,135 @@
-# Phase A: local environment and offline development
+# Environment setup and offline development
 
 ## One environment file
 
-Use **repository-root `.env` only**. `.env.example` is tracked and contains no credentials;
-`.env` is ignored. Do not create `backend/.env` or `frontend/.env`.
-
-From the repository root:
+Use **repository-root `.env` only**. The tracked `.env.example` is the settings
+template and contains no credentials. Never create `backend/.env` or
+`frontend/.env`, and never expose backend secrets through `VITE_*` values.
 
 ```bash
 python3 scripts/setup_env.py
 ```
 
 This creates `.env` with mode `0600` and a cryptographically random JWT secret.
-If `.env` already exists, it is left byte-for-byte unchanged: no secret rotation,
-automatic merging, or overwriting. Existing incomplete files must be edited manually
-using `.env.example` as a reference. Do not copy its JWT placeholder into runtime use.
-
-Edit the root `.env` in your editor. `GEMINI_API_KEY` is intentionally empty;
-`ENABLE_LIVE_LLM=false`. No Gemini key is needed for offline startup or tests.
-Never paste keys into terminal commands, screenshots, commits, or `VITE_*` variables.
+An existing file is left byte-for-byte unchanged: no rotation, merge or overwrite.
+Reconcile incomplete existing files manually using `.env.example`. Its JWT
+placeholder is deliberately rejected at runtime. The template leaves Gemini off
+and its key empty; no provider key is needed for retrieval-only operation.
 
 ## Reproducible installation
 
-Supported Python: **3.12** (the existing local 3.12 interpreter is sufficient).
-`pyproject.toml` is the sole dependency declaration; `uv.lock` pins the resolution.
-The former requirements files are documentation pointers, not independent installers.
-Do not use the old README's `pip install -e .` from `backend/`.
+Use Python **3.12**, uv and Node **22.21+ or 24**. `pyproject.toml` is the Python
+dependency declaration; `uv.lock` pins the resolution. Requirements files are
+documentation pointers, not independent installers. From repository root:
 
 ```bash
 uv sync --frozen
+uv lock --check
 uv pip check
 npm --prefix frontend ci --ignore-scripts --no-audit --no-fund
 ```
 
-Use Node 22.21+ or Node 24 for the built-in TypeScript-stripping security tests.
-The default Python environment contains API/auth/database, LangGraph, provider SDK,
-and test dependencies, but **not torch/transformers/embedding weights**.
-`ml`, `crawl`, and `eval` are opt-in extras, not required for Phase A.
-The optional torch resolution uses the official PyTorch CPU index; other packages
-use PyPI. Installing an extra is not permission to run crawling or live evaluations.
-Changing dependency declarations requires `uv lock`; ordinary setup uses `--frozen`.
+The base environment includes API/database, parsing and test dependencies, but
+not torch/transformers/model weights. Extras `tokenizer`, `ml`, `crawl` and `eval`
+are optional. Installing them does not authorize crawling, weights or live judges.
+Optional torch uses the official CPU wheel index; remote model code remains off.
+Ordinary installation may need package-network access; validation can use
+`UV_OFFLINE=true` with an already provisioned environment. No new package install
+or external documentation request is required to run the local checks.
 
 ## Offline startup
 
-From the repository root, in separate terminals:
+Run these commands from root in separate terminals:
 
 ```bash
 uv run --frozen uvicorn backend.main:app --host 127.0.0.1 --port 8000
+```
+
+```bash
 npm --prefix frontend run dev
 ```
 
-The installed `backend` package also imports from other working directories;
-do not add `backend/` to `PYTHONPATH` or launch the old `main:app` target.
-Startup validates settings and applies local Alembic migrations only. It does not
-initialize RAG, contact Qdrant, instantiate Gemini clients, or download model weights.
-Authentication, sessions, document lookup, and liveness work offline; legal chat
-returns **503** when live LLM use is disabled. No synthetic legal answers are served.
+Open `http://127.0.0.1:5173`; API documentation is at `http://127.0.0.1:8000/docs`.
+Use installed `backend.*` imports, not `PYTHONPATH=backend` or old `main:app`
+targets. Application startup validates settings, applies local Alembic migrations
+and loads the bundled demo BM25 index. It does not initialize the separate neural
+RAG pipeline, instantiate a live Gemini client or download weights.
 
-- `/healthz`: process liveness; never probes models, Gemini, or Qdrant.
-- `/readyz`: database + initialized RAG readiness; **503 is expected in offline mode**.
-  It is a local state report, not a live provider/quota probe.
-- SQLite defaults to `data/law.db`, resolved relative to repository root, not cwd.
-  Back up existing data before schema changes; Phase B introduces guarded Alembic
-  adoption of Phase A tables. See `docs/legal-data-model.md`. No existing database is reset.
+- `/healthz`: process liveness.
+- `/demo/readyz`: database and demo index readiness; expected 200 after startup
+  with the bundled artifact and `MVP_ENABLED=true`.
+- `/readyz`: separate authenticated RAG readiness; expected 503 until initialized.
+- Public `/api/v1/demo/chat`: greetings, retrieval excerpts and scope refusals
+  work offline. With generation disabled, source-grounded queries return
+  `llm_disabled`, not a synthesized legal answer.
+- Authenticated `/api/v1/chat`: separate path; returns 503 when live use is off.
+
+SQLite defaults to `data/law.db` relative to repository root. Back up existing
+databases before schema changes; follow [migration guidance](legal-data-model.md#migrations-and-existing-application-data).
+No database is reset by this guide. Lookup includes bundled excerpts and can
+also read local JSON under `DOCS_ROOT`; it is independent of Qdrant.
 
 ## How settings reach each process
 
-- FastAPI and legacy ingestion settings use Pydantic Settings with an absolute root
-  `.env` path. OS environment overrides `.env`; explicit injected settings override both.
-- Relative `DOCS_ROOT`, `LLM_USAGE_DB`, and the default relative SQLite URL resolve
-  against repository root. Prefer absolute paths for custom database URLs.
-- Benchmark/crawler commands explicitly read root `.env`, never a cwd-relative file.
-  Invoke scripts as modules from root, e.g. `uv run --frozen python -m preprocess.ingest_data --help`.
-  This is a help command only, not authorization to index.
-- Vite uses root `envDir` and exposes only `VITE_*`; keep all backend secrets unprefixed.
-- Compose explicitly injects root `.env` into **backend only** via `env_file`.
-  It overrides container database/document/ledger paths and `QDRANT_HOST=qdrant`.
-  Frontend receives only `VITE_API_BASE_URL`; `.env` is excluded from build contexts.
-- A root `.env` used for Compose substitution does not implicitly populate containers.
-
-Compose is CPU-first, has no GPU reservation, and binds host ports to loopback only.
-The optional `retrieval` profile starts Qdrant without exposing a host port. Named
-volumes persist new container data; old `qdrant_data/` is untouched and not migrated.
-The default backend image intentionally has no ML extra; it is an offline foundation
-image, not yet a complete legal QA deployment. Docker build/start was not required
-to run the offline test suite.
+- Pydantic Settings reads an absolute root `.env` path. OS environment overrides
+  that file; injected application settings propagate through `settings_context`.
+- Relative `DOCS_ROOT`, `LLM_USAGE_DB`, `MVP_DEMO_CORPUS_PATH` and the default
+  relative SQLite URL resolve against repository root. Prefer absolute paths for
+  custom database URLs.
+- Vite's `envDir` points to root and exposes only `VITE_*`. Backend and frontend
+  should agree on API origin/port; changing production frontend settings requires
+  rebuilding assets.
+- Compose injects `.env` into **backend only**, overrides container data/document
+  paths and Qdrant host, and sends only the public API origin to frontend.
+  Build contexts exclude `.env`. Loopback host ports and optional internal-only
+  Qdrant are documented in [deployment](deployment.md).
 
 ## Configuration and consent controls
 
-| Setting | Default / meaning |
+Values below are from **`.env.example`**, not necessarily Python fallbacks or
+existing local/remote settings. In particular `Config.MODEL` falls back to
+`gemini-2.5-flash-lite`, `MAX_LLM_CALLS_PER_TURN` to 5 and daily attempts to 20;
+the template explicitly overrides these. Do not silently rotate existing values.
+
+| Setting | Template value / purpose |
 |---|---|
-| `APP_MODE` | `development`; `production` and `test` also supported |
-| `JWT_SECRET_KEY` | Generated locally; missing, known-placeholder, short, or low-diversity values rejected |
+| `APP_MODE`, `LOG_LEVEL` | `development`, `INFO` |
+| `JWT_SECRET_KEY` | Generated locally; missing/placeholder/short/low-diversity values rejected |
 | `JWT_ACCESS_TOKEN_EXPIRE_MINUTES` | 60 |
-| `CORS_ORIGINS` | JSON array of exact localhost/loopback frontend origins; no wildcard or credentialed CORS |
-| `LOG_LEVEL` | `INFO`; Authorization/API-key/password logs and URLs redacted |
-| `GEMINI_API_KEY` | Empty; manual input only when separately enabling approved live use |
-| `MODEL` | `gemini-2.5-flash-lite`; availability/account entitlement not verified |
-| `ENABLE_LIVE_LLM` | `false`; checked before lazy RAG startup and each live provider invocation |
-| `MAX_LLM_CALLS_PER_TURN` | 1; entire graph, not just final answer |
+| `CORS_ORIGINS` | JSON array of localhost/loopback frontend origins; no wildcard |
+| `ENABLE_LIVE_LLM`, `GEMINI_API_KEY` | `false`, empty; explicit approval and key required for live use |
+| `MODEL` | `gemini-3.5-flash-lite`; verify exact account access before live use |
+| `MAX_LLM_CALLS_PER_TURN`, `MAX_LLM_CALLS_PER_DAY` | 1 / 8 attempts; MVP forces a one-attempt turn |
 | `MAX_LLM_OUTPUT_TOKENS` | 1024 per attempt |
-| `MAX_LLM_CALLS_PER_DAY` | 8 application attempts per UTC day; persistent SQLite ledger; M2 live-test budget |
-| `LLM_REQUEST_TIMEOUT_SECONDS` | 20 per attempt, not a whole-turn deadline |
-| `LLM_MAX_RETRIES` | 0; optional bounded retries consume the same call budgets |
-| `LLM_USAGE_DB` | `data/llm-usage.sqlite3`; failures count, ledger failure refuses requests |
-| `EMBEDDING_DEVICE` | `cpu`; `auto` falls back to CPU; explicit unavailable `cuda` fails clearly |
-| `ALLOW_MODEL_DOWNLOADS` | `false`; loaders resolve local paths/cached snapshots only |
-| `ALLOW_REMOTE_MODEL_CODE` | `false`; no model-specific need has been approved or validated |
-| `QDRANT_HOST`, `QDRANT_PORT` | `localhost`, 6333 for future host-side retrieval |
-| `COLLECTION_NAME`, `VIETNAMESE_COLLECTION_NAME` | `laws`; legacy indexes can be incompatible—verify schema first |
-| `RETRIEVAL_MODE`, `RETRIEVAL_K`, `TOP_K` | `dense`, 10, 3; `TOP_K <= RETRIEVAL_K` required |
-| `MAX_HISTORY_MESSAGES`, `MAX_HISTORY_CHARACTERS` | 20 / 20000 for model context; no process-local history cache |
-| `VITE_API_BASE_URL` | Public browser URL `http://127.0.0.1:8000` |
+| `LLM_REQUEST_TIMEOUT_SECONDS`, `LLM_MAX_RETRIES` | 20 / 0; timeout is per attempt, not whole-turn |
+| `LLM_USAGE_DB` | `data/llm-usage.sqlite3`; failed attempts count; accounting failure refuses calls |
+| `MVP_ENABLED`, `MVP_DEMO_CORPUS_PATH` | `true`, `backend/resources/mvp_demo_corpus.jsonl` |
+| `MVP_TOP_K`, `MVP_MIN_SCORE`, `MVP_MIN_COVERAGE` | 6 / 5.0 / 0.5 |
+| `MVP_RATE_LIMIT_PER_MINUTE`, `MVP_RATE_LIMIT_PER_DAY` | 6 / 60 per observed client IP; process-local |
+| `MVP_MAX_MESSAGE_CHARS` | 1000 |
+| `MVP_MAX_HISTORY_MESSAGES`, `MVP_MAX_HISTORY_CHARS` | 6 / 4000; generation has an additional smaller prompt bound |
+| `DATABASE_URL` | `sqlite:///./data/law.db` |
+| `MAX_HISTORY_MESSAGES`, `MAX_HISTORY_CHARACTERS` | 20 / 20000 for the separate authenticated path |
+| `VITE_API_BASE_URL` | `http://127.0.0.1:8000`; public browser/build setting, never a credential |
+| `DOCS_ROOT` | `law_crawler/vbpl_documents`; optional local JSON lookup |
+| `EMBEDDING_DEVICE`, `ALLOW_MODEL_DOWNLOADS`, `ALLOW_REMOTE_MODEL_CODE` | `cpu`, `false`, `false`; optional neural workflows |
+| `QDRANT_HOST`, `QDRANT_PORT` | `localhost`, 6333; optional neural retrieval only |
+| `COLLECTION_NAME`, `VIETNAMESE_COLLECTION_NAME` | `laws`; verify historical schemas before any indexing |
+| `VIETNAMESE_EMBEDDING_MODEL` | `AITeamVN/Vietnamese_Embedding_v2`; optional workflow, not MVP search |
+| `RETRIEVAL_MODE`, `RETRIEVAL_K`, `TOP_K` | `dense`, 10, 3 for separate neural paths; `TOP_K <= RETRIEVAL_K` |
 
-These are conservative application safeguards, **not Google's free-tier quotas or
-a guarantee of zero billing**. Do not enable live use without separate authorization.
-Provider/account quotas can be lower. The SDK's internal retries are disabled;
-application retries reserve another attempt before transmission. Rate/quota failures
-fail closed with a generic 503 and no paid fallback. A default five-call turn can
-exhaust its budget if the inherited graph rewrites; this is intentional.
-All workers must share the same ledger file; separate machines/volumes do not share
-a global quota. Preserve the ledger across restarts; it must not be casually reset.
-LLM tracing is disabled at the request boundary. Legacy live DeepEval judges are
-blocked until their internal calls can be budgeted; installing `eval` does not enable them.
+These are application safeguards, **not provider quotas or a zero-billing
+guarantee**. SDK retries are disabled; application retries reserve extra attempts.
+The shared SQLite ledger must persist across restarts and be shared by workers;
+separate machines/filesystems do not automatically share budgets. Ephemeral free
+hosting loses the ledger; process-local rate counters reset too. Live DeepEval
+judges remain blocked. Do not enable external tracing or bypass the shared LLM
+provider. Never paste credentials into commands, screenshots or documentation.
 
-Persisted conversations have no automatic age-based deletion in Phase A. Owners
-can delete sessions; bounded model context is not a data-retention purge. Agree a
-retention policy before shared use. Existing JWT default/CORS/header-log defects
-are fixed, but public hosting, rate limiting, cookie-based auth, and TLS are not
-implemented deployment features.
+Demo chats are not saved server-side and reload clears browser conversations;
+enabled generation still sends question/context/history to Google. Retained
+authenticated chats persist until owner deletion; context limits are not retention
+purges. See [architecture/privacy](architecture.md) before shared use.
 
 ## Offline checks
 
@@ -137,24 +138,16 @@ uv lock --check
 uv pip check
 uv run --frozen pytest -q
 uv run --frozen pytest tests/test_main.py::test_healthcheck -q
-uv run --frozen python -m compileall -q backend preprocess law_crawler benchmarks scripts tests
+uv run --frozen python -m compileall -q backend batch preprocess law_crawler benchmarks scripts tests evaluation
+npm --prefix frontend run lint
 npm --prefix frontend run typecheck
 npm --prefix frontend run build
 npm --prefix frontend test
-npm --prefix frontend run lint
 git diff --check
 ```
 
-pytest blocks network sockets, disables model download/tracing, uses explicit test
-secrets and temporary SQLite databases, and injects deterministic providers. Destructive
-indexing tests use mocks only. Legacy indexing now refuses existing collections unless
-both `--recreate` and `--confirm-collection DELETE:<exact-name>` are supplied. Never
-exercise that path against real data during Phase A.
-
-## Remaining boundaries
-
-No corpus, index, model weights, or Gemini account configuration is supplied by Phase A.
-Real ML inference compatibility and Docker image builds need separate validation; do not
-claim successful legal QA merely because liveness/tests pass. Phase B now provides
-legal models/explicit validity metadata and migrations; authoritative acquisition,
-applicability reasoning and verified citations remain later work.
+pytest blocks network sockets, disables downloads/tracing, injects deterministic
+providers and uses temporary databases. Mocked indexing tests are not permission
+to recreate a real collection; existing indexes require explicit destructive
+confirmation. No ML inference, container build, public availability or generated
+answer correctness is established by successful offline checks.

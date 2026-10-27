@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "corpus_path": "backend/resources/mvp_demo_corpus.jsonl",
+  "corpus_sha256": "ce0df852742ea3144ae5c04bdef27580d88d53752ad6039a4cdd0b091a73508e",
+  "dataset_path": "evaluation/datasets/cases.jsonl",
+  "top_k": 6,
+  "min_score": 5.0,
+  "min_coverage": 0.5,
+  "min_heading_coverage": 0.3,
+  "warmup_queries": 10,
+  "timing_repetitions": 5,
+  "bootstrap_resamples": 2000,
+  "random_seed": 20261027,
+  "external_provider_requests_allowed": 0
+}

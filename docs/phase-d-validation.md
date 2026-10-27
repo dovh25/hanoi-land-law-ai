@@ -1,5 +1,8 @@
 # Phase D validation — authoritative corpus acquisition preparation
 
+> **Phase D validation snapshot.** Acquisition/test counts are stage-specific.
+> See [current bundled corpus](corpus.md) and later D.1/D.2 records.
+
 > **Historical Phase D record.** Phase D.1 later resolved the acquisition blocker by using
 > an alternate official representation (the gazette file CDN `congbaocdn.chinhphu.vn`) and
 > acquired 8 instruments / 16 originals. See [phase-d1-validation.md](phase-d1-validation.md).

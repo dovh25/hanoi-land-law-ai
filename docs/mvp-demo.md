@@ -1,5 +1,14 @@
 # MVP demo — corpus, retrieval, Gemini, and free-cloud runbook
 
+> **Implementation-stage snapshot, retained as evidence.** Status, budgets and
+> deployment statements below describe that stage, not the current checkout.
+> Use [current setup](environment-setup.md), [deployment](deployment.md),
+> [pipeline semantics](rag-pipeline.md) and [evaluation](evaluation.md) instead.
+> In particular, citation checks are partial rather than per-claim proof; unknown
+> markers alone do not necessarily reject an answer. Later recorded releases
+> deployed the UI and verified generation disabled. Health routes `/demo/readyz`
+> and `/readyz` are root routes, not under `/api/v1`.
+
 ## Status
 
 This document describes the **public MVP demo** that is implemented and tested offline but

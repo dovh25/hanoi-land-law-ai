@@ -1,0 +1,8 @@
+{
+  "note": "Three actual local runs during evaluator construction. Later runs added provenance/size and human-review reporting; retrieval and production code unchanged. Host load and caches were not controlled. Final (third) raw samples are in offline-results.json. Earlier raw samples were overwritten by the reproducible reporting command; these snapshots preserve observed summaries rather than selecting only the fastest run.",
+  "runs": [
+    {"run": 1, "samples": 220, "p50_ms": 133.82469999999103, "p95_ms": 253.68469900001855, "sequential_queries_per_second": 6.991649851099637},
+    {"run": 2, "samples": 220, "p50_ms": 63.1147270000838, "p95_ms": 90.40933500000392, "sequential_queries_per_second": 15.211102677819875},
+    {"run": 3, "samples": 220, "p50_ms": 78.27485000007073, "p95_ms": 133.55282600014107, "sequential_queries_per_second": 11.75185470699679}
+  ]
+}

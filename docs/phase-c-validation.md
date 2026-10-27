@@ -1,5 +1,8 @@
 # Phase C validation — offline ingestion and Colab Web
 
+> **Phase C validation snapshot.** Results apply to this phase's inputs; use
+> [current setup](environment-setup.md) and [corpus scope](corpus.md) for the demo.
+
 ## Acceptance
 
 - **Offline Phase C: PASS.** Synthetic local-file acquisition, extraction, review,

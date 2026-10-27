@@ -1,0 +1,112 @@
+{
+  "tests": 282,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "seconds": 67.981,
+  "by_module": {
+    "tests.test_batch": {
+      "tests": 31,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_colab_web": {
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_config": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_demo_api": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_evaluation": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_legal_domain": {
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_llm": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_logging": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_main": {
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_mvp_corpus": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_mvp_pipeline": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_notebooks": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_offline_ingestion": {
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_phase_d2_review": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_pilot": {
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_public_limits": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests.test_safety": {
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "scope": "Offline network-blocked pytest; local API contracts and mocks, not public uptime or live provider reliability."
+}

@@ -1,5 +1,8 @@
 # Phase E readiness — real neural embedding preparation
 
+> **Optional neural-workflow planning snapshot.** This is not the public MVP
+> execution path or a prerequisite for [current setup](environment-setup.md).
+
 ## Status
 
 Phase D.2 recovered technically usable R0 extractions for `43/2024/QH15` and

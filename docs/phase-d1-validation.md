@@ -1,5 +1,9 @@
 # Phase D.1 validation — recovering authoritative corpus acquisition
 
+> **Phase D.1 validation snapshot.** This preserves the acquisition/extraction
+> results of that stage. See [current runtime corpus](corpus.md) for included
+> artifacts and [D.2](phase-d2-validation.md) for subsequent extraction evidence.
+
 > **Phase D.2 audit note:** the parsed-stage counts below are historical. D.2 found
 > **16 preserved PDFs across 8 identifiers**, several of which are multipart
 > continuations, and applied append-only parser v3 re-stages. See

@@ -1,4 +1,0 @@
-/* Minimal overrides; Tailwind handles most styling */
-#root {
-  min-height: 100vh;
-}

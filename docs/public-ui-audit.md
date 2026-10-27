@@ -1,5 +1,9 @@
 # Public demo UI and integration validation
 
+> **Preserved pre-redesign audit.** Selectors and deployment observations belong
+> to this run. See [current architecture](architecture.md) and
+> [UI release evidence](ui-redesign/implementation-summary.md).
+
 Validated locally on 2026-10-27; base commit `a4f60f1`, with uncommitted changes.
 Verdict: **UI READY — LOCAL ONLY** (retrieval-only demo, not legal-production certification).
 

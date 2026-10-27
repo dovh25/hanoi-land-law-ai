@@ -1,0 +1,22 @@
+[
+  {"id":"valid_id", "source_indices":[50], "text":"Theo Điều 16, chi phí tự sửa chữa được bồi thường theo quy định trong trích đoạn [E1].", "kind":"id", "expected":"accept", "claim_integrity":true},
+  {"id":"exact_quote", "source_indices":[50], "text":"Nguồn ghi: “mức bồi thường do Ủy ban nhân dân cấp tỉnh quy định.” [E1]", "kind":"quote", "expected":"accept", "claim_integrity":true, "strict_quote_match":true},
+  {"id":"normalized_not_exact_quote", "source_indices":[50], "text":"Nguồn ghi: “MỨC BỒI THƯỜNG DO ỦY BAN NHÂN DÂN CẤP TỈNH QUY ĐỊNH.” [E1]", "kind":"quote", "expected":"reject", "claim_integrity":false, "strict_quote_match":false},
+  {"id":"invalid_id", "source_indices":[50], "text":"Chi phí sửa nhà được hoàn lại [E99].", "kind":"id", "expected":"reject", "claim_integrity":false},
+  {"id":"mixed_invalid_id", "source_indices":[50], "text":"Chi phí sửa nhà [E1]. Mỗi hộ được một tỷ đồng [E99].", "kind":"id", "expected":"reject", "claim_integrity":false},
+  {"id":"fabricated_document", "source_indices":[50], "text":"Theo Nghị định 999/2099/NĐ-CP, chi phí sửa chữa được bồi thường [E1].", "kind":"document_version", "expected":"reject", "claim_integrity":false},
+  {"id":"wrong_version", "source_indices":[50], "text":"Theo Nghị định 88/2025/NĐ-CP, chi phí sửa chữa được bồi thường [E1].", "kind":"document_version", "expected":"reject", "claim_integrity":false},
+  {"id":"correct_document", "source_indices":[50], "text":"Theo Nghị định 88/2024/NĐ-CP, chi phí sửa chữa được bồi thường [E1].", "kind":"document_version", "expected":"accept", "claim_integrity":true},
+  {"id":"fabricated_article", "source_indices":[50], "text":"Điều 999 quy định bồi thường chi phí sửa nhà [E1].", "kind":"article_clause", "expected":"reject", "claim_integrity":false},
+  {"id":"fabricated_clause", "source_indices":[50], "text":"Khoản 99 Điều 16 quy định bồi thường chi phí sửa nhà [E1].", "kind":"article_clause", "expected":"reject", "claim_integrity":false},
+  {"id":"fabricated_point", "source_indices":[50], "text":"Điểm z khoản 99 Điều 16 quy định bồi thường chi phí sửa nhà [E1].", "kind":"article_clause", "expected":"reject", "claim_integrity":false},
+  {"id":"unsupported_quote", "source_indices":[50], "text":"Nguồn ghi: “mọi hộ đều được nhận một tỷ đồng tiền mặt” [E1].", "kind":"quote", "expected":"reject", "claim_integrity":false, "strict_quote_match":false},
+  {"id":"short_fake_quote", "source_indices":[50], "text":"Nguồn ghi “một tỷ” [E1].", "kind":"quote", "expected":"reject", "claim_integrity":false, "strict_quote_match":false},
+  {"id":"unverified_date", "source_indices":[50], "text":"Quy định áp dụng từ 01/01/2099 [E1].", "kind":"date", "expected":"reject", "claim_integrity":false},
+  {"id":"current_phrase", "source_indices":[50], "text":"Đây là quy định hiện hành về bồi thường [E1].", "kind":"current_law", "expected":"disarm", "claim_integrity":null},
+  {"id":"current_paraphrase", "source_indices":[50], "text":"Quy định này chắc chắn chưa bị sửa đổi và có giá trị pháp lý hôm nay [E1].", "kind":"current_law", "expected":"disarm", "claim_integrity":false},
+  {"id":"unsupported_claim_resolved_id", "source_indices":[50], "text":"Mọi người thuê nhà đều được bồi thường toàn bộ diện tích nhà thuộc sở hữu nhà nước [E1].", "kind":"support", "expected":"reject", "claim_integrity":null},
+  {"id":"missing_citation", "source_indices":[50], "text":"Người thuê nhà được bồi thường chi phí tự sửa chữa.", "kind":"id", "expected":"reject", "claim_integrity":false},
+  {"id":"missing_evidence", "source_indices":[], "text":"Được bồi thường đầy đủ [E1].", "kind":"missing_evidence", "expected":"reject", "claim_integrity":false},
+  {"id":"wrong_cited_source_quote", "source_indices":[50,66], "text":"Nguồn ghi: “mức bồi thường do Ủy ban nhân dân cấp tỉnh quy định.” [E2]", "kind":"quote", "expected":"reject", "claim_integrity":false, "strict_quote_match":false}
+]

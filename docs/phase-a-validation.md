@@ -1,5 +1,9 @@
 # Phase A implementation and validation
 
+> **Phase A validation snapshot.** Test counts and runtime scope below are
+> phase-specific. Use [current setup](environment-setup.md) and
+> [architecture](architecture.md) for the bundled MVP.
+
 ## Delivered
 
 - Created local ignored `.env` (0600) and versionable `.env.example`; bootstrap never

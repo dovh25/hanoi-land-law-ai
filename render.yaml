@@ -2,11 +2,12 @@
 #
 # This file does not deploy anything by itself. It is only read after the repository
 # has a remote, the working tree has been committed/pushed with approval, and a Render
-# Blueprint is created for that repository. See docs/mvp-demo.md.
+# Blueprint is created for that repository. See docs/deployment.md.
 #
 # The demo is deliberately offline-capable: retrieval is lexical BM25 over a bundled
 # JSONL artifact, with no Qdrant, embeddings, model downloads, or database persistence.
-# Live Gemini stays disabled until M2 is explicitly approved.
+# Production Gemini activation was explicitly approved on 2026-10-27.
+# Keep its API key in Render's secret environment, never in this file.
 services:
   - type: web
     name: hanoi-land-law-ai-demo
@@ -57,10 +58,10 @@ services:
       - key: ALLOW_REMOTE_MODEL_CODE
         value: "false"
 
-      # Generation is off. Do not flip this until the M2 checks in docs/mvp-demo.md
-      # are approved; GEMINI_API_KEY is then added as a dashboard secret.
+      # Approved production activation; requires an existing valid GEMINI_API_KEY
+      # dashboard secret. Local .env.example remains retrieval-only by default.
       - key: ENABLE_LIVE_LLM
-        value: "false"
+        value: "true"
       - key: MODEL
         value: gemini-3.5-flash-lite
       # Application hard cap, not a claim about Google's Free Tier quota.

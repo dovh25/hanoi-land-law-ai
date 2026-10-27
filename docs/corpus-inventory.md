@@ -1,5 +1,8 @@
 # Phase D — corpus inventory
 
+> **Phase D inventory snapshot.** These are discovery-stage counts, not the
+> current runtime corpus. See [bundled corpus scope and statistics](corpus.md).
+
 ## Executive inventory
 
 | Measure | Count | Meaning |

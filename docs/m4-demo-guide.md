@@ -1,5 +1,11 @@
 # Public MVP demo guide
 
+> **M4 presentation snapshot.** The ON/model/daily-budget settings below record
+> that validation stage, not current service configuration. The later
+> [UI release](ui-redesign/implementation-summary.md#deployment-readiness) verified
+> Gemini disabled. Use [current deployment guidance](deployment.md) and inspect
+> metadata before presenting; no provider quota or current uptime is implied.
+
 Validated 2026-10-27. Frontend: https://hanoi-land-law-ai.pages.dev
 Backend: https://hanoi-land-law-ai-demo.onrender.com
 Readiness: `/demo/readyz` (not the legacy `/readyz`).

@@ -1,0 +1,2 @@
+# Preserve original evaluation CSV bytes: reports bind review worksheets by hash.
+evaluation/**/*.csv -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

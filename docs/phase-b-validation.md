@@ -1,5 +1,8 @@
 # Phase B validation — legal domain + interactive Colab preparation
 
+> **Phase B validation snapshot.** Counts and deferred work describe this phase,
+> not the present MVP. See [current architecture](architecture.md).
+
 ## Acceptance
 
 - **Phase B legal-domain foundation: PASS (offline scope).**

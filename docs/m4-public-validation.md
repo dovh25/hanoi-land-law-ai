@@ -1,5 +1,9 @@
 # M4 — public deployment validation
 
+> **Preserved validation evidence.** Counts, live settings and observations apply
+> to the recorded run only. See [current deployment](deployment.md) and the later
+> [UI release evidence](ui-redesign/implementation-summary.md#deployment-readiness).
+
 Date: 2026-10-27. Scope: supervised public MVP demonstration, not a comprehensive
 legal QA benchmark or an unattended production service. No paid resources, plan
 changes, new databases, corpus downloads or live Gemini calls were made.

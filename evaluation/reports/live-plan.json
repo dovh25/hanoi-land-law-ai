@@ -1,0 +1,220 @@
+{
+  "state": "PREPARED_NOT_APPROVED_NOT_EXECUTED",
+  "corpus_sha256": "ce0df852742ea3144ae5c04bdef27580d88d53752ad6039a4cdd0b091a73508e",
+  "expected_generation_requests": 3,
+  "maximum_provider_attempts_including_failures": 8,
+  "automatic_retries": 0,
+  "judge_requests": 0,
+  "model_id": null,
+  "required_preflight": [
+    "explicit user approval of exact budget",
+    "model available in owning project",
+    "Free Tier with billing disabled",
+    "actual shared RPM/TPM/RPD and remaining quota",
+    "single operator, no concurrent public usage consuming the budget",
+    "process-scoped live settings and durable experiment attempt counter"
+  ],
+  "responses": [
+    {
+      "case_id": "T01",
+      "user_query": "Điều 4 Nghị định 88/2024/NĐ-CP khoản 1 dùng thời điểm nào để xác định giá đất tính tiền sử dụng đất khi bồi thường bằng đất khác mục đích?",
+      "expected_generation_requests": 1,
+      "routing_reason": "sufficient",
+      "retrieved_context_ids": [
+        "b812503d03eae580effbfdbd4724967ef38c094d784b8c73bf59cfd2cf6d257a",
+        "4710a7bda579c1362162c3ce8bd9ca6cfe3ca7f4b812b3440aacdcc56a505d93"
+      ],
+      "exact_retrieved_evidence": [
+        {
+          "citation_id": "E1",
+          "chunk_id": "b812503d03eae580effbfdbd4724967ef38c094d784b8c73bf59cfd2cf6d257a",
+          "source_text": "Điều 4. Bồi thường bằng đất có mục đích sử dụng khác với loại đất thu hồi\nhoặc bằng nhà ở khi Nhà nước thu hồi đất quy định tại khoản 1 Điều 96,\nkhoản 1 Điều 98, khoản 1 Điều 99 của Luật Đất đai\n1. Giá đất tính tiền sử dụng đất khi bồi thường bằng đất có mục đích sử dụng\nkhác với loại đất thu hồi cho hộ gia đình, cá nhân, người gốc Việt Nam định cư ở\nnước ngoài đang sử dụng đất ở, đang sở hữu nhà ở gắn liền với quyền sử dụng đất\ntại Việt Nam là giá đất được xác định theo bảng giá đất tại thời điểm phê duyệt\nphương án bồi thường, hỗ trợ, tái định cư; trường hợp bồi thường bằng cho thuê\nđất thu tiền thuê đất trả tiền một lần cho cả thời gian thuê thì giá đất tính tiền thuê\nđất là giá đất cụ thể do Ủy ban nhân dân cấp có thẩm quyền quyết định tại thời\nđiểm phê duyệt phương án bồi thường, hỗ trợ, tái định cư.\nGiá đất tính tiền sử dụng đất, tiền thuê đất khi bồi thường bằng đất có mục\nđích sử dụng khác với loại đất thu hồi cho tổ chức kinh tế có đất ở thu hồi là giá\nđất cụ thể do Ủy ban nhân dân cấp có thẩm quyền quyết định tại thời điểm phê\nduyệt phương án bồi thường, hỗ trợ, tái định cư.\n2. ",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E2",
+          "chunk_id": "4710a7bda579c1362162c3ce8bd9ca6cfe3ca7f4b812b3440aacdcc56a505d93",
+          "source_text": "Người có đất thu hồi được bồi thường bằng đất có mục đích sử dụng khác\nvới loại đất thu hồi hoặc bằng nhà ở mà có chênh lệch giá trị giữa tiền bồi thường,\nhỗ trợ về đất với tiền sử dụng đất, tiền thuê đất phải nộp khi được giao đất, thuê đất\nkhác hoặc tiền mua nhà ở thì xử lý như sau:\na) Trường hợp tiền bồi thường, hỗ trợ về đất lớn hơn tiền sử dụng đất, tiền thuê\nđất phải nộp khi được giao đất, thuê đất có mục đích sử dụng khác với loại đất thu\nhồi hoặc tiền mua nhà ở thì người có đất thu hồi được nhận phần chênh lệch;\nb) Trường hợp tiền bồi thường, hỗ trợ về đất nhỏ hơn tiền sử dụng đất, tiền\nthuê đất phải nộp khi được giao đất, thuê đất có mục đích sử dụng khác với loại đất\nthu hồi hoặc tiền mua nhà ở thì người có đất thu hồi phải nộp phần chênh lệch.\n3. Ủy ban nhân dân cấp tỉnh căn cứ quỹ đất, quỹ nhà và tình hình thực tế tại\nđịa phương quy định tỷ lệ quy đổi, điều kiện bồi thường bằng đất có mục đích sử\ndụng khác với loại đất thu hồi hoặc bằng nhà ở để bồi thường cho người có đất thu\nhồi quy định tại Điều này.\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        }
+      ],
+      "exact_context_to_send": "[E1] 88/2024/NĐ-CP — Điều 4. Bồi thường bằng đất có mục đích sử dụng khác với loại đất thu hồi\nNguồn chính thức: https://vanban.chinhphu.vn/?pageid=27160&docid=210658\nTrích đoạn:\nĐiều 4. Bồi thường bằng đất có mục đích sử dụng khác với loại đất thu hồi\nhoặc bằng nhà ở khi Nhà nước thu hồi đất quy định tại khoản 1 Điều 96,\nkhoản 1 Điều 98, khoản 1 Điều 99 của Luật Đất đai\n1. Giá đất tính tiền sử dụng đất khi bồi thường bằng đất có mục đích sử dụng\nkhác với loại đất thu hồi cho hộ gia đình, cá nhân, người gốc Việt Nam định cư ở\nnước ngoài đang sử dụng đất ở, đang sở hữu nhà ở gắn liền với quyền sử dụng đất\ntại Việt Nam là giá đất được xác định theo bảng giá đất tại thời điểm phê duyệt\nphương án bồi thường, hỗ trợ, tái định cư; trường hợp bồi thường bằng cho thuê\nđất thu tiền thuê đất trả tiền một lần cho cả thời gian thuê thì giá đất tính tiền thuê\nđất là giá đất cụ thể do Ủy ban nhân dân cấp có thẩm quyền quyết định tại thời\nđiểm phê duyệt phương án bồi thường, hỗ trợ, tái định cư.\nGiá đất tính tiền sử dụng đất, tiền thuê đất khi bồi thường bằng đất có mục\nđích sử dụng khác với loại đất thu hồi cho tổ chức kinh tế có đất ở thu hồi là giá\nđất cụ thể do Ủy ban nhân dân cấp có thẩm quyền quyết định tại thời điểm phê\nduyệt phương án bồi thường, hỗ trợ, tái định cư.\n2.\n\n[E2] 88/2024/NĐ-CP — Điều 4. Bồi thường bằng đất có mục đích sử dụng khác với loại đất thu hồi\nNguồn chính thức: https://vanban.chinhphu.vn/?pageid=27160&docid=210658\nTrích đoạn:\nNgười có đất thu hồi được bồi thường bằng đất có mục đích sử dụng khác\nvới loại đất thu hồi hoặc bằng nhà ở mà có chênh lệch giá trị giữa tiền bồi thường,\nhỗ trợ về đất với tiền sử dụng đất, tiền thuê đất phải nộp khi được giao đất, thuê đất\nkhác hoặc tiền mua nhà ở thì xử lý như sau:\na) Trường hợp tiền bồi thường, hỗ trợ về đất lớn hơn tiền sử dụng đất, tiền thuê\nđất phải nộp khi được giao đất, thuê đất có mục đích sử dụng khác với loại đất thu\nhồi hoặc tiền mua nhà ở thì người có đất thu hồi được nhận phần chênh lệch;\nb) Trường hợp tiền bồi thường, hỗ trợ về đất nhỏ hơn tiền sử dụng đất, tiền\nthuê đất phải nộp khi được giao đất, thuê đất có mục đích sử dụng khác với loại đất\nthu hồi hoặc tiền mua nhà ở thì người có đất thu hồi phải nộp phần chênh lệch.\n3. Ủy ban nhân dân cấp tỉnh căn cứ quỹ đất, quỹ nhà và tình hình thực tế tại\nđịa phương quy định tỷ lệ quy đổi, điều kiện bồi thường bằng đất có mục đích sử\ndụng khác với loại đất thu hồi hoặc bằng nhà ở để bồi thường cho người có đất thu\nhồi quy định tại Điều này.",
+      "prompt_characters": 3647,
+      "generated_answer": null,
+      "citation_ids": null,
+      "token_usage": null,
+      "latency_ms": null,
+      "provider_attempt_count": 0,
+      "validation_outcome": "not_executed",
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "T07",
+      "user_query": "Điều 20 Nghị định 88/2024/NĐ-CP yêu cầu hộ nhận giao khoán đất có giấy tờ gì để được hỗ trợ ổn định sản xuất?",
+      "expected_generation_requests": 1,
+      "routing_reason": "sufficient",
+      "retrieved_context_ids": [
+        "5c95b38a3236e3c03de0e03971547cccea775a2022e3b2e3a33070a4c7e8bcd0",
+        "bd277776abcdbbaa339be75ebe92e307f426d7956701fb0de259855e6831c5c1",
+        "592819d163ac570809452f7f91f05383b195e88109e4799fc48dae6746c5146c"
+      ],
+      "exact_retrieved_evidence": [
+        {
+          "citation_id": "E1",
+          "chunk_id": "5c95b38a3236e3c03de0e03971547cccea775a2022e3b2e3a33070a4c7e8bcd0",
+          "source_text": "Điều 20. Hỗ trợ ổn định sản xuất, kinh doanh khi Nhà nước thu hồi đất\nViệc hỗ trợ ổn định sản xuất, kinh doanh khi Nhà nước thu hồi đất quy định tại\nđiểm b khoản 1 Điều 108 của Luật Đất đai được thực hiện theo quy định sau đây:\n1. Đối tượng được hỗ trợ ổn định sản xuất, kinh doanh\na) Tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh doanh, tổ chức kinh tế\ncó vốn đầu tư nước ngoài bị ngừng sản xuất, kinh doanh mà có đủ điều kiện được\nbồi thường về đất thì được hỗ trợ ổn định sản xuất, kinh doanh;\nb) Hộ gia đình, cá nhân đang sử dụng đất do nhận giao khoán đất sử dụng vào\nmục đích nông nghiệp, lâm nghiệp, nuôi trồng thuỷ sản, làm muối thuộc đối tượng\nquy định khoản 2 Điều 19 của Nghị định này thì được hỗ trợ ổn định sản xuất.\n2. Điều kiện để được hỗ trợ ổn định sản xuất, kinh doanh\na) Đối với hộ gia đình, cá nhân, tổ chức kinh tế, tổ chức kinh tế có vốn đầu tư\nnước ngoài được bồi thường về đất;\nb) Đối với hộ gia đình, cá nhân đang sử dụng đất do nhận giao khoán đất quy\nđịnh tại khoản 2 Điều 19 của Nghị định này thì phải có hợp đồng giao khoán sử\ndụng đất.\n3. ",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E2",
+          "chunk_id": "bd277776abcdbbaa339be75ebe92e307f426d7956701fb0de259855e6831c5c1",
+          "source_text": "khoản 1 Điều này thuê lao động theo hợp đồng lao động thì được áp dụng hỗ trợ\nchế độ trợ cấp ngừng việc theo quy định của pháp luật về lao động nhưng thời gian\ntrợ cấp không quá 06 tháng.\n5. Trường hợp hộ gia đình, cá nhân đang sử dụng đất do nhận giao khoán đất\nđể sử dụng vào mục đích nông nghiệp, lâm nghiệp, nuôi trồng thuỷ sản, làm muối\ntừ các nông, lâm trường quốc doanh hoặc công ty nông, lâm nghiệp được chuyển\nđổi từ các nông, lâm trường quốc doanh, tập đoàn sản xuất nông nghiệp, hợp tác xã\nnông nghiệp và có hợp đồng giao khoán sử dụng đất thì Ủy ban nhân dân cấp tỉnh\nquyết định mức hỗ trợ ổn định sản xuất cho phù hợp với từng dự án.\n6. Ủy ban nhân dân cấp tỉnh quyết định mức hỗ trợ, thời gian hỗ trợ, định kỳ\nchi trả tiền hỗ trợ cho phù hợp với thực tế tại địa phương.\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E3",
+          "chunk_id": "592819d163ac570809452f7f91f05383b195e88109e4799fc48dae6746c5146c",
+          "source_text": "Việc hỗ trợ ổn định sản xuất, kinh doanh thực hiện theo quy định sau:\na) Hộ gia đình, cá nhân bị thu hồi đất nông nghiệp thì được hỗ trợ ổn định sản\nxuất, kinh doanh bao gồm: hỗ trợ giống cây trồng, giống vật nuôi cho sản xuất\nnông nghiệp, các dịch vụ khuyến nông, khuyến lâm, dịch vụ bảo vệ thực vật, thú y,\nkỹ thuật trồng trọt, chăn nuôi và kỹ thuật nghiệp vụ đối với sản xuất, kinh doanh\ndịch vụ công thương nghiệp;\nb) Đối với tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh doanh, tổ chức\nkinh tế có vốn đầu tư nước ngoài thuộc đối tượng quy định tại khoản 1 Điều này thì\nđược hỗ trợ ổn định sản xuất, kinh doanh bằng tiền với mức cao nhất bằng 30% một\nnăm thu nhập sau thuế, theo mức thu nhập bình quân của 03 năm liền kề trước đó.\nThu nhập sau thuế được xác định là thu nhập sau khi đã nộp thuế thu nhập cá\nnhân, thuế thu nhập doanh nghiệp theo quy định của pháp luật về thuế thu nhập cá\nnhân, pháp luật về thuế thu nhập doanh nghiệp.\n4. Người lao động do tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh\ndoanh, tổ chức kinh tế có vốn đầu tư nước ngoài thuộc đối tượng quy định tại\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        }
+      ],
+      "exact_context_to_send": "[E1] 88/2024/NĐ-CP — Điều 20. Hỗ trợ ổn định sản xuất, kinh doanh khi Nhà nước thu hồi đất\nNguồn chính thức: https://vanban.chinhphu.vn/?pageid=27160&docid=210658\nTrích đoạn:\nĐiều 20. Hỗ trợ ổn định sản xuất, kinh doanh khi Nhà nước thu hồi đất\nViệc hỗ trợ ổn định sản xuất, kinh doanh khi Nhà nước thu hồi đất quy định tại\nđiểm b khoản 1 Điều 108 của Luật Đất đai được thực hiện theo quy định sau đây:\n1. Đối tượng được hỗ trợ ổn định sản xuất, kinh doanh\na) Tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh doanh, tổ chức kinh tế\ncó vốn đầu tư nước ngoài bị ngừng sản xuất, kinh doanh mà có đủ điều kiện được\nbồi thường về đất thì được hỗ trợ ổn định sản xuất, kinh doanh;\nb) Hộ gia đình, cá nhân đang sử dụng đất do nhận giao khoán đất sử dụng vào\nmục đích nông nghiệp, lâm nghiệp, nuôi trồng thuỷ sản, làm muối thuộc đối tượng\nquy định khoản 2 Điều 19 của Nghị định này thì được hỗ trợ ổn định sản xuất.\n2. Điều kiện để được hỗ trợ ổn định sản xuất, kinh doanh\na) Đối với hộ gia đình, cá nhân, tổ chức kinh tế, tổ chức kinh tế có vốn đầu tư\nnước ngoài được bồi thường về đất;\nb) Đối với hộ gia đình, cá nhân đang sử dụng đất do nhận giao khoán đất quy\nđịnh tại khoản 2 Điều 19 của Nghị định này thì phải có hợp đồng giao khoán sử\ndụng đất.\n3.\n\n[E2] 88/2024/NĐ-CP — Điều 20. Hỗ trợ ổn định sản xuất, kinh doanh khi Nhà nước thu hồi đất\nNguồn chính thức: https://vanban.chinhphu.vn/?pageid=27160&docid=210658\nTrích đoạn:\nkhoản 1 Điều này thuê lao động theo hợp đồng lao động thì được áp dụng hỗ trợ\nchế độ trợ cấp ngừng việc theo quy định của pháp luật về lao động nhưng thời gian\ntrợ cấp không quá 06 tháng.\n5. Trường hợp hộ gia đình, cá nhân đang sử dụng đất do nhận giao khoán đất\nđể sử dụng vào mục đích nông nghiệp, lâm nghiệp, nuôi trồng thuỷ sản, làm muối\ntừ các nông, lâm trường quốc doanh hoặc công ty nông, lâm nghiệp được chuyển\nđổi từ các nông, lâm trường quốc doanh, tập đoàn sản xuất nông nghiệp, hợp tác xã\nnông nghiệp và có hợp đồng giao khoán sử dụng đất thì Ủy ban nhân dân cấp tỉnh\nquyết định mức hỗ trợ ổn định sản xuất cho phù hợp với từng dự án.\n6. Ủy ban nhân dân cấp tỉnh quyết định mức hỗ trợ, thời gian hỗ trợ, định kỳ\nchi trả tiền hỗ trợ cho phù hợp với thực tế tại địa phương.\n\n[E3] 88/2024/NĐ-CP — Điều 20. Hỗ trợ ổn định sản xuất, kinh doanh khi Nhà nước thu hồi đất\nNguồn chính thức: https://vanban.chinhphu.vn/?pageid=27160&docid=210658\nTrích đoạn:\nViệc hỗ trợ ổn định sản xuất, kinh doanh thực hiện theo quy định sau:\na) Hộ gia đình, cá nhân bị thu hồi đất nông nghiệp thì được hỗ trợ ổn định sản\nxuất, kinh doanh bao gồm: hỗ trợ giống cây trồng, giống vật nuôi cho sản xuất\nnông nghiệp, các dịch vụ khuyến nông, khuyến lâm, dịch vụ bảo vệ thực vật, thú y,\nkỹ thuật trồng trọt, chăn nuôi và kỹ thuật nghiệp vụ đối với sản xuất, kinh doanh\ndịch vụ công thương nghiệp;\nb) Đối với tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh doanh, tổ chức\nkinh tế có vốn đầu tư nước ngoài thuộc đối tượng quy định tại khoản 1 Điều này thì\nđược hỗ trợ ổn định sản xuất, kinh doanh bằng tiền với mức cao nhất bằng 30% một\nnăm thu nhập sau thuế, theo mức thu nhập bình quân của 03 năm liền kề trước đó.\nThu nhập sau thuế được xác định là thu nhập sau khi đã nộp thuế thu nhập cá\nnhân, thuế thu nhập doanh nghiệp theo quy định của pháp luật về thuế thu nhập cá\nnhân, pháp luật về thuế thu nhập doanh nghiệp.\n4. Người lao động do tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh\ndoanh, tổ chức kinh tế có vốn đầu tư nước ngoài thuộc đối tượng quy định tại",
+      "prompt_characters": 4607,
+      "generated_answer": null,
+      "citation_ids": null,
+      "token_usage": null,
+      "latency_ms": null,
+      "provider_attempt_count": 0,
+      "validation_outcome": "not_executed",
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "T13",
+      "user_query": "Điều 29 Nghị định 88/2024/NĐ-CP giao bộ nào kiểm tra, thanh tra thực hiện bồi thường hỗ trợ tái định cư trong bản lưu?",
+      "expected_generation_requests": 1,
+      "routing_reason": "sufficient",
+      "retrieved_context_ids": [
+        "fca2b2981c03f051496f2308680961bd6a9288c2a5d9e67e2aff19a0eb3e7933"
+      ],
+      "exact_retrieved_evidence": [
+        {
+          "citation_id": "E1",
+          "chunk_id": "fca2b2981c03f051496f2308680961bd6a9288c2a5d9e67e2aff19a0eb3e7933",
+          "source_text": "Điều 29. Trách nhiệm tổ chức thực hiện bồi thường, hỗ trợ, tái định cư\n1. Các bộ, cơ quan ngang bộ, cơ quan thuộc Chính phủ, Tập đoàn kinh tế,\nTổng công ty, đơn vị sự nghiệp công lập có dự án đầu tư phải thu hồi đất có trách\nnhiệm phối hợp với Ủy ban nhân dân các cấp và đơn vị, tổ chức thực hiện nhiệm\nvụ bồi thường, hỗ trợ, tái định cư trong quá trình tổ chức thực hiện; bảo đảm kinh\nphí cho việc bồi thường, hỗ trợ, tái định cư theo quy định của Nghị định này.\n2. Ủy ban nhân dân cấp tỉnh có trách nhiệm chỉ đạo tổ chức bồi thường, hỗ trợ,\ntái định cư khi Nhà nước thu hồi đất theo quy định tại Nghị định này.\n3. Bộ Tài nguyên và Môi trường có trách nhiệm kiểm tra, thanh tra việc thực\nhiện việc bồi thường, hỗ trợ, tái định cư khi Nhà nước thu hồi đất theo quy định tại\nNghị định này.\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        }
+      ],
+      "exact_context_to_send": "[E1] 88/2024/NĐ-CP — Điều 29. Trách nhiệm tổ chức thực hiện bồi thường, hỗ trợ, tái định cư\nNguồn chính thức: https://vanban.chinhphu.vn/?pageid=27160&docid=210658\nTrích đoạn:\nĐiều 29. Trách nhiệm tổ chức thực hiện bồi thường, hỗ trợ, tái định cư\n1. Các bộ, cơ quan ngang bộ, cơ quan thuộc Chính phủ, Tập đoàn kinh tế,\nTổng công ty, đơn vị sự nghiệp công lập có dự án đầu tư phải thu hồi đất có trách\nnhiệm phối hợp với Ủy ban nhân dân các cấp và đơn vị, tổ chức thực hiện nhiệm\nvụ bồi thường, hỗ trợ, tái định cư trong quá trình tổ chức thực hiện; bảo đảm kinh\nphí cho việc bồi thường, hỗ trợ, tái định cư theo quy định của Nghị định này.\n2. Ủy ban nhân dân cấp tỉnh có trách nhiệm chỉ đạo tổ chức bồi thường, hỗ trợ,\ntái định cư khi Nhà nước thu hồi đất theo quy định tại Nghị định này.\n3. Bộ Tài nguyên và Môi trường có trách nhiệm kiểm tra, thanh tra việc thực\nhiện việc bồi thường, hỗ trợ, tái định cư khi Nhà nước thu hồi đất theo quy định tại\nNghị định này.",
+      "prompt_characters": 2097,
+      "generated_answer": null,
+      "citation_ids": null,
+      "token_usage": null,
+      "latency_ms": null,
+      "provider_attempt_count": 0,
+      "validation_outcome": "not_executed",
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "T21",
+      "user_query": "Điều 777 Nghị định 88/2024/NĐ-CP cho phép bồi thường bằng vàng đúng không?",
+      "expected_generation_requests": 0,
+      "routing_reason": "explicit_citation_not_in_corpus",
+      "retrieved_context_ids": [],
+      "exact_retrieved_evidence": [],
+      "exact_context_to_send": null,
+      "prompt_characters": 0,
+      "generated_answer": null,
+      "citation_ids": null,
+      "token_usage": null,
+      "latency_ms": null,
+      "provider_attempt_count": 0,
+      "validation_outcome": "not_executed",
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "T24",
+      "user_query": "Khi sốt cao nên uống thuốc gì và liều bao nhiêu?",
+      "expected_generation_requests": 0,
+      "routing_reason": "out_of_domain",
+      "retrieved_context_ids": [
+        "b070463ffd3daf611c4ae443567366541ef2dbc871c261225066a4f98842dd35",
+        "592819d163ac570809452f7f91f05383b195e88109e4799fc48dae6746c5146c",
+        "7a23c27acfe953693e6342706763da8fbcf18663394700eed18b066e6b5b6d96",
+        "c0c2934b2acdcfb07a86f3026be70a8b6c270d8d10d6f0b017d450e49421d2c8",
+        "d9504ed987cc03e3dae36bf56cbc8a0286c8429d59cdb69f603bd03101ce5437",
+        "c3bda64222671dfaa2c263b1c66d110df71e3ba60e6b03d4c53533771b739158"
+      ],
+      "exact_retrieved_evidence": [
+        {
+          "citation_id": "E1",
+          "chunk_id": "b070463ffd3daf611c4ae443567366541ef2dbc871c261225066a4f98842dd35",
+          "source_text": "Điều 15. Bồi thường, hỗ trợ do phải di dời mồ mả khi Nhà nước thu hồi đất\n1. Ủy ban nhân dân cấp tỉnh, Ủy ban nhân dân cấp huyện có trách nhiệm bố trí\nquỹ đất trong các nghĩa trang theo quy hoạch để di dời mồ mả khi thu hồi đất.\n2. Đối với mồ mả trong phạm vi đất thu hồi phải di dời thì được bồi thường\ncác chi phí bao gồm: chi phí đào, bốc, di dời, xây dựng mới và các chi phí hợp lý\nkhác có liên quan trực tiếp để di dời mồ mả đến vị trí mới trong nghĩa trang theo\nquy hoạch của địa phương; trường hợp tự thu xếp việc di chuyển mồ mả ngoài khu\nvực được bố trí thì được hỗ trợ tiền.\nTrường hợp quận, thành phố, thị xã thuộc thành phố trực thuộc Trung ương,\nthị xã, thành phố thuộc tỉnh nơi có đất thu hồi không còn quỹ đất trong các nghĩa\ntrang thì Ủy ban nhân dân cấp tỉnh có trách nhiệm rà soát quỹ đất tại địa bàn các\nđơn vị hành chính cấp huyện khác để bố trí di dời mồ mả, quy định chính sách hỗ\ntrợ để khuyến khích hình thức hoả táng, lưu giữ tro cốt tại các cơ sở lưu giữ tro cốt\nnhằm thực hiện nếp sống văn minh, đảm bảo sử dụng đất tiết kiệm, hiệu quả, bền\nvững, góp phần bảo vệ môi trường.\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E2",
+          "chunk_id": "592819d163ac570809452f7f91f05383b195e88109e4799fc48dae6746c5146c",
+          "source_text": "Việc hỗ trợ ổn định sản xuất, kinh doanh thực hiện theo quy định sau:\na) Hộ gia đình, cá nhân bị thu hồi đất nông nghiệp thì được hỗ trợ ổn định sản\nxuất, kinh doanh bao gồm: hỗ trợ giống cây trồng, giống vật nuôi cho sản xuất\nnông nghiệp, các dịch vụ khuyến nông, khuyến lâm, dịch vụ bảo vệ thực vật, thú y,\nkỹ thuật trồng trọt, chăn nuôi và kỹ thuật nghiệp vụ đối với sản xuất, kinh doanh\ndịch vụ công thương nghiệp;\nb) Đối với tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh doanh, tổ chức\nkinh tế có vốn đầu tư nước ngoài thuộc đối tượng quy định tại khoản 1 Điều này thì\nđược hỗ trợ ổn định sản xuất, kinh doanh bằng tiền với mức cao nhất bằng 30% một\nnăm thu nhập sau thuế, theo mức thu nhập bình quân của 03 năm liền kề trước đó.\nThu nhập sau thuế được xác định là thu nhập sau khi đã nộp thuế thu nhập cá\nnhân, thuế thu nhập doanh nghiệp theo quy định của pháp luật về thuế thu nhập cá\nnhân, pháp luật về thuế thu nhập doanh nghiệp.\n4. Người lao động do tổ chức kinh tế, hộ gia đình, cá nhân sản xuất, kinh\ndoanh, tổ chức kinh tế có vốn đầu tư nước ngoài thuộc đối tượng quy định tại\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E3",
+          "chunk_id": "7a23c27acfe953693e6342706763da8fbcf18663394700eed18b066e6b5b6d96",
+          "source_text": "hỗ trợ, tái định cư diện tích của thửa đất đã đo đạc bị thay đổi thì sử dụng số liệu\nđã đo đạc để lập phương án bồi thường, hỗ trợ, tái định cư.\n2. Trường hợp có sự chênh lệch diện tích đất mà số liệu đo đạc thực tế lớn hơn\nsố liệu ghi trên Giấy chứng nhận hoặc giấy tờ quy định tại Điều 137 của Luật Đất\nđai, không có tranh chấp với những người sử dụng đất liền kề thì diện tích bồi\nthường được xác định theo số liệu đo đạc thực tế theo quy định tại khoản 6 Điều\n135 của Luật Đất đai.\n3. Trường hợp Giấy chứng nhận hoặc giấy tờ quy định tại Điều 137 của Luật\nĐất đai mà vị trí, tọa độ không chính xác thì xem xét bồi thường theo đúng vị trí,\ntọa độ khi đo đạc thực tế.\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E4",
+          "chunk_id": "c0c2934b2acdcfb07a86f3026be70a8b6c270d8d10d6f0b017d450e49421d2c8",
+          "source_text": "việc bán vật tư, vật liệu, tài sản thu hồi quy định tại khoản này; việc bán thực hiện\nnhư việc bán vật tư, vật liệu thu hồi từ thanh lý tài sản công tại cơ quan nhà nước\ntheo quy định của pháp luật về quản lý, sử dụng tài sản công. Số tiền thu được từ\nviệc bán vật tư, vật liệu, tài sản thu hồi sau khi trừ đi các chi phí liên quan đến việc\nbán được nộp vào ngân sách nhà nước tại địa phương.\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E5",
+          "chunk_id": "d9504ed987cc03e3dae36bf56cbc8a0286c8429d59cdb69f603bd03101ce5437",
+          "source_text": "được thực hiện khi đơn vị, tổ chức thực hiện nhiệm vụ bồi thường, hỗ trợ, tái định\ncư không có đủ nhân sự để thực hiện và không được thực hiện nhiệm vụ trùng lắp\nvới nhân sự của đơn vị, tổ chức thực hiện nhiệm vụ bồi thường, hỗ trợ, tái định cư;\ni) Các nội dung chi khác có liên quan trực tiếp đến việc tổ chức thực hiện bồi\nthường, hỗ trợ, tái định cư.\n5. Nội dung chi tổ chức thực hiện cưỡng chế kiểm đếm, cưỡng chế thu hồi đất:\na) Chi thông báo, tuyên truyền vận động các đối tượng thực hiện quyết định\ncưỡng chế kiểm đếm, quyết định cưỡng chế thu hồi đất;\nb) Chi mua nguyên liệu, nhiên liệu, thuê phương tiện, thiết bị bảo vệ, y tế,\nphòng chống cháy nổ, các thiết bị, phương tiện cần thiết khác phục vụ cho việc\nthực hiện cưỡng chế kiểm đếm, cưỡng chế thu hồi đất;\nc) Chi phục vụ công tác tổ chức thi hành quyết định cưỡng chế kiểm đếm,\ncưỡng chế thu hồi đất;\nd) Chi phí niêm phong, phá, tháo dỡ, vận chuyển tài sản; di chuyển người bị\ncưỡng chế và người có liên quan ra khỏi khu đất cưỡng chế, chi thuê địa điểm,\nnhân công, phương tiện bảo quản tài sản và các khoản chi phí thực tế hợp pháp\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        },
+        {
+          "citation_id": "E6",
+          "chunk_id": "c3bda64222671dfaa2c263b1c66d110df71e3ba60e6b03d4c53533771b739158",
+          "source_text": "Đất ở có nhà ở gắn liền với đất nằm trong phạm vi hành lang bảo vệ an toàn\ncông trình, khu vực bảo vệ, vành đai an toàn khi xây dựng công trình, khu vực có\nhành lang bảo vệ an toàn phải di chuyển chỗ ở theo quyết định của cơ quan nhà\nnước có thẩm quyền thì người sử dụng đất, chủ sở hữu nhà ở gắn liền với đất ngoài\nviệc được bồi thường theo quy định tại khoản 1 Điều này, nếu có nhu cầu thì được\nbố trí tái định cư, được bồi thường chi phí di chuyển và được hỗ trợ ổn định đời\nsống, sản xuất.\n",
+          "document_number": "88/2024/NĐ-CP",
+          "raw_sha256": "a5721e26bb7079e107c4e1bc2eda9474f4f9bb416219fa0db55e779139ebe94f",
+          "parsed_text_sha256": "d8c51ff3a0ac966540a58f16c2b13a43aade1343b1d71167bddfaa271d3d8fb5"
+        }
+      ],
+      "exact_context_to_send": null,
+      "prompt_characters": 0,
+      "generated_answer": null,
+      "citation_ids": null,
+      "token_usage": null,
+      "latency_ms": null,
+      "provider_attempt_count": 0,
+      "validation_outcome": "not_executed",
+      "human_review_status": "pending"
+    }
+  ]
+}

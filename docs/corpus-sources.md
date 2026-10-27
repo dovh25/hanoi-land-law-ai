@@ -1,5 +1,9 @@
 # Phase D — authoritative Vietnamese land-law sources
 
+> **Source-discovery evidence snapshot.** Access/status findings apply to the
+> recorded discovery phase; do not treat them as new online checks. See
+> [current bundled sources](corpus.md) and preserve all acquisition approvals.
+
 ## Status
 
 > **Phase D.1 update:** the acquisition blocker below was resolved by an alternate

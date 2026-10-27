@@ -1,5 +1,9 @@
 # Frontend redesign — Indochine legal-tech
 
+> **Earlier visual-design record.** The active interface is documented by the
+> [current UI design system](ui-redesign/design-system.md) and
+> [implementation evidence](ui-redesign/implementation-summary.md).
+
 The public anonymous demo page (`frontend/src/pages/DemoChatPage.tsx`, route `/`) was
 redesigned in Figma and re-implemented in React + Tailwind v4. Behaviour, data flow,
 security controls, rate limiting, and citation/anchor handling are **unchanged** — this
