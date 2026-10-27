@@ -220,6 +220,7 @@ class Evidence:
         if len(excerpt) > excerpt_chars:
             excerpt = excerpt[:excerpt_chars].rstrip() + "…"
         return {
+            "document_id": self.stage_id,
             "evidence_id": evidence_id,
             "chunk_id": self.chunk_id,
             "document_number": self.document_number,

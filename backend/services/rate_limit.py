@@ -32,6 +32,13 @@ class SlidingWindowLimiter:
     def check(self, key: str, now: float | None = None) -> RateDecision:
         current = time.monotonic() if now is None else now
         with self._lock:
+            if key not in self._events and len(self._events) >= 8192:
+                for candidate in [k for k, value in self._events.items()
+                                  if not value or value[-1] <= current - self.window]:
+                    self._events.pop(candidate, None)
+                if len(self._events) >= 8192:
+                    # Fail closed rather than evicting active visitors and resetting limits.
+                    return RateDecision(False, max(1, int(self.window)), 0, self.limit)
             events = self._events.setdefault(key, deque())
             cutoff = current - self.window
             while events and events[0] <= cutoff:
@@ -42,7 +49,7 @@ class SlidingWindowLimiter:
             events.append(current)
             # Opportunistically drop idle keys so a long-running process stays bounded.
             if len(self._events) > 2048:
-                for candidate in [k for k, value in self._events.items() if not value][:1024]:
+                for candidate in [k for k, value in self._events.items() if not value or value[-1] <= cutoff]:
                     self._events.pop(candidate, None)
             return RateDecision(True, 0, max(0, self.limit - len(events)), self.limit)
 

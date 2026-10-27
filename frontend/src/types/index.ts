@@ -32,7 +32,7 @@ export interface LawDocument {
   ref: string;
   date: string;
   snippet: string;
-  content?: string; // Full text for the preview
+  content?: string | null; // Full text for the preview, absent for summaries
 }
 
 // Response model for paginated document list

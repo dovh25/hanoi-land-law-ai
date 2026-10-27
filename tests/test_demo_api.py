@@ -198,3 +198,47 @@ def test_demo_history_is_request_local(settings):
         assert "PRIVATE_M4_CANARY" in prompts[0]
         assert "PRIVATE_M4_CANARY" not in prompts[1]
         assert "set-cookie" not in first.headers
+
+
+def test_anonymous_cannot_access_or_mutate_persisted_sessions(settings):
+    with TestClient(create_app(settings)) as client:
+        session_id = "1e07a9a8-31dc-441d-8641-2e4c735a72b9"
+        for method, path, body in [
+            ("GET", "/sessions", None),
+            ("GET", f"/sessions/{session_id}", None),
+            ("PATCH", f"/sessions/{session_id}", {"title": "stolen"}),
+            ("DELETE", f"/sessions/{session_id}", None),
+        ]:
+            assert client.request(method, f"/api/v1{path}", json=body).status_code == 401
+        assert client.post("/api/v1/demo/chat", json={
+            "message": "Xin chào", "session_id": session_id,
+        }).status_code == 422
+
+
+def test_public_citation_opens_matching_bundled_excerpt(settings):
+    with TestClient(create_app(settings)) as client:
+        response = client.post("/api/v1/demo/chat", json={
+            "message": "Điều 11 Nghị định 88/2024/NĐ-CP quy định gì?",
+        })
+        assert response.status_code == 200
+        source = response.json()["sources"][0]
+        doc = client.get(f'/api/v1/documents/{source["document_id"]}')
+        assert doc.status_code == 200
+        assert doc.json()["ref"] == source["document_number"]
+        assert source["article_number"] in doc.json()["content"]
+        assert "không phải toàn văn" in doc.json()["content"]
+        found = client.get('/api/v1/documents/search', params={"q": source["document_number"]})
+        assert any(item["id"] == source["document_id"] for item in found.json()["items"])
+        articles = client.get(f'/api/v1/documents/{source["document_id"]}/articles')
+        assert articles.status_code == 200
+        assert any(item["article_number"] == source["article_number"] for item in articles.json())
+
+
+def test_demo_rejects_blank_and_unbounded_history(settings):
+    with TestClient(create_app(settings)) as client:
+        for payload in [
+            {"message": "   "},
+            {"message": "Xin chào", "history": [{"role": "user", "content": "x"}] * 21},
+            {"message": "Xin chào", "history": [{"role": "user", "content": "x" * 4001}]},
+        ]:
+            assert client.post("/api/v1/demo/chat", json=payload).status_code == 422

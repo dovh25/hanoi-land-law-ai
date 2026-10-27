@@ -51,7 +51,9 @@ def create_app(
     app.state.settings = settings
     app.state.database_ready = False
     app.state.chat_service = ChatService(settings, pipeline=pipeline)
-    app.state.lookup_service = lookup_service or LawDocumentService(str(settings.DOCS_ROOT))
+    app.state.lookup_service = lookup_service or LawDocumentService(
+        str(settings.DOCS_ROOT), settings.MVP_DEMO_CORPUS_PATH if settings.MVP_ENABLED else None
+    )
     app.state.mvp_pipeline = mvp_pipeline
     if app.state.mvp_pipeline is None and settings.MVP_ENABLED:
         app.state.mvp_pipeline = MvpRagPipeline(settings.MVP_DEMO_CORPUS_PATH)

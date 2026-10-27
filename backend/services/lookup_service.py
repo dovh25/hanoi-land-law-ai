@@ -8,6 +8,7 @@ for the Vietnamese Law lookup page.
 import json
 import logging
 import re
+import threading
 from pathlib import Path
 from typing import Dict, List, Optional
 from dataclasses import dataclass, asdict
@@ -234,22 +235,56 @@ class LawDocumentService:
     Uses file system for document listing, retrieval, and text-based search.
     """
 
-    def __init__(self, docs_root: Optional[str] = None):
+    def __init__(self, docs_root: Optional[str] = None, demo_corpus_path: Optional[Path] = None):
         self.docs_root = Path(docs_root) if docs_root else Path(config.DOCS_ROOT)
+        self.demo_corpus_path = demo_corpus_path
+        self._demo_documents: Dict[str, Dict] = {}
         self._id_to_filepath: Dict[str, str] = {}
         self._content_cache: List[tuple] = []  # (law_id, content) for content search
         self._documents_cache: List[Dict] = []  # All document metadata for fast listing
         self._types_cache: List[str] = []  # All document types
         self._initialized = False
+        self._startup_lock = threading.Lock()
 
     def startup(self) -> None:
         """Initialize the service: build all caches."""
+        with self._startup_lock:
+            if self._initialized:
+                return
+            self._startup()
+
+    def _startup(self) -> None:
         logger.info("Initializing LawDocumentService...")
         self._build_id_mapping()
         self._build_content_cache()
         self._build_documents_cache()
+        self._load_demo_excerpts()
         logger.info("LawDocumentService initialized successfully")
         self._initialized = True
+
+    def _load_demo_excerpts(self) -> None:
+        """Expose bundled evidence in the reader; not reconstructed full instruments."""
+        if not self.demo_corpus_path or not self.demo_corpus_path.exists():
+            return
+        from backend.services.mvp_corpus import MvpCorpusIndex
+        index = MvpCorpusIndex.load(self.demo_corpus_path)
+        groups: Dict[str, list] = {}
+        for chunk in index.evidence:
+            groups.setdefault(chunk.stage_id, []).append(chunk)
+        for doc_id, chunks in groups.items():
+            chunks.sort(key=lambda item: item.source_start)
+            first = chunks[0]
+            content = "\n\n".join(dict.fromkeys(chunk.source_text for chunk in chunks))
+            year = re.search(r"/(\d{4})/", first.document_number)
+            doc = {"id": doc_id, "title": first.document_title,
+                   "ref": first.document_number, "type": first.document_type,
+                   "date": year.group(1) if year else "", "snippet": content[:200],
+                   "content": "TRÍCH ĐOẠN KHO DEMO — không phải toàn văn; hiệu lực chưa xác minh.\n\n" + content}
+            self._demo_documents[doc_id] = doc
+            metadata = {key: value for key, value in doc.items() if key != "content"}
+            self._documents_cache.append({**metadata, "content_lower": content.lower()})
+            self._content_cache.append((doc_id, content))
+        self._types_cache = sorted(set(self._types_cache) | {doc["type"] for doc in self._demo_documents.values()})
 
     def _get_cache_path(self) -> Path:
         """Get the path to the cache file."""
@@ -280,6 +315,8 @@ class LawDocumentService:
 
     def _save_cache(self) -> None:
         """Save ID mapping to cache file."""
+        if not self.docs_root.is_dir():
+            return
         cache_path = self._get_cache_path()
         try:
             cache_data = {
@@ -346,6 +383,8 @@ class LawDocumentService:
 
     def get_document(self, doc_id: str) -> Optional[Dict]:
         """Get a single document by ID with full content."""
+        if doc_id in self._demo_documents:
+            return self._demo_documents[doc_id]
         logger.debug(f"Getting document by ID: {doc_id}")
         filepath = self._find_filepath_by_id(doc_id)
         if not filepath:
@@ -362,6 +401,8 @@ class LawDocumentService:
 
     def get_articles(self, doc_id: str) -> List[Dict]:
         """Get all articles from a document."""
+        if doc_id in self._demo_documents:
+            return [asdict(article) for article in parse_articles(self._demo_documents[doc_id]["content"])]
         filepath = self._find_filepath_by_id(doc_id)
         if not filepath:
             return []
@@ -454,7 +495,7 @@ class LawDocumentService:
                 continue
 
             # Search in title and cached content
-            if query_lower in doc.get('title', '').lower() or query_lower in doc.get('content_lower', ''):
+            if any(query_lower in doc.get(field, '').lower() for field in ('title', 'ref', 'content_lower')):
                 results.append(doc)
 
         # Paginate

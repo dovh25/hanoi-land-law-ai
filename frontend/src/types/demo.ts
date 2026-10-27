@@ -1,4 +1,5 @@
 export interface DemoSource {
+  document_id?: string;
   evidence_id: string;
   chunk_id: string;
   document_number: string;

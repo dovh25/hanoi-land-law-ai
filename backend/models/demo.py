@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class DemoHistoryMessage(BaseModel):
@@ -9,11 +9,20 @@ class DemoHistoryMessage(BaseModel):
 
 
 class DemoChatRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     message: str = Field(min_length=1, max_length=5000)
     history: list[DemoHistoryMessage] = Field(default_factory=list, max_length=20)
 
+    @field_validator("message")
+    @classmethod
+    def nonblank(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("Question must not be blank")
+        return value.strip()
+
 
 class DemoSource(BaseModel):
+    document_id: str = ""
     evidence_id: str
     chunk_id: str
     document_number: str

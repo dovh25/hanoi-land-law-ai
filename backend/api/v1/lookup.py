@@ -5,7 +5,7 @@ Law Document Lookup API endpoints.
 import logging
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from backend.models.lookup import (
     DocumentResponse,
@@ -17,7 +17,7 @@ from backend.services.lookup_service import LawDocumentService
 
 
 class SearchByContentRequest(BaseModel):
-    source_text: str
+    source_text: str = Field(min_length=1, max_length=10000)
 
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ async def get_document_types(
 
 @router.get("/search", response_model=DocumentListResponse)
 async def search_documents(
-    q: str = Query(..., min_length=1, description="Search query"),
+    q: str = Query(..., min_length=1, max_length=500, description="Search query"),
     type: Optional[str] = Query(None, description="Filter by document type"),
     page: int = Query(1, ge=1, description="Page number"),
     page_size: int = Query(20, ge=1, le=100, description="Items per page"),

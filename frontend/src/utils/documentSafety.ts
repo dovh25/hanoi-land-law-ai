@@ -7,5 +7,14 @@ export function escapeHtml(value: string): string {
 }
 
 export function containsArticle(line: string, article: string | null): boolean {
-  return Boolean(article && line.toLocaleLowerCase('vi').includes(article.toLocaleLowerCase('vi')));
+  if (!article || !/^Điều\s+\d+[a-zđ]?$/iu.test(article)) return false;
+  return line.trim().toLocaleLowerCase('vi').startsWith(article.toLocaleLowerCase('vi'))
+    && !/[\da-zđ]/iu.test(line.trim().slice(article.length, article.length + 1));
+}
+
+export function safeSourceUrl(value: string): string | undefined {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password ? url.href : undefined;
+  } catch { return undefined; }
 }
