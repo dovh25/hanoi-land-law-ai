@@ -26,9 +26,11 @@ at startup; back them up before schema upgrades. Setup never overwrites secrets.
 
 ## Production frontend: Cloudflare Pages
 
-The recorded production origin is `https://hanoi-land-law-ai.pages.dev`, backed by
+The canonical production frontend is `https://hanoi-land-law-ai.pages.dev`, backed by
 the [preserved release evidence](ui-redesign/implementation-summary.md#deployment-readiness).
-This guide records configuration, not a new public availability check.
+The legacy URL `https://hanoi-land-law.pages.dev` redirects to this application;
+it is not an independent application deployment. Redirect and read-only backend
+checks were performed on 2026-10-28, as recorded below.
 
 With repository root as the build working directory:
 
@@ -48,6 +50,81 @@ For a local production preview after building, run
 `npm --prefix frontend run preview -- --host 127.0.0.1 --port 5173`; using port
 5173 keeps the default development CORS allowlist applicable. Preview is not a
 production application server.
+
+### Legacy domain consolidation (verified 2026-10-28)
+
+Both existing Pages projects belong to account `6dea4b2aa0a3efc4bdb326f1164b541f`.
+Both use **Direct Upload**, production branch `main`, no connected Git repository,
+no configured Pages build command/output directory, and no custom domains.
+The build settings above describe the local canonical frontend build, not a
+Cloudflare Git build pipeline.
+
+| Project | Project ID | Production deployment after consolidation |
+|---|---|---|
+| `hanoi-land-law` (redirect only) | `a9d6b5a9-511f-4aca-93e1-7da0019eac57` | `14269eae-1ca4-41f7-8b87-e09c3727b9ed` |
+| `hanoi-land-law-ai` (canonical, unchanged) | `865c0da9-77bc-4966-99ed-86ef4976fa41` | `b35fae5d-8397-4a72-838d-1eb0ee86f6af` |
+
+The old production deployment was `9a00398a-eb3f-4283-987a-e2fe6d34d090`.
+Its root served the legacy application (HTTP 200), and production settings included
+`BACKEND_ORIGIN=https://land-law-chatbot.onrender.com` and an encrypted
+`INGRESS_SECRET`. The obsolete `BACKEND_ORIGIN` was removed from the old project's
+production configuration. The encrypted secret was left untouched; the new static
+deployment has no Functions, JavaScript, API client or backend dependency.
+Both projects have empty preview environment settings; the canonical project also
+has empty production environment settings because its API URL is compiled locally
+into the frontend assets, rather than supplied by a Pages build.
+
+The minimal source is [`deploy/legacy-pages`](../deploy/legacy-pages). Its native
+Pages `_redirects` rules issue **301** redirects over HTTPS:
+
+- `/` → canonical `/`.
+- `/lookup` and `/lookup/` → canonical `/lookup`.
+- Legacy `/chat`, `/chat/:sessionId`, `/login`, and all other paths → canonical `/`.
+  Only `/` and `/lookup` are distinct supported canonical pages.
+- Incoming query strings are preserved, including encoded values.
+
+Rules were first deployed and verified with 302, including browser navigation,
+then redeployed with 301. The final deployment status is `success`. To maintain
+this redirect, upload **only** that directory to the **old** project:
+
+```bash
+wrangler pages deploy deploy/legacy-pages --project-name hanoi-land-law --branch main
+```
+
+Do not upload the application build to `hanoi-land-law`, delete that project, or
+replace the canonical frontend's SPA `_redirects` file with these external rules.
+There is no Git integration that could automatically restore the old application.
+The redirect source is in this repository, but deployment is managed by Direct
+Upload, not automated Git builds. Committing or pushing these files does not
+trigger a deployment of either Pages project.
+
+Actual verification results:
+
+- Ten fresh HTTP route/query/API-path checks each returned one 301 followed by
+  canonical HTTP 200, without loops or third-party redirect destinations.
+- Playwright in a fresh browser context verified redirected root, library query,
+  legacy chat, and direct canonical access: current UI, no password/login form,
+  no JavaScript or console errors.
+- Mobile viewport 390×844: redirected UI rendered, chat input visible, document
+  width 390px (no horizontal overflow).
+- Browser requests reached only the two Pages hostnames and
+  `https://hanoi-land-law-ai-demo.onrender.com`. Demo info, document types and
+  document listing returned 200; no requests targeted the old backend.
+- Current backend `/healthz`, `/demo/readyz`, `/api/v1/demo/info`: 200. Readiness
+  reported `demo_rag=true`, `live_llm_enabled=true`; info reported anonymous MVP
+  corpus metadata and model `gemini-3.5-flash-lite`. No chat/generation request was
+  made. Canonical CORS preflight: 200 with exact canonical origin; legacy origin:
+  400 with no CORS allowance. Backend settings/keys/quotas were not changed.
+- Cloudflare API snapshots confirmed the entire canonical project configuration
+  and production deployment were unchanged before/after the operation.
+
+The old Render backend `https://land-law-chatbot.onrender.com` remains running
+(`/healthz` returned 200). It is absent from the active canonical frontend assets
+and browser traffic. No Render service or historical Pages deployment was deleted;
+historical deployment-specific URLs were not retired. Other consumers of the old
+backend have not been ruled out. Decommissioning it requires a dependency review
+and explicit approval. No new project, Worker, backend, database or paid resource
+was created, and no Gemini generation was invoked.
 
 ## Production backend: Render
 
